@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import { computed, type Component } from 'vue'
-import { Building2, Flag, Wheat, Landmark, Pickaxe, Trees } from 'lucide-vue-next'
+import { Building2, Flag, Wheat, Landmark, Pickaxe, Trees, CircleAlert } from 'lucide-vue-next'
 import type { Feature } from 'geojson'
 import { layers, type LayerName } from '@/world/data'
 import { categoryOf, FEATURE_INFO, type Category } from '@/world/categories'
@@ -78,5 +78,6 @@ export const CHIPS: { label: string; icon: Component; match: (e: SearchEntry) =>
   { label: 'Farms', icon: Wheat, match: (e) => ['farm', 'orchard', 'mill'].includes(e.kind) },
   { label: 'Landmarks', icon: Landmark, match: (e) => ['landmark', 'castle', 'watchtower', 'outpost', 'shrine', 'temple'].includes(e.kind) },
   { label: 'Mines', icon: Pickaxe, match: (e) => ['mine', 'quarry'].includes(e.kind) },
+  { label: 'Events', icon: CircleAlert, match: (e) => e.kind === 'event' },
   { label: 'Nature', icon: Trees, match: (e) => e.selection.type === 'feature' },
 ]

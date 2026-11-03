@@ -64,6 +64,9 @@
   #app {
     @apply h-full overflow-hidden bg-background text-foreground font-sans antialiased;
   }
+  #app {
+    height: 100dvh; /* phones: the visible height, not including the browser's toolbars */
+  }
 }
 
 /* MapLibre's own popups/attribution are not used; keep the canvas cursor Google-like. */

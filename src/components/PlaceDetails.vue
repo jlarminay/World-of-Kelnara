@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Navigation, Share2, LocateFixed, Layers, MapPin, Info, Building2 } from 'lucide-vue-next'
+import { Navigation, Share2, LocateFixed, Layers, MapPin, Info, Building2, CalendarDays } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { categoryOf } from '@/world/categories'
@@ -75,6 +75,7 @@ const share = () => navigator.clipboard?.writeText(location.href)
       <li class="flex items-center gap-6 px-6 py-3">
         <Layers class="size-5 text-primary" />Shown from zoom {{ levelToZoom(p.minzoom) }} (detail level {{ p.minzoom }})
       </li>
+      <li v-if="p.when" class="flex items-center gap-6 px-6 py-3"><CalendarDays class="size-5 shrink-0 text-primary" />{{ p.when }}</li>
       <li v-if="p.note" class="flex items-center gap-6 px-6 py-3"><Info class="size-5 text-primary" />{{ p.note }}</li>
     </ul>
 

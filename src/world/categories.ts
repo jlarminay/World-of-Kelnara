@@ -2,7 +2,7 @@
 import type { IconNode } from 'lucide'
 import {
   Anchor, Apple, Beer, Castle, Church, Crown, Gem, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
-  Building2, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
+  Building2, CircleAlert, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
 
@@ -32,6 +32,7 @@ export const KINDS: Record<string, Category> = {
   camp: { label: 'Camp', color: '#e8710a', icon: Tent },
   ruin: { label: 'Ruin', color: '#5f6368', icon: Skull },
   cave: { label: 'Cave', color: '#5f6368', icon: Gem },
+  event: { label: 'Event', color: '#d93025', icon: CircleAlert },
   default: { label: 'Point of interest', color: '#5f6368', icon: MapPin },
 }
 
@@ -43,6 +44,7 @@ export const RANK_INFO: Record<Rank, Category> = {
   district: { label: 'District', color: '#5f6368', icon: Flag },
   farm: { label: 'Farm', color: '#34a853', icon: Wheat },
   poi: KINDS.default,
+  event: KINDS.event,
 }
 
 export const FEATURE_INFO: Record<string, Category> = {
@@ -57,9 +59,10 @@ export const FEATURE_INFO: Record<string, Category> = {
 }
 
 /** Places that get a coloured pin on the map (everything except settlements and districts). */
-export const isPinned = (p: PlaceProps) => p.rank === 'poi' || p.rank === 'farm'
+export const isPinned = (p: PlaceProps) => p.rank === 'poi' || p.rank === 'farm' || p.rank === 'event'
 
 export function categoryOf(p: PlaceProps): Category {
+  if (p.rank === 'event') return KINDS.event
   if (isPinned(p)) return KINDS[p.kind] ?? (p.rank === 'farm' ? KINDS.farm : KINDS.default)
   return RANK_INFO[p.rank] ?? KINDS.default
 }

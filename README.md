@@ -8,18 +8,18 @@ The roadmap, open decisions and build phases are in `.claude/PLAN.md`.
 
 ```bash
 npm install
-npm run dev        # app + local editor at http://localhost:5173
+npm run dev        # local app at http://localhost:5173
 npm run bake       # regenerate data/generated/*.json from data/settlements.json
 npm run build      # dist/index.html: one self-contained, read-only file
 npm run preview    # serve the build (it must be served over http; file:// is blocked by Chrome)
 ```
 
-The **Editor** button (top right) only exists in `npm run dev`. It edits places and settlement parameters and saves them straight into `data/`. A production build contains no editor code.
+There is no in-app editor: all map content is edited directly in the files in `data/`.
 
 ## Folder layout
 
 ```
-data/                   all map content (plain JSON/GeoJSON, edit by hand, in the editor, or in geojson.io/QGIS)
+data/                   all map content (plain JSON/GeoJSON, edit by hand or in geojson.io/QGIS)
   world.json            coordinate system, scale, detail levels, travel speeds  ← read this first
   places.geojson        capitals, cities, districts, farms, points of interest (Point)
   areas.geojson         hand-drawn city areas (urban), city walls and farmland
@@ -36,7 +36,6 @@ src/
   routing/              road (Dijkstra) and cross-country (A*) journey planner
   components/           Google-Maps-style UI (search, side panel, details, directions, controls)
   components/ui/        shadcn-vue components
-  editor/               dev-only editor panel
 tools/bake.ts           `npm run bake`
 vite.config.ts          .geojson loader, dev-only save/bake endpoints, single-file build
 legacy/viewer/          the original plain-JS viewer, kept for reference
@@ -44,7 +43,7 @@ legacy/viewer/          the original plain-JS viewer, kept for reference
 
 ## Procedural cities and baking
 
-`data/settlements.json` gives a settlement a seed, a city radius, a farmland radius, an old-town (walled) radius and its main roads. `src/map/procedural/city.ts` turns that into wards, street grids, blocks, buildings, walls, fields, orchards, pasture and farmsteads, avoiding sea, lakes and forests. Generation is seeded (no `Math.random`). The output is also **baked** to `data/generated/<id>.json`, and builds always render the baked file, so later generator changes can never alter a published map. In dev, a settlement whose parameters or centre changed since its last bake shows a live preview; the editor's **Bake** button (or `npm run bake`) saves it.
+`data/settlements.json` gives a settlement a seed, a city radius, a farmland radius, an old-town (walled) radius and its main roads. `src/map/procedural/city.ts` turns that into wards, street grids, blocks, buildings, walls, fields, orchards, pasture and farmsteads, avoiding sea, lakes and forests. Generation is seeded (no `Math.random`). The output is also **baked** to `data/generated/<id>.json`, and builds always render the baked file, so later generator changes can never alter a published map. In dev, a settlement whose parameters or centre changed since its last bake shows a live preview; `npm run bake` saves it.
 
 Named things (districts, farms, the castle) are ordinary places in `places.geojson` with `parent` set to the city.
 
@@ -100,10 +99,10 @@ Ideas for later: mountain passes (cheap cells cut through ranges), sea routes be
 
 ## Caveats / things to fix
 
-- **There are no roads yet.** The traced draft roads were removed; `roads.geojson` is an empty collection until roads are drawn in the editor.
+- **Roads:** the traced draft roads were removed. `roads.geojson` now holds the hand-placed road to the Northern Outpost and the paths to the commune, the cave and Roslow's farm.
 - **Land, lakes and rivers were re-traced** from the drawing at 1 px (inlets, the Emerald Citadel's lake peninsula, river source ponds). All rivers connect to a lake, a pond, the sea or another river.
 - **The Emerald Citadel** sits at the tip of a peninsula in its lake and is a capital.
-- **Nine cities are "Unnamed city N"**: the drawing had dots without readable names. Name them in the editor.
+- **Nine cities are "Unnamed city N"**: the drawing had dots without readable names. Name them in `places.geojson`.
 - **Province names** are inferred from which side of the dashed border each label sat on. The south-east lands (Caldrith, eastern peninsula) have no drawn border, so they're currently part of Orrenfall. The north-west islands belong to no province.
 - Lakes, rivers, forests and most mountain ranges are unnamed (`name: null`). Emerald Woods and the Steel Spine Mountains are named.
 - Heimdall is only a label, because the drawing shows it as a pencil sketch with no land.
@@ -113,4 +112,3 @@ Ideas for later: mountain passes (cheap cells cut through ranges), sea routes be
 
 - **geojson.io:** drag a .geojson file in, edit shapes and properties, and save. The fake coordinates sit off the coast of Africa on its basemap, which doesn't matter.
 - **QGIS** (free desktop GIS) for heavier editing; load the files as vector layers.
-- **In this app:** `npm run dev` → Editor (points now; polygon/line editing is planned, see `.claude/PLAN.md`).

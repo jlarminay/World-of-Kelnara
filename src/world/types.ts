@@ -1,9 +1,10 @@
 import type { Feature, FeatureCollection, Point } from 'geojson'
 
 /** How important a place is; drives icon, label weight and default detail level. */
-export type Rank = 'capital' | 'city' | 'town' | 'village' | 'district' | 'farm' | 'poi'
+/** 'event' marks where something happened rather than a place. */
+export type Rank = 'capital' | 'city' | 'town' | 'village' | 'district' | 'farm' | 'poi' | 'event'
 
-export const RANKS: Rank[] = ['capital', 'city', 'town', 'village', 'district', 'farm', 'poi']
+export const RANKS: Rank[] = ['event', 'capital', 'city', 'town', 'village', 'district', 'farm', 'poi']
 export const SETTLEMENT_RANKS: Rank[] = ['capital', 'city', 'town', 'village']
 
 export interface PlaceProps {
@@ -19,6 +20,8 @@ export interface PlaceProps {
   history?: string
   /** Long-form notes (several paragraphs, blank line between them). Shown above "Nearby". */
   details?: string
+  /** When an event happened, in the campaign's own terms ("Session 4, three days past Green Rock Farm"). */
+  when?: string
   /** Other names the place is searchable by ("The Emerald City"). */
   aliases?: string[]
   tags?: string[]

@@ -9,6 +9,7 @@ import { store } from '@/state/store'
 export const pathKm = (pts: [number, number][]) => pts.slice(1).reduce((s, p, i) => s + distanceKm(pts[i], p), 0)
 
 export function startMeasure(first?: [number, number]) {
+  if (store.mobile) store.panel = 'none'
   store.measure.active = true
   store.measure.points = first ? [first] : []
   store.contextMenu = null
@@ -63,7 +64,7 @@ export function setupMeasure(map: MlMap) {
   })
 
   map.on('click', (e) => {
-    if (!store.measure.active) return
+    if (!store.measure.active || Date.now() - store.longPressAt < 600) return
     store.measure.points.push([e.lngLat.lng, e.lngLat.lat])
   })
 }

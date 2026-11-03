@@ -18,7 +18,7 @@ import { BASE_ZOOM, MAX_ZOOM, levelToZoom } from '@/world/coords'
 import { bboxOf } from '@/world/geo'
 import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
-import { clearSelection, mapRef, placeById, selectPlace, store } from '@/state/store'
+import { clearSelection, mapRef, placeById, selectPlace, sheetPeekPx, store } from '@/state/store'
 
 // Note: Chrome blocks workers on file:// pages, so dist/index.html must be served over http(s).
 maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([workerSource], { type: 'text/javascript' })))
@@ -121,11 +121,27 @@ export async function createMap(container: HTMLElement) {
     store.contextMenu = { x: e.point.x, y: e.point.y, lngLat: [e.lngLat.lng, e.lngLat.lat] }
   })
   for (const ev of ['movestart', 'zoomstart'] as const) map.on(ev, () => (store.contextMenu = null))
+  // touch: a long press opens the same menu
+  let press = 0
+  let pressAt: maplibregl.Point | null = null
+  const cancelPress = () => { clearTimeout(press); pressAt = null }
+  map.on('touchstart', (e) => {
+    cancelPress()
+    if (e.points.length !== 1) return
+    pressAt = e.point
+    press = window.setTimeout(() => {
+      store.longPressAt = Date.now()
+      store.contextMenu = { x: e.point.x, y: e.point.y, lngLat: [e.lngLat.lng, e.lngLat.lat] }
+    }, 550)
+  })
+  map.on('touchmove', (e) => { if (pressAt && e.point.dist(pressAt) > 8) cancelPress() })
+  map.on('touchend', cancelPress)
+  map.on('touchcancel', cancelPress)
 
   map.on('click', (e) => {
+    if (Date.now() - store.longPressAt < 600) return // the tap that ends a long press
     if (store.contextMenu) return void (store.contextMenu = null)
     if (store.measure.active) return // handled by measure.ts
-    if (store.editor.enabled && store.editor.tool === 'add') return // handled by the editor
     const hit = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_PLACES })[0]
     if (hit) return selectPlace(hit.properties.id)
     const area = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_FEATURES.map(([l]) => l) }).find((f) => f.properties.name)
@@ -150,23 +166,15 @@ export async function createMap(container: HTMLElement) {
   pinEl.innerHTML = `<svg width="27" height="43" viewBox="0 0 27 43"><path d="M13.5 0C6 0 0 6 0 13.5 0 23.6 13.5 43 13.5 43S27 23.6 27 13.5C27 6 21 0 13.5 0z" fill="#ea4335"/><path d="M13.5 1C6.6 1 1 6.6 1 13.5 1 22.8 13.5 41.2 13.5 41.2S26 22.8 26 13.5C26 6.6 20.4 1 13.5 1z" fill="#ea4335" stroke="#b31412" stroke-width="1"/><circle cx="13.5" cy="13.5" r="5" fill="#b31412"/></svg>`
   const pin = new maplibregl.Marker({ element: pinEl, anchor: 'bottom' })
   watch(
-    () => [store.selection, store.editor.enabled, store.selection?.type === 'place' && placeById.value.get(store.selection.id)?.geometry.coordinates] as const,
+    () => [store.selection, store.selection?.type === 'place' && placeById.value.get(store.selection.id)?.geometry.coordinates] as const,
     () => {
       const sel = store.selection
       const place = sel?.type === 'place' ? placeById.value.get(sel.id) : null
       if (!place) return void pin.remove()
-      pin.setLngLat(place.geometry.coordinates as [number, number]).setDraggable(store.editor.enabled).addTo(map)
+      pin.setLngLat(place.geometry.coordinates as [number, number]).addTo(map)
     },
     { immediate: true },
   )
-  pin.on('dragend', () => {
-    const sel = store.selection
-    const place = sel?.type === 'place' ? placeById.value.get(sel.id) : null
-    if (!place) return
-    const { lng, lat } = pin.getLngLat()
-    place.geometry.coordinates = [+lng.toFixed(6), +lat.toFixed(6)]
-    store.editor.dirty = true
-  })
 
   // ---- route ----
   watch(() => store.directions.result, (r) => {
@@ -215,11 +223,16 @@ export function fitCoords(coords: Position[], padding = 60, maxZoom = MAX_ZOOM -
   const map = mapRef.value
   if (!map || !coords.length) return
   const b = coords.reduce((b, [x, y]) => [Math.min(b[0], x), Math.min(b[1], y), Math.max(b[2], x), Math.max(b[3], y)], [Infinity, Infinity, -Infinity, -Infinity])
-  map.fitBounds([[b[0], b[1]], [b[2], b[3]]] as LngLatBoundsLike, { padding: { top: padding, bottom: padding, right: padding, left: padding + leftInset() }, maxZoom })
+  const inset = panelInset()
+  map.fitBounds([[b[0], b[1]], [b[2], b[3]]] as LngLatBoundsLike, { padding: { top: padding + 60, bottom: padding + inset.bottom, right: padding, left: padding + inset.left }, maxZoom })
 }
 
 /** Width of the left panel, so the camera centres things in the visible part of the map. */
-const leftInset = () => (store.panel === 'none' ? 0 : 408)
+/** Room taken by the panel: on the left on desktop, the bottom sheet on phones. */
+const panelInset = () => {
+  if (store.panel === 'none') return { left: 0, bottom: 0 }
+  return store.mobile ? { left: 0, bottom: sheetPeekPx() } : { left: 408, bottom: 0 }
+}
 
 export function flyToPlace(id: string) {
   const map = mapRef.value
@@ -229,7 +242,7 @@ export function flyToPlace(id: string) {
   // Settlements with a generated city zoom to show the whole built-up area.
   const settlement = store.settlements.find((s) => s.placeId === id)
   const target = settlement ? 12.2 : levelToZoom(p.minzoom) + 1.5
-  map.flyTo({ center: place.geometry.coordinates as [number, number], zoom: Math.max(map.getZoom(), target), padding: { left: leftInset(), top: 0, right: 0, bottom: 0 }, duration: 1200 })
+  map.flyTo({ center: place.geometry.coordinates as [number, number], zoom: Math.max(map.getZoom(), target), padding: { left: panelInset().left, top: store.mobile ? 60 : 0, right: 0, bottom: panelInset().bottom }, duration: 1200 })
 }
 
 export function flyToFeature(layer: LayerName, id: string) {

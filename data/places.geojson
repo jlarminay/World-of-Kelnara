@@ -478,6 +478,27 @@
      0.133608
     ]
    }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "event-black-robed-caravan",
+    "name": "The Black-Robed Caravan",
+    "rank": "event",
+    "kind": "event",
+    "province": "Eldravane",
+    "minzoom": 2,
+    "when": "Session 4: three days after leaving Green Rock Farm, on the way to the Northern Outpost",
+    "description": "Where the party met a caravan of pale, black-robed travellers coming south on the road.",
+    "details": "Cresting a hill, the party saw a caravan drawn by two black horses, with five riders, four people walking beside it and one driving. It carried no banner, and nobody noticed much until it was about a hundred feet away. The travellers wore black robes, were not heavily armoured, and were exceedingly pale, with skin and clothing unlike anything familiar. Their robes showed battle stains, though very old ones.\n\nOne rider pulled ahead and stopped the caravan, greeting the party in a very friendly manner. He said they had travelled from Olympus in the north and had passed through the outpost without issue. Storvald challenged this, and Fugly saw through the lie. Asked to inspect the caravan, they agreed, and Storvald, Botox and Fugly went to check it under some very hard looks."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.170199,
+     0.176946
+    ]
+   }
   }
  ]
 }
