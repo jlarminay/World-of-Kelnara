@@ -3,6 +3,7 @@ import MapView from '@/components/MapView.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import ContextMenu from '@/components/ContextMenu.vue'
 import MeasureCard from '@/components/MeasureCard.vue'
+import CompareCard from '@/components/CompareCard.vue'
 import AutoUpdate from '@/components/AutoUpdate.vue'
 import InstallBanner from '@/components/InstallBanner.vue'
 import SidePanel from '@/components/SidePanel.vue'
@@ -19,6 +20,7 @@ import { store } from '@/state/store'
     </div>
     <MapControls />
     <MeasureCard />
+    <CompareCard />
     <ContextMenu />
     <AutoUpdate />
     <InstallBanner />

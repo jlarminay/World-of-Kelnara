@@ -69,6 +69,12 @@ A city is an area, not just a point. The point in `places.geojson` is only where
 - **Districts:** places with `rank: "district"`, `parent` set to the city and their own `area`. `parent` chains, so a point of interest can belong to a district that belongs to a city (The Grand Citadel → The Heights → Emerald Citadel), and the details panel shows the whole chain.
 - **Gates:** `gates` on a city lists where its roads cross the boundary (`{ id, name?, at, place?, road? }`; `place` points to the gate's own place, e.g. the Main Gate). A world road starts at the gate. The stretch from the city centre to the gate is a separate street with `city` set to the city id, and trips to or from the city itself start at the gate, so distances between cities run gate to gate (as `world.json` says).
 
+## Real-world size comparison
+
+Menu → **Tools → Compare real-world size** lays faded, true-scale outlines of real places over the map (City of Vancouver, Metro Vancouver, Vancouver Island, Great Britain, Japan and Canada). Drag an outline to move it. Click it to show a rotate handle at its top-right corner: drag the handle to turn the outline, click it to reset to 0°. The pills in the card at the bottom show or hide each outline, and the card gives its area, length and share of Kelnara. The label sits on the middle of the largest island (Honshu for Japan), which is also the point it turns around (`src/map/compare.ts`, `src/components/CompareCard.vue`).
+
+The outlines are in `data/comparisons.geojson`, in **real** longitude/latitude, not Kelnara coordinates. They come from Natural Earth (public domain) and, for the two Vancouver boundaries, OpenStreetMap clipped to the coastline (ODbL: the card shows the required credit). Add `"hidden": true` to a feature's properties to take it out of the card without deleting it. The app projects each one around its own centre (azimuthal equidistant) into km, then converts km to Kelnara degrees with `km_per_degree`, so shapes and sizes stay true. To add a place, add a `Polygon`/`MultiPolygon` feature with `id`, `name` and `area_km2`; it shows up in the card automatically. Keep it simplified (a few hundred points).
+
 ## Coordinate system (important)
 
 The data uses **fake longitude/latitude**, so MapLibre, Leaflet, turf, geojson.io etc. all work unchanged:

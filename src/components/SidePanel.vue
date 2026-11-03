@@ -3,15 +3,15 @@
 // that peeks at about half the screen; drag its handle up to expand, down to shrink or close.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { clearSelection, sheetPeekPx, store } from '@/state/store'
+import { appHeightPx, clearSelection, sheetPeekPx, store } from '@/state/store'
 import ResultsList from './ResultsList.vue'
 import PlaceDetails from './PlaceDetails.vue'
 import FeatureDetails from './FeatureDetails.vue'
 import DirectionsPanel from './DirectionsPanel.vue'
 import SideMenu from './SideMenu.vue'
 
-const vh = ref(window.innerHeight)
-const onResize = () => (vh.value = window.innerHeight)
+const vh = ref(appHeightPx())
+const onResize = () => (vh.value = appHeightPx())
 onMounted(() => window.addEventListener('resize', onResize))
 onBeforeUnmount(() => window.removeEventListener('resize', onResize))
 
@@ -74,7 +74,7 @@ function close() {
       >
         <span class="h-1 w-9 rounded-full bg-black/20" />
       </div>
-      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]">
+      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <DirectionsPanel v-if="store.panel === 'directions'" />
         <SideMenu v-else-if="store.panel === 'menu'" />
         <template v-else-if="store.panel === 'details' && store.selection">

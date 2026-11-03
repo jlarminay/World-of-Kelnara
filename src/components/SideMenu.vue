@@ -1,11 +1,12 @@
 <script setup lang="ts">
 // Menu shown in the side panel (below the search bar) when the menu button is pressed.
 import { ref } from 'vue'
-import { ChevronDown, Ruler, Layers, Footprints, Download, Share } from 'lucide-vue-next'
+import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth } from 'lucide-vue-next'
 import { canInstall, install, promptInstall } from '@/state/install'
 import { CHIPS } from '@/search'
 import { store } from '@/state/store'
 import { startMeasure } from '@/map/measure'
+import { openCompare } from '@/map/compare'
 import { world } from '@/world/data'
 
 const foot = world.travel.on_foot_km_per_day
@@ -25,6 +26,10 @@ function browse(label: string) {
 function measure() {
   store.panel = 'none'
   startMeasure()
+}
+function compare() {
+  store.panel = 'none'
+  openCompare()
 }
 </script>
 
@@ -55,6 +60,9 @@ function measure() {
       </template>
       <button v-if="open.tools" class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="measure">
         <Ruler class="size-5 text-muted-foreground" />Measure distance
+      </button>
+      <button v-if="open.tools" class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="compare">
+        <Earth class="size-5 text-muted-foreground" />Compare real-world size
       </button>
     </section>
 

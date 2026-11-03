@@ -12,6 +12,7 @@ import { buildStyle } from './style'
 import { buildImages } from './icons'
 import { setupMeasure } from './measure'
 import { setupRouteEdit } from './routeEdit'
+import { setupCompare } from './compare'
 import { settlementRadiusDeg } from './procedural/city'
 import { bake, baked, bakeKey, toGeoJSON, type CityGeometry } from './procedural/bake'
 import { layers, type LayerName } from '@/world/data'
@@ -117,6 +118,7 @@ export async function createMap(container: HTMLElement) {
   // ---- interaction ----
   setupMeasure(map)
   setupRouteEdit(map)
+  setupCompare(map)
   // right-click menu
   map.on('contextmenu', (e) => {
     e.preventDefault()
@@ -144,6 +146,7 @@ export async function createMap(container: HTMLElement) {
     if (Date.now() - store.longPressAt < 600) return // the tap that ends a long press
     if (store.contextMenu) return void (store.contextMenu = null)
     if (store.measure.active) return // handled by measure.ts
+    if (map.queryRenderedFeatures(e.point, { layers: ['compare-fill'] }).length) return // handled by compare.ts
     const hit = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_PLACES })[0]
     if (hit) return selectPlace(hit.properties.id)
     const area = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_FEATURES.map(([l]) => l) }).find((f) => f.properties.name)

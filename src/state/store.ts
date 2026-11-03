@@ -32,6 +32,9 @@ export const store = reactive({
   contextMenu: null as null | { x: number; y: number; lngLat: [number, number] },
   /** Distance measuring: points of the path, and the kind of ground for the time estimate. */
   measure: { active: false, points: [] as [number, number][], ground: 'open' as Ground },
+  /** Real-world size comparison: whether its card is open, the outlines placed on the map, and the one clicked
+   * (it shows the rotate handle). See src/map/compare.ts. */
+  compare: { open: false, items: [] as CompareItem[], selected: null as string | null },
   /** Phone-sized screen: panels become a bottom sheet (like Google Maps on mobile). */
   mobile: false,
   /** Bottom sheet height on phones. */
@@ -44,10 +47,14 @@ const phone = window.matchMedia('(max-width: 640px)')
 store.mobile = phone.matches
 phone.addEventListener('change', (e) => (store.mobile = e.matches))
 
+/** Height the app is laid out in: the window minus the strip kept clear of the phone's navigation bar (style.css). */
+export const appHeightPx = () => (document.querySelector('#app > div') as HTMLElement | null)?.clientHeight || window.innerHeight
 /** Height of the bottom sheet when peeking (phones). */
-export const sheetPeekPx = () => Math.round(window.innerHeight * 0.45)
+export const sheetPeekPx = () => Math.round(appHeightPx() * 0.45)
 
 export type Ground = 'road' | 'path' | 'open'
+/** A real-world outline on the map: which one (id in data/comparisons.geojson), where its centre is, and its turn in degrees. */
+export type CompareItem = { id: string; center: [number, number]; rotation: number }
 
 export const mapRef = shallowRef<MlMap | null>(null)
 

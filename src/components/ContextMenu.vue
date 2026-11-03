@@ -2,7 +2,7 @@
 // Right-click menu on the map (Google-style): directions from/to here, measure from here, copy the point, clear a measurement.
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { Ruler, Copy, X, CircleDot, MapPin } from 'lucide-vue-next'
-import { openDirections, store } from '@/state/store'
+import { appHeightPx, openDirections, store } from '@/state/store'
 import { pointWaypoint } from '@/routing'
 import { FEATURES } from '@/features'
 import { startMeasure, stopMeasure } from '@/map/measure'
@@ -11,7 +11,7 @@ const close = () => (store.contextMenu = null)
 // keep the menu inside the screen (phones, or right-clicks near an edge)
 const pos = computed(() => ({
   left: Math.max(8, Math.min(store.contextMenu!.x, window.innerWidth - 240)) + 'px',
-  top: Math.max(8, Math.min(store.contextMenu!.y, window.innerHeight - 260)) + 'px',
+  top: Math.max(8, Math.min(store.contextMenu!.y, appHeightPx() - 260)) + 'px',
 }))
 function copy() {
   const [lng, lat] = store.contextMenu!.lngLat

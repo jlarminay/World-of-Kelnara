@@ -15,10 +15,13 @@ import roads from '../../data/roads.geojson'
 import places from '../../data/places.geojson'
 import labels from '../../data/labels.geojson'
 import areas from '../../data/areas.geojson'
+import comparisons from '../../data/comparisons.geojson'
 
 export { world }
 export const settlementData = settlements as Settlement[]
 export const placesData = places as unknown as Places
+/** Real-world outlines (real lng/lat, not Kelnara coordinates) for the size-comparison tool. */
+export const comparisonData = comparisons
 
 export const layers = { land, provinces, forests, mountains, ridges, lakes, rivers, borders, roads, labels, areas } satisfies Record<
   string,

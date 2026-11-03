@@ -66,6 +66,11 @@
   }
   #app {
     height: 100dvh; /* phones: the visible height, not including the browser's toolbars */
+    /* Installed app on Android (and iPhone home bar): the page is drawn under the system navigation bar
+       (viewport-fit=cover), so keep a blank strip of that height at the bottom and lay the app out above it.
+       env() is 0 wherever nothing overlaps the page (desktop, a normal browser tab). */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
   }
 }
 
