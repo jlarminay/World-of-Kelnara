@@ -2,13 +2,15 @@
 
 A Google-Maps-style map of the Kelnara campaign world (Vue 3 + TypeScript + Tailwind + shadcn-vue + MapLibre GL). The data was traced from the hand-drawn poster map. Big cities and their farmland are generated procedurally, then **baked** to JSON so the map is identical every time.
 
-The roadmap, open decisions and build phases are in `.claude/PLAN.md`.
+The roadmap, open decisions and build phases are in [`reference/PLAN.md`](reference/PLAN.md).
+
+The players and their characters (with the official spellings of their names) are in [`reference/PARTY.md`](reference/PARTY.md), and the session notes in [`reference/sessions/`](reference/sessions/).
 
 ## Quick start
 
 ```bash
 npm install
-npm run dev        # local app at http://localhost:5173
+npm start          # local app at http://localhost:5173
 npm run bake       # regenerate data/generated/*.json from data/settlements.json
 npm run build      # dist/: a small static site (HTML, JS, images), read-only
 npm run preview    # serve the build (it must be served over http; file:// is blocked by Chrome)
@@ -28,7 +30,8 @@ data/                   all map content (plain JSON/GeoJSON, edit by hand or in 
   generated/            baked procedural geometry, one file per settlement (do not edit by hand)
   land / provinces / borders / forests / mountains / ridges / lakes / rivers / roads / labels .geojson
   terrain.png + .json   400x592 terrain-class grid for cross-country routing
-reference/              the original drawing (all data is aligned to kelnara-original-straightened.png)
+reference/              the original drawing (all data is aligned to kelnara-original-straightened.png),
+                        PLAN.md (roadmap), PARTY.md (the players), sessions/ (session notes)
 src/
   world/                data loading, types, coordinates, place categories (icons + colours)
   map/                  MapLibre style, controller, icons, procedural/ (city generator + baking)

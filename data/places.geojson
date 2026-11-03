@@ -499,7 +499,7 @@
     "kind": "farm",
     "province": "Eldravane",
     "description": "A brand-new farmstead claiming to grow the best radishes, which Roslow hopes to sell to the citadel.",
-    "details": "Roslow is a rough, bearded man in a white tunic, baggy pants and muddy boots, and the only one working the farm. The house is very new, which stands out: most farms around the city have been worked for generations. He says he farmed elsewhere before this, and seems genuine. He is a fan of Gilgamutt's book and asks travellers to talk up Roslow's radishes in town.",
+    "details": "Roslow is a rough, bearded man in a white tunic, baggy pants and muddy boots, and the only one working the farm. The house is very new, which stands out: most farms around the city have been worked for generations. He says he farmed elsewhere before this, and seems genuine. He is a fan of Golgamutt's book and asks travellers to talk up Roslow's radishes in town.",
     "minzoom": 2
    },
    "geometry": {
@@ -551,6 +551,30 @@
     "coordinates": [
      -0.255847,
      0.133608
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-golgamutts-house",
+    "name": "Golgamutt's House",
+    "rank": "poi",
+    "kind": "house",
+    "province": "Eldravane",
+    "minzoom": 4,
+    "parent": "district-the-heights",
+    "tags": [
+     "Golgamutt"
+    ],
+    "description": "Golgamutt's fine house in The Heights, bought with the earnings from his best-selling book.",
+    "details": "During the three years after Dion was taken, Golgamutt joined the grand library as a researcher. While there he wrote \"Unique Insights on Events That Already Happened\", a massive best seller that is very popular in the city and beyond. Its success let him afford a nice house in The Heights, the upper district near the Grand Citadel.\n\nWhen Golgamutt is off travelling, the house is watched over by some of his trusted assistants."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.253955,
+     0.129278
     ]
    }
   },

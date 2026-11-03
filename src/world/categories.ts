@@ -27,6 +27,7 @@ export const KINDS: Record<string, Category> = {
   orchard: { label: 'Orchard', color: '#34a853', icon: Apple },
   mill: { label: 'Mill', color: '#34a853', icon: Warehouse },
   grove: { label: 'Grove', color: '#34a853', icon: TreeDeciduous },
+  house: { label: 'House', color: '#795548', icon: House },
   inn: { label: 'Inn', color: '#f29900', icon: Beer },
   tavern: { label: 'Tavern', color: '#f29900', icon: Beer },
   port: { label: 'Port', color: '#1a73e8', icon: Anchor },
