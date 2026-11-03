@@ -1,7 +1,7 @@
 import { computed, reactive, shallowRef } from 'vue'
 import type { Map as MlMap } from 'maplibre-gl'
 import type { Place, Places, Settlement } from '@/world/types'
-import { layers, placesData, settlementData, type LayerName } from '@/world/data'
+import { placesData, settlementData, type LayerName } from '@/world/data'
 import type { RouteResult } from '@/routing'
 
 export type Selection = { type: 'place'; id: string } | { type: 'feature'; layer: LayerName; id: string }
@@ -19,10 +19,12 @@ export const store = reactive({
   drawingOpacity: 1,
   zoom: 8,
   directions: {
+    /** Waypoints: a place id, or "pt:lng,lat" for a point picked on the map (see src/routing). */
     from: '' as string,
     to: '' as string,
+    /** Stops added by dragging the route line ("pt:lng,lat", snapped onto a road), in travel order. */
+    via: [] as string[],
     mode: 'foot' as 'foot' | 'horse' | 'cart',
-    how: (layers.roads.features.length ? 'roads' : 'cross') as 'roads' | 'cross',
     result: null as RouteResult | null,
     error: '',
   },
@@ -66,6 +68,18 @@ export const childrenOf = (id: string): Place[] => store.places.features.filter(
 export function selectPlace(id: string) {
   store.selection = { type: 'place', id }
   store.panel = 'details'
+}
+
+/** Opens the directions panel with one end filled in (the other end is kept if it is set). */
+export function openDirections(end: 'from' | 'to', waypoint: string) {
+  const d = store.directions
+  const other = end === 'from' ? 'to' : 'from'
+  if (d[other] === waypoint) d[other] = ''
+  d[end] = waypoint
+  d.via = [] // stops belonged to the old route
+  d.result = null
+  store.contextMenu = null
+  store.panel = 'directions'
 }
 
 export function clearSelection() {

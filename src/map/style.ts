@@ -166,10 +166,18 @@ export function buildStyle(): StyleSpecification {
       paint: { 'line-color': C.selected, 'line-width': ramp([z(0), 1.5], [z(6), 2.5]), 'line-dasharray': [3, 1.5] } },
 
     // ---- journey route ----
-    { id: 'route-case', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' },
+    { id: 'route-case', type: 'line', source: 'route', filter: ['==', ['geometry-type'], 'LineString'], layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': C.routeCase, 'line-width': ramp2([z(0), 6], [z(6), 12], [z(10), 16]) } },
-    { id: 'route', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' },
+    { id: 'route', type: 'line', source: 'route', filter: ['==', ['geometry-type'], 'LineString'], layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': C.route, 'line-width': ramp2([z(0), 4], [z(6), 9], [z(10), 12]) } },
+    // invisible, wider copy of the line: what you grab to drag the route (src/map/routeEdit.ts)
+    { id: 'route-hit', type: 'line', source: 'route', filter: ['==', ['geometry-type'], 'LineString'], layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#000', 'line-opacity': 0, 'line-width': 22 } },
+    { id: 'route-hover', type: 'circle', source: 'route-hover',
+      paint: { 'circle-radius': 5, 'circle-color': '#ffffff', 'circle-stroke-color': C.routeCase, 'circle-stroke-width': 2 } },
+    { id: 'route-ends', type: 'circle', source: 'route', filter: ['==', ['geometry-type'], 'Point'],
+      paint: { 'circle-radius': 6, 'circle-color': ['match', ['get', 'end'], 'to', '#ea4335', '#ffffff'],
+        'circle-stroke-color': ['match', ['get', 'end'], 'to', '#b31412', '#202124'], 'circle-stroke-width': 2.5 } },
 
     // ---- labels ----
     { id: 'label-water', type: 'symbol', source: 'labels', maxzoom: z(4), filter: ['all', ['==', ['get', 'kind'], 'water'], atLevel],
@@ -237,6 +245,7 @@ export function buildStyle(): StyleSpecification {
       ...Object.fromEntries(Object.entries(layers).map(([k, v]) => [k, geo(v, { tolerance: 0.08, ...(k === 'areas' ? { lineMetrics: true } : {}) })])),
       places: geo(empty),
       route: geo(empty),
+      'route-hover': geo(empty),
       'city-areas': geo(empty, { maxzoom: 18, tolerance: 0.2 }),
       'city-lines': geo(empty, { maxzoom: 18, tolerance: 0.2 }),
     },

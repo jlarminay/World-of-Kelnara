@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Menu, Search, X, Navigation } from 'lucide-vue-next'
+import { Menu, Search, X } from 'lucide-vue-next'
+import DirectionsIcon from './icons/DirectionsIcon.vue'
 import { search, type SearchEntry } from '@/search'
 import { store } from '@/state/store'
 import { openEntry } from '@/components/open'
@@ -62,7 +63,7 @@ function key(e: KeyboardEvent) {
       <template v-else-if="FEATURES.directions">
         <div class="mx-1 h-6 w-px bg-border" />
         <button type="button" class="grid size-9 place-items-center rounded-full text-primary hover:bg-black/5" title="Directions" @click="store.panel = 'directions'">
-          <Navigation class="size-5 rotate-45 fill-primary" />
+          <DirectionsIcon class="size-6" />
         </button>
       </template>
     </form>

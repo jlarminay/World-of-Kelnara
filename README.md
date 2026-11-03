@@ -33,7 +33,7 @@ src/
   world/                data loading, types, coordinates, place categories (icons + colours)
   map/                  MapLibre style, controller, icons, procedural/ (city generator + baking)
   search/               Fuse.js index and category chips
-  routing/              road (Dijkstra) and cross-country (A*) journey planner
+  routing/              journey planner: road graph from road geometry (roads.ts), unused cross-country A*
   components/           Google-Maps-style UI (search, side panel, details, directions, controls)
   components/ui/        shadcn-vue components
 tools/bake.ts           `npm run bake`
@@ -64,7 +64,7 @@ A city is an area, not just a point. The point in `places.geojson` is only where
 
 - **Boundary:** `area` on a place is the id of its polygon in `areas.geojson` (`kind: "urban"` for a city, `kind: "district"` for a district). Selecting the place outlines that polygon.
 - **Districts:** places with `rank: "district"`, `parent` set to the city and their own `area`. `parent` chains, so a point of interest can belong to a district that belongs to a city (The Grand Citadel → The Heights → Emerald Citadel), and the details panel shows the whole chain.
-- **Gates:** `gates` on a city lists where its roads cross the boundary (`{ id, name?, at, place?, road? }`; `place` points to the gate's own place, e.g. the Main Gate). A world road starts at the gate. The stretch from the city centre to the gate is a separate street with `city` set to the city id, and road routing leaves it out, so distances between cities run gate to gate (as `world.json` says).
+- **Gates:** `gates` on a city lists where its roads cross the boundary (`{ id, name?, at, place?, road? }`; `place` points to the gate's own place, e.g. the Main Gate). A world road starts at the gate. The stretch from the city centre to the gate is a separate street with `city` set to the city id, and trips to or from the city itself start at the gate, so distances between cities run gate to gate (as `world.json` says).
 
 ## Coordinate system (important)
 
@@ -107,12 +107,13 @@ Levels 5 and up are city scale (districts, farms, generated streets and building
 
 ## Journey planner (src/routing)
 
-Currently **disabled** (`src/features.ts`) until roads exist and `terrain.png` is regenerated from the re-traced coastline.
+Open it with the round **Directions** button next to a place's name, the search box's directions button, or right-click (long-press on phones) the map → **Directions from here / to here** (a dropped pin).
 
-
-- **Follow roads:** Dijkstra over the road graph (place → place edges, weight = `length_km`).
-- **Cross country:** A* over `terrain.png`. Roads are burned into the grid as cheap cells, so it mixes roads and open ground. Cost multipliers are in `world.json → travel.terrain_cost_multiplier`: plains 1, road 0.8, forest 1.7, mountains 6, river ford 2.5, sea/lake impassable.
-- Time = effective km ÷ km/day (foot 39, horse 60, cart 30). On foot, `world.json → travel.on_foot_km_per_day` refines this by ground: road, path, open country (shown in the map footer). Distances from a city are measured from outside its gate (`gate` on the place). The result shows a breakdown (km on road, forest, mountains…).
+- **Always by road** (`src/routing/roads.ts`). The graph is built from the road geometry: every vertex is a node, and a road whose end lies on another road (within ~1 km) is joined to it there, so branches like the commune trail start where they really leave `road-north`. The `from`/`to` names on roads are only used to word the steps ("Highway towards Northern Outpost").
+- **Getting on and off the road:** each end walks in a straight line to the nearest point on any road, at most `world.json → travel.max_off_road_km` (40 km, about a day). Further than that there is no road route; the panel shows the straight-line distance as a rough estimate and can open it in the measure tool. A city with `gates` is left and entered through its gates instead (distances are measured from the gate). Places *inside* a city (districts, the Grand Citadel, a dropped pin inside its area) start from their own position and use the city's streets.
+- **Time** = effective km ÷ km/day for the mode (foot 39, horse 60, cart 30). Road km count as faster and trail km as slower, using the on-foot speeds in `world.json → travel.on_foot_km_per_day` (road 46, path 33, open 39). The panel lists the steps and a table of km, speed and time on roads, trails and off road for the chosen mode.
+- **Changing the route** (`src/map/routeEdit.ts`), like Google Maps: drag the blue line to add a stop and take a different road. The route follows the pointer, and on release the stop snaps onto the nearest road (it is dropped if no road is within the off-road limit). Drag a stop to move it, click it (or its ✕ in the panel) to remove it. Stops are kept in `store.directions.via` and cleared when the panel closes or a new start/destination is picked from a place.
+- **Cross country** (A* over `terrain.png`, `routeTerrain`) is still in `src/routing/index.ts` but not offered in the UI: `terrain.png` predates the re-traced coastline.
 
 Ideas for later: mountain passes (cheap cells cut through ranges), sea routes between ports, terrain-specific speeds per travel mode, waypoints.
 

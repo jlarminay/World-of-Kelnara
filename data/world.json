@@ -61,6 +61,8 @@
    "path": 33,
    "open": 39
   },
+  "max_off_road_km": 40,
+  "max_off_road_note": "Directions walk at most this far (about a day on foot) from a place to the nearest road; further than that, no road route is offered.",
   "note": "Walking speed depends on the ground: 46 km/day on a road (the road from the Emerald Citadel's gate to the Northern Outpost, 649 km, is about 14 days), 33 on a path, 39 across open country (the map legend). Distances from a city are measured from outside its gate."
  }
 }

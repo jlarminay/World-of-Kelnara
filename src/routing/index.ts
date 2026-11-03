@@ -1,17 +1,31 @@
-// Journey planner, ported from the original viewer.
-//  roads: Dijkstra over the place-to-place road graph (edge weight = length_km)
-//  cross: A* over data/terrain.png, with roads burned in as cheap cells
-import type { Feature, LineString, Position } from 'geojson'
+// Journey planner.
+//  planJourney: always by road (src/routing/roads.ts). Places off the road walk to the nearest road point;
+//    walled cities are left and entered through their gates.
+//  routeTerrain: A* over data/terrain.png, with roads burned in as cheap cells. Not used by the UI at the
+//    moment (terrain.png predates the re-traced coastline); kept for a future "cross country" mode.
+import type { Feature, LineString, Polygon, Position } from 'geojson'
 import { layers, world } from '@/world/data'
+import { ancestorsOf, placeById, store } from '@/state/store'
+import type { Place } from '@/world/types'
+import { routeOnRoads, snapToRoad, type Endpoint, type Ground } from './roads'
+export { snapToRoad }
 import terrainUrl from '../../data/terrain.png?url'
 import terrainMeta from '../../data/terrain.json'
+
+export interface RouteStep {
+  text: string
+  km: number
+}
 
 export interface RouteResult {
   coords: Position[]
   km: number
   /** km weighted by terrain difficulty; divide by km/day for travel time */
   effKm: number
-  via?: string[]
+  steps?: RouteStep[]
+  /** For each leg (stop to stop), the index in `coords` where it ends. */
+  legEnds?: number[]
+  /** km on each kind of ground. Road routes use the Ground keys: road, path (trails), open (off road). */
   breakdown?: Record<string, number>
 }
 
@@ -21,37 +35,85 @@ const toPx = ([lng, lat]: Position) => [lng / DEG + W0 / 2, H0 / 2 - lat / DEG]
 const toLL = (x: number, y: number): Position => [(x - W0 / 2) * DEG, (H0 / 2 - y) * DEG]
 
 export const KM_PER_DAY = world.travel.km_per_day
+export type Mode = keyof typeof KM_PER_DAY
+export type { Ground }
+/** km/day for a mode on a kind of ground: the on-foot ground speeds, scaled by the mode's open-country speed. */
+export const speedOn = (mode: Mode, ground: Ground) =>
+  (KM_PER_DAY[mode] * world.travel.on_foot_km_per_day[ground]) / world.travel.on_foot_km_per_day.open
+export const MAX_OFF_ROAD_KM = world.travel.max_off_road_km
 
-export function routeRoads(from: string, to: string): RouteResult | null {
-  type Edge = [string, number, Position[]]
-  const adj: Record<string, Edge[]> = {}
-  for (const f of layers.roads.features as Feature<LineString>[]) {
-    const p = f.properties as { from: string; to: string; length_km: number; city?: string }
-    // streets inside a city (centre → gate) are not part of the city-to-city graph: a city's node is its gates
-    if (p.city) continue
-    const g = f.geometry.coordinates
-    ;(adj[p.from] ||= []).push([p.to, p.length_km, g])
-    ;(adj[p.to] ||= []).push([p.from, p.length_km, [...g].reverse()])
+// ---- waypoints: a place id, or "pt:lng,lat" for a point picked on the map ----
+
+export const pointWaypoint = ([lng, lat]: [number, number]) => `pt:${lng.toFixed(5)},${lat.toFixed(5)}`
+export const waypointCoord = (w: string): Position | null => parsePoint(w) ?? placeById.value.get(w)?.geometry.coordinates ?? null
+const parsePoint = (w: string): Position | null => (w.startsWith('pt:') ? w.slice(3).split(',').map(Number) : null)
+
+export function waypointLabel(w: string): string {
+  const pt = parsePoint(w)
+  if (pt) return `Dropped pin (${pt[1].toFixed(4)}, ${pt[0].toFixed(4)})`
+  return placeById.value.get(w)?.properties.name ?? ''
+}
+
+function inRing(p: Position, ring: Position[]) {
+  let inside = false
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i], [xj, yj] = ring[j]
+    if (yi > p[1] !== yj > p[1] && p[0] < ((xj - xi) * (p[1] - yi)) / (yj - yi) + xi) inside = !inside
   }
-  const dist: Record<string, number> = { [from]: 0 }
-  const prev: Record<string, [string, Position[]]> = {}
-  const done = new Set<string>()
-  for (;;) {
-    let u: string | null = null
-    for (const k in dist) if (!done.has(k) && (u === null || dist[k] < dist[u])) u = k
-    if (u === null) return null
-    if (u === to) break
-    done.add(u)
-    for (const [v, km, g] of adj[u] ?? []) if (!(v in dist) || dist[u] + km < dist[v]) { dist[v] = dist[u] + km; prev[v] = [u, g] }
+  return inside
+}
+const insideArea = (p: Position, place: Place) => {
+  const area = layers.areas.features.find((f) => f.properties?.id === place.properties.area) as Feature<Polygon> | undefined
+  return !!area && area.geometry.type === 'Polygon' && inRing(p, area.geometry.coordinates[0])
+}
+
+/** Where a waypoint can be left from or arrived at. `other` is the far end, so trips within a city skip its gates. */
+function endpoints(w: string, other: string, leaving: boolean): Endpoint[] | null {
+  const pt = parsePoint(w)
+  if (pt) return [{ at: pt, step: leaving ? 'Head to the nearest road' : 'Leave the road for the dropped pin' }]
+  const place = placeById.value.get(w)
+  if (!place) return null
+  const at = place.geometry.coordinates
+  const otherPt = parsePoint(other) ?? placeById.value.get(other)?.geometry.coordinates
+  const otherInside = ancestorsOf(other).some((a) => a.properties.id === w) || (!!otherPt && insideArea(otherPt, place))
+  const gates = place.properties.gates
+  if (gates?.length && !otherInside)
+    return gates.map((g) => ({ at: g.at, step: `${leaving ? 'Leave' : 'Enter'} ${place.properties.name} through the ${g.name ?? 'gate'}` }))
+  return [{ at, step: leaving ? 'Head to the nearest road' : `Leave the road for ${place.properties.name}` }]
+}
+
+/** A road's from/to reference (a place name, place id or gate id) as a display name. */
+function nameOf(ref: string): string | null {
+  const byId = placeById.value.get(ref)
+  if (byId) return byId.properties.name
+  for (const f of store.places.features) {
+    if (f.properties.name === ref) return ref
+    const g = f.properties.gates?.find((g) => g.id === ref)
+    if (g) return `${f.properties.name} ${g.name ?? 'gate'}`
   }
-  const segs: Position[][] = [], via: string[] = []
-  for (let cur = to; cur !== from;) {
-    const [u, g] = prev[cur]
-    segs.unshift(g)
-    if (u !== from) via.unshift(u)
-    cur = u
+  return null
+}
+
+/** A road journey through the given stops in order (start, any stops dragged onto the route, destination). */
+export function planJourney(stops: string[]): RouteResult | null {
+  if (stops.length < 2 || !layers.roads.features.length) return null
+  const out: RouteResult = { coords: [], km: 0, effKm: 0, steps: [], breakdown: {}, legEnds: [] }
+  for (let i = 0; i < stops.length - 1; i++) {
+    const a = endpoints(stops[i], stops[i + 1], true), b = endpoints(stops[i + 1], stops[i], false)
+    const leg = a && b && routeOnRoads(a, b, nameOf)
+    if (!leg) return null
+    out.coords.push(...(i ? leg.coords.slice(1) : leg.coords))
+    out.legEnds!.push(out.coords.length - 1)
+    out.km += leg.km
+    out.effKm += leg.effKm
+    for (const st of leg.steps ?? []) {
+      const last = out.steps![out.steps!.length - 1]
+      if (last?.text === st.text) last.km += st.km
+      else out.steps!.push({ ...st })
+    }
+    for (const [k, v] of Object.entries(leg.breakdown ?? {})) out.breakdown![k] = (out.breakdown![k] ?? 0) + v
   }
-  return { coords: segs.flat(), km: dist[to], effKm: dist[to], via }
+  return out
 }
 
 interface Grid { w: number; h: number; cls: Uint8Array; cost: Float32Array; road: Uint8Array; cell: number; kmCell: number }

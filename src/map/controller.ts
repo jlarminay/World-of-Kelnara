@@ -11,6 +11,7 @@ import drawingUrl from '@/assets/kelnara-drawing.webp?url'
 import { buildStyle } from './style'
 import { buildImages } from './icons'
 import { setupMeasure } from './measure'
+import { setupRouteEdit } from './routeEdit'
 import { settlementRadiusDeg } from './procedural/city'
 import { bake, baked, bakeKey, toGeoJSON, type CityGeometry } from './procedural/bake'
 import { layers, type LayerName } from '@/world/data'
@@ -115,6 +116,7 @@ export async function createMap(container: HTMLElement) {
 
   // ---- interaction ----
   setupMeasure(map)
+  setupRouteEdit(map)
   // right-click menu
   map.on('contextmenu', (e) => {
     e.preventDefault()
@@ -184,11 +186,22 @@ export async function createMap(container: HTMLElement) {
   )
 
   // ---- route ----
+  // re-fit the view when the start or destination changes, not while the route is being dragged
+  let fitPending = false
+  watch(() => [store.directions.from, store.directions.to], () => (fitPending = true))
   watch(() => store.directions.result, (r) => {
-    ;(map.getSource('route') as GeoJSONSource).setData(
-      r ? { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: r.coords } } : { type: 'FeatureCollection', features: [] },
-    )
-    if (r) fitCoords(r.coords, 80)
+    const ends = r ? ([['from', r.coords[0]], ['to', r.coords[r.coords.length - 1]]] as const) : []
+    ;(map.getSource('route') as GeoJSONSource).setData({
+      type: 'FeatureCollection',
+      features: r
+        ? [
+            { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: r.coords } },
+            ...ends.map(([end, at]) => ({ type: 'Feature' as const, properties: { end }, geometry: { type: 'Point' as const, coordinates: at } })),
+          ]
+        : [],
+    })
+    if (r && fitPending) fitCoords(r.coords, 80)
+    if (r) fitPending = false
   })
 
   // ---- base layer toggle ----

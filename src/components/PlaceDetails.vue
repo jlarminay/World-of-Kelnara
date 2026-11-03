@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Navigation, Share2, LocateFixed, Layers, MapPin, Info, Building2, CalendarDays } from 'lucide-vue-next'
+import { Share2, LocateFixed, Layers, MapPin, Info, Building2, CalendarDays } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { categoryOf } from '@/world/categories'
 import { distanceKm, formatKm, levelToZoom } from '@/world/coords'
-import { ancestorsOf, childrenOf, placeById, selectPlace, store } from '@/state/store'
+import { ancestorsOf, childrenOf, openDirections, placeById, selectPlace, store } from '@/state/store'
 import { flyToPlace } from '@/map/controller'
 import LucideIcon from './LucideIcon.vue'
 import Hero from './Hero.vue'
 import ActionButton from './ActionButton.vue'
+import DirectionsIcon from './icons/DirectionsIcon.vue'
 import { FEATURES } from '@/features'
 
 const props = defineProps<{ id: string }>()
@@ -30,11 +31,7 @@ const nearby = computed(() => {
 const details = computed(() => (p.value?.details ?? '').split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean))
 const coords = computed(() => place.value?.geometry.coordinates.map((c) => c.toFixed(5)).join(', '))
 
-function directions() {
-  store.directions.to = props.id
-  store.directions.result = null
-  store.panel = 'directions'
-}
+const directions = () => openDirections('to', props.id)
 function go(id: string) {
   selectPlace(id)
   flyToPlace(id)
@@ -46,7 +43,16 @@ const share = () => navigator.clipboard?.writeText(location.href)
   <div v-if="p && cat">
     <Hero :category="cat" />
     <div class="px-6 pt-5 pb-3">
-      <h1 class="text-[22px] leading-7">{{ p.name }}</h1>
+      <div class="flex items-start gap-3">
+        <h1 class="min-w-0 flex-1 text-[22px] leading-7">{{ p.name }}</h1>
+        <button
+          v-if="FEATURES.directions" title="Directions"
+          class="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-white shadow-sm hover:brightness-110"
+          @click="directions"
+        >
+          <DirectionsIcon class="size-6" arrow="var(--primary)" />
+        </button>
+      </div>
       <p v-if="p.aliases?.length" class="text-sm text-muted-foreground">Also known as {{ p.aliases.join(', ') }}</p>
       <p class="mt-1 text-sm text-muted-foreground">
         {{ cat.label }}<template v-if="p.province"> · {{ p.province }}</template>
@@ -55,12 +61,9 @@ const share = () => navigator.clipboard?.writeText(location.href)
         <Badge v-for="t in p.tags" :key="t" variant="secondary">{{ t }}</Badge>
       </div>
     </div>
-    <div v-if="FEATURES.directions || FEATURES.placeActions" class="flex justify-around px-4 pb-4">
-      <ActionButton v-if="FEATURES.directions" label="Directions" primary @click="directions"><Navigation class="rotate-45" /></ActionButton>
-      <template v-if="FEATURES.placeActions">
-        <ActionButton label="Zoom to" :primary="!FEATURES.directions" @click="flyToPlace(id)"><LocateFixed /></ActionButton>
-        <ActionButton label="Share" @click="share"><Share2 /></ActionButton>
-      </template>
+    <div v-if="FEATURES.placeActions" class="flex justify-around px-4 pb-4">
+      <ActionButton label="Zoom to" primary @click="flyToPlace(id)"><LocateFixed /></ActionButton>
+      <ActionButton label="Share" @click="share"><Share2 /></ActionButton>
     </div>
     <Separator />
 
