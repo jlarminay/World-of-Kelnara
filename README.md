@@ -58,6 +58,14 @@ The site installs as an app ("Add to Home Screen") and works offline: a service 
 
 Named things (districts, farms, the castle) are ordinary places in `places.geojson` with `parent` set to the city.
 
+## Cities, districts and gates
+
+A city is an area, not just a point. The point in `places.geojson` is only where its label and search result sit.
+
+- **Boundary:** `area` on a place is the id of its polygon in `areas.geojson` (`kind: "urban"` for a city, `kind: "district"` for a district). Selecting the place outlines that polygon.
+- **Districts:** places with `rank: "district"`, `parent` set to the city and their own `area`. `parent` chains, so a point of interest can belong to a district that belongs to a city (The Grand Citadel → The Heights → Emerald Citadel), and the details panel shows the whole chain.
+- **Gates:** `gates` on a city lists where its roads cross the boundary (`{ id, name?, at, place?, road? }`; `place` points to the gate's own place, e.g. the Main Gate). A world road starts at the gate. The stretch from the city centre to the gate is a separate street with `city` set to the city id, and road routing leaves it out, so distances between cities run gate to gate (as `world.json` says).
+
 ## Coordinate system (important)
 
 The data uses **fake longitude/latitude**, so MapLibre, Leaflet, turf, geojson.io etc. all work unchanged:

@@ -4,12 +4,13 @@
   {
    "type": "Feature",
    "properties": {
-    "id": "road-north",
+    "id": "street-emerald-gate-road",
     "name": null,
     "rank": "highway",
+    "city": "place-emerald-citadel",
     "from": "Emerald Citadel",
-    "to": "Northern Outpost",
-    "length_km": 684,
+    "to": "gate-emerald-citadel-main",
+    "length_km": 34,
     "minzoom": 0
    },
    "geometry": {
@@ -18,6 +19,31 @@
      [
       -0.2514,
       0.1307
+     ],
+     [
+      -0.243154,
+      0.128084
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "road-north",
+    "name": null,
+    "rank": "highway",
+    "from": "Emerald Citadel",
+    "to": "Northern Outpost",
+    "length_km": 650,
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -0.243154,
+      0.128084
      ],
      [
       -0.23962,

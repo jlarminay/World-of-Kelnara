@@ -26,7 +26,9 @@ export function routeRoads(from: string, to: string): RouteResult | null {
   type Edge = [string, number, Position[]]
   const adj: Record<string, Edge[]> = {}
   for (const f of layers.roads.features as Feature<LineString>[]) {
-    const p = f.properties as { from: string; to: string; length_km: number }
+    const p = f.properties as { from: string; to: string; length_km: number; city?: string }
+    // streets inside a city (centre → gate) are not part of the city-to-city graph: a city's node is its gates
+    if (p.city) continue
     const g = f.geometry.coordinates
     ;(adj[p.from] ||= []).push([p.to, p.length_km, g])
     ;(adj[p.to] ||= []).push([p.from, p.length_km, [...g].reverse()])

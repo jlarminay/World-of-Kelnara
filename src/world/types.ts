@@ -25,10 +25,24 @@ export interface PlaceProps {
   /** Other names the place is searchable by ("The Emerald City"). */
   aliases?: string[]
   tags?: string[]
-  /** id of the place this one belongs to (a farm or district of a city). */
+  /** id of the place this one belongs to (a district of a city, a POI in a district). Can chain: POI → district → city. */
   parent?: string
+  /** id of this place's boundary polygon in areas.geojson (a city's urban area, a district). Outlined when selected. */
+  area?: string
+  /** Where roads cross a city's boundary. Distances between cities are measured gate to gate. */
+  gates?: Gate[]
   /** Data caveat from the original trace. */
   note?: string
+}
+
+export interface Gate {
+  id: string
+  name?: string
+  at: [number, number]
+  /** id of the gate's own place in places.geojson, if it has one. */
+  place?: string
+  /** id of the road in roads.geojson that leaves the city here. */
+  road?: string
 }
 
 export type Place = Feature<Point, PlaceProps>

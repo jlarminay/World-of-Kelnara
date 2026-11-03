@@ -2,7 +2,7 @@
 import type { IconNode } from 'lucide'
 import {
   Anchor, Apple, Beer, Castle, Church, Crown, Gem, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
-  Building2, CircleAlert, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
+  Building2, CircleAlert, DoorOpen, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
 
@@ -17,6 +17,7 @@ export const KINDS: Record<string, Category> = {
   castle: { label: 'Castle', color: '#129eaf', icon: Castle },
   landmark: { label: 'Landmark', color: '#129eaf', icon: Landmark },
   watchtower: { label: 'Watchtower', color: '#129eaf', icon: TowerControl },
+  gate: { label: 'Gate', color: '#129eaf', icon: DoorOpen },
   outpost: { label: 'Outpost', color: '#129eaf', icon: Shield },
   shrine: { label: 'Shrine', color: '#8e63ce', icon: Church },
   temple: { label: 'Temple', color: '#8e63ce', icon: Church },

@@ -55,9 +55,18 @@
     ],
     "history": "",
     "details": "The citadel stands at the far end of a peninsula that reaches out into the middle of the Cerulean Lake, so that the water wraps around it. The land rises along the peninsula to sheer cliffs at its tip, with the citadel at the top. Travellers coming around the lake first see a small spire rising out of what looks like land in the middle of the water.\n\nIt has the elegance of an elven city crossed with the massive power of dwarven architecture: white marble walls and green, white and silver spires. The streets are busy, with forges, barracks and guards on patrol, and holy symbols of Freya on people and buildings alike. Farming communities surround it along the lake shore, most of them worked by the same families for generations.\n\nThe grand temple of Freya stands at the end of the city and is open to the community. In its great sanctum a tree of life is set into the floor in Freya's honour. The current Meruion, a very old half-elf, sits on a throne there, and people line up to receive his blessing. Beyond the throne a glowing green crystalline female figure hangs suspended in the air.\n\nBehind the sanctum are a council room with a long table and large windows overlooking the lake, a war room, and a library. The high priests, like most of the temple's priests and leaders, are elven. The temple checks on the hidden commune of Freya every day through the power of Freya.",
-    "gate": [
-     -0.243154,
-     0.128084
+    "area": "city-emerald-citadel",
+    "gates": [
+     {
+      "id": "gate-emerald-citadel-main",
+      "at": [
+       -0.243154,
+       0.128084
+      ],
+      "road": "road-north",
+      "name": "Main Gate",
+      "place": "place-emerald-main-gate"
+     }
     ]
    },
    "geometry": {
@@ -65,6 +74,72 @@
     "coordinates": [
      -0.2514,
      0.1307
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "district-the-heights",
+    "name": "The Heights",
+    "rank": "district",
+    "kind": "district",
+    "province": "Eldravane",
+    "minzoom": 3,
+    "parent": "place-emerald-citadel",
+    "area": "area-the-heights",
+    "description": "The high end of the peninsula, rising to the sheer cliffs where the Grand Citadel and the temple of Freya stand."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.253778,
+     0.131498
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "district-lower-city",
+    "name": "Lower City",
+    "rank": "district",
+    "kind": "district",
+    "province": "Eldravane",
+    "minzoom": 3,
+    "parent": "place-emerald-citadel",
+    "area": "area-lower-city",
+    "description": "The landward half of the city behind the wall and the Main Gate: forges, barracks and the busy streets travellers enter by."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.247435,
+     0.128099
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-emerald-main-gate",
+    "name": "Main Gate",
+    "rank": "poi",
+    "kind": "gate",
+    "province": "Eldravane",
+    "minzoom": 3,
+    "parent": "district-lower-city",
+    "aliases": [
+     "The Great Gate"
+    ],
+    "description": "The Emerald Citadel's great gate in the landward wall, the city's main way in. It is very large and always busy.",
+    "details": "The gate stands where the main road north passes through the wall across the neck of the peninsula. Almost everyone coming to the city by land passes through it: farmers from the lake shore, caravans and travellers on the road, and the crews heading out to the Northern Outpost.\n\nDistances from the city are measured from here. The Northern Outpost is about 650 km up the road, two weeks on foot."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.243154,
+     0.128084
     ]
    }
   },
@@ -467,7 +542,7 @@
     "kind": "castle",
     "province": "Eldravane",
     "minzoom": 3,
-    "parent": "place-emerald-citadel",
+    "parent": "district-the-heights",
     "description": "The citadel itself, at the top of the sheer cliffs at the tip of the peninsula. The grand temple of Freya is here.",
     "details": "The grand temple is open to the community. In its great sanctum a tree of life is set into the floor in Freya's honour, the current Meruion sits on a throne giving blessings, and beyond the throne a glowing green crystalline female figure hangs suspended in the air. Behind the sanctum are the council room, with large windows overlooking the Cerulean Lake, the war room and the library."
    },

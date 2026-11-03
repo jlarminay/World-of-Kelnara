@@ -33,6 +33,7 @@ export const C = {
   highwayCase: '#e3b64e',
   trail: '#b9b4aa',
   wall: '#b5a58e',
+  selected: '#db4437', // outline of the selected city or district, like Google's boundary highlight
   route: '#1a73e8',
   routeCase: '#1557b0',
   text: '#202124',
@@ -159,6 +160,10 @@ export function buildStyle(): StyleSpecification {
           paint: { 'line-color': hw ? C.highway : C.road, 'line-width': w } },
       ]
     }),
+
+    // ---- boundary of the selected city/district (place.area); the filter is set by controller.ts ----
+    { id: 'area-selected', type: 'line', source: 'areas', filter: ['==', ['get', 'id'], ''], layout: { 'line-join': 'round' },
+      paint: { 'line-color': C.selected, 'line-width': ramp([z(0), 1.5], [z(6), 2.5]), 'line-dasharray': [3, 1.5] } },
 
     // ---- journey route ----
     { id: 'route-case', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' },

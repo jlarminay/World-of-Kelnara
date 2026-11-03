@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { categoryOf } from '@/world/categories'
 import { distanceKm, formatKm, levelToZoom } from '@/world/coords'
-import { childrenOf, placeById, selectPlace, store } from '@/state/store'
+import { ancestorsOf, childrenOf, placeById, selectPlace, store } from '@/state/store'
 import { flyToPlace } from '@/map/controller'
 import LucideIcon from './LucideIcon.vue'
 import Hero from './Hero.vue'
@@ -16,7 +16,7 @@ const props = defineProps<{ id: string }>()
 const place = computed(() => placeById.value.get(props.id))
 const p = computed(() => place.value?.properties)
 const cat = computed(() => p.value && categoryOf(p.value))
-const parent = computed(() => (p.value?.parent ? placeById.value.get(p.value.parent) : undefined))
+const ancestors = computed(() => ancestorsOf(props.id))
 const children = computed(() => childrenOf(props.id))
 const nearby = computed(() => {
   const here = place.value?.geometry.coordinates
@@ -68,8 +68,13 @@ const share = () => navigator.clipboard?.writeText(location.href)
     <Separator v-if="p.description" />
 
     <ul class="py-2 text-sm">
-      <li v-if="parent" class="flex cursor-pointer items-center gap-6 px-6 py-3 hover:bg-black/[.03]" @click="go(parent.properties.id)">
-        <Building2 class="size-5 text-primary" />Part of {{ parent.properties.name }}
+      <li v-if="ancestors.length" class="flex items-center gap-6 px-6 py-3">
+        <Building2 class="size-5 shrink-0 text-primary" />
+        <span>Part of
+          <template v-for="(a, i) in ancestors" :key="a.properties.id"
+            ><template v-if="i">, </template
+            ><button class="hover:underline" @click="go(a.properties.id)">{{ a.properties.name }}</button></template>
+        </span>
       </li>
       <li class="flex items-center gap-6 px-6 py-3"><MapPin class="size-5 text-primary" />{{ coords }}</li>
       <li class="flex items-center gap-6 px-6 py-3">

@@ -176,6 +176,13 @@ export async function createMap(container: HTMLElement) {
     { immediate: true },
   )
 
+  // ---- selected city/district: dashed boundary outline ----
+  watch(
+    () => (store.selection?.type === 'place' ? placeById.value.get(store.selection.id)?.properties.area : undefined) ?? '',
+    (area) => map.setFilter('area-selected', ['==', ['get', 'id'], area]),
+    { immediate: true },
+  )
+
   // ---- route ----
   watch(() => store.directions.result, (r) => {
     ;(map.getSource('route') as GeoJSONSource).setData(

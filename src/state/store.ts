@@ -50,6 +50,17 @@ export type Ground = 'road' | 'path' | 'open'
 export const mapRef = shallowRef<MlMap | null>(null)
 
 export const placeById = computed(() => new Map(store.places.features.map((f) => [f.properties.id, f])))
+/** Parent chain, nearest first: POI → district → city. */
+export function ancestorsOf(id: string): Place[] {
+  const out: Place[] = []
+  for (let p = placeById.value.get(id)?.properties.parent; p && out.length < 8; ) {
+    const f = placeById.value.get(p)
+    if (!f) break
+    out.push(f)
+    p = f.properties.parent
+  }
+  return out
+}
 export const childrenOf = (id: string): Place[] => store.places.features.filter((f) => f.properties.parent === id)
 
 export function selectPlace(id: string) {
