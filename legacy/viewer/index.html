@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kelnara — data viewer</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;font-family:"EB Garamond",Georgia,serif;color:#2b2118}
+  #map{position:absolute;inset:0;background:#c9d6d3}
+  .place{display:flex;align-items:center;gap:5px;white-space:nowrap;cursor:pointer;transform:translateX(calc(50% - 6px))}
+  .place i{width:9px;height:9px;border-radius:50%;background:#2b2118;border:2px solid #f4ead6;box-shadow:0 0 0 1px #2b2118;flex:none}
+  .place.capital i{width:12px;height:12px;background:#b8892b}
+  .place.poi i{border-radius:0;width:0;height:0;background:none;border:6px solid transparent;border-bottom:11px solid #2b2118;border-top:0;box-shadow:none}
+  .place span{font-size:14px;text-shadow:0 0 3px #f4ead6,0 0 3px #f4ead6,0 0 4px #f4ead6}
+  .place.capital span{font-family:Cinzel,serif;font-weight:700;font-size:14px}
+  .place.unnamed span{font-style:italic;color:#7a6542}
+  .lbl{font-style:italic;white-space:nowrap;pointer-events:none;letter-spacing:.06em;text-shadow:0 0 3px #f4ead6,0 0 3px #f4ead6}
+  .lbl.province{font-family:Cinzel,serif;font-style:normal;color:#8c2f1f;letter-spacing:.2em;text-transform:uppercase;font-size:15px}
+  .lbl.water{color:#2f4f7a;font-size:16px}
+  .lbl.region{color:#4a3a28;font-size:15px}
+  #panel{position:absolute;top:12px;left:12px;z-index:5;background:#f4ead6;border:1px solid #b9a27a;border-radius:12px;padding:12px 14px;width:270px;box-shadow:0 4px 16px rgba(60,40,10,.25)}
+  #panel h1{font-family:Cinzel,serif;font-size:18px;margin:0 0 4px}
+  #panel .z{font-size:13px;color:#7a6542}
+  #panel label{display:block;font-size:14px;margin-top:8px}
+  #panel select,#panel button{font:inherit;font-size:15px;width:100%;margin-top:3px;padding:5px 7px;border:1px solid #b9a27a;border-radius:8px;background:#fffaf0;color:#2b2118}
+  #panel button{background:#8c2f1f;color:#fff;border-color:#8c2f1f;cursor:pointer;margin-top:10px}
+  #result{margin-top:10px;font-size:15px;line-height:1.35}
+  #result b{font-family:Cinzel,serif}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>Kelnara</h1>
+  <div class="z">Detail level <span id="lvl">0</span> · zoom <span id="zm"></span></div>
+  <label>From <select id="from"></select></label>
+  <label>To <select id="to"></select></label>
+  <label>Travel by
+    <select id="mode"><option value="foot">Foot (39 km/day)</option><option value="horse">Horse (60 km/day)</option><option value="cart">Cart (30 km/day)</option></select>
+  </label>
+  <label>Route
+    <select id="how"><option value="roads">Follow roads</option><option value="cross">Cross country (terrain-aware)</option></select>
+  </label>
+  <button id="go">Plan journey</button>
+  <div id="result"></div>
+</div>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-olympus",
+    "name": "Olympus",
+    "rank": "capital",
+    "kind": "capital",
+    "province": "Vaelthorn",
+    "minzoom": 0,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.199,
+     0.449
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-gold-mines",
+    "name": "Golden Gods Mine",
+    "rank": "poi",
+    "kind": "mine",
+    "province": "Vaelthorn",
+    "minzoom": 2,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.256,
+     0.441
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-emerald-citadel",
+    "name": "Emerald Citadel",
+    "rank": "capital",
+    "kind": "capital",
+    "province": "Eldravane",
+    "minzoom": 0,
+    "description": "",
+    "aliases": [
+     "The Emerald City"
+    ],
+    "history": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.2514,
+     0.1307
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-tree-of-life",
+    "name": "Tree of Life",
+    "rank": "poi",
+    "kind": "landmark",
+    "province": "Scorched Lands",
+    "minzoom": 2,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.585,
+     -0.16
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-last-watch",
+    "name": "Last Watch",
+    "rank": "poi",
+    "kind": "watchtower",
+    "province": "Scorched Lands",
+    "minzoom": 2,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.465,
+     -0.137
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-moonlit-citadel",
+    "name": "Moonlit Citadel",
+    "rank": "capital",
+    "kind": "capital",
+    "province": "Orrenfall",
+    "minzoom": 0,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.047,
+     -0.536
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-steel-mines",
+    "name": "Steel Mines",
+    "rank": "poi",
+    "kind": "mine",
+    "province": "Orrenfall",
+    "minzoom": 2,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.061,
+     -0.58
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-north-caldrith",
+    "name": "North Caldrith",
+    "rank": "city",
+    "kind": "city",
+    "province": "Orrenfall",
+    "minzoom": 1,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.147,
+     -0.63
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-south-caldrith",
+    "name": "South Caldrith",
+    "rank": "city",
+    "kind": "city",
+    "province": "Orrenfall",
+    "minzoom": 1,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.17,
+     -0.647
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-northern-shrine",
+    "name": "Northern Shrine",
+    "rank": "poi",
+    "kind": "shrine",
+    "province": "Eldravane",
+    "minzoom": 2,
+    "description": ""
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.14,
+     0.237
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-1",
+    "name": "Unnamed city 1",
+    "rank": "city",
+    "kind": "city",
+    "province": "Vaelthorn",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (Unity Bay N)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1,
+     0.068
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-2",
+    "name": "Unnamed city 2",
+    "rank": "city",
+    "kind": "city",
+    "province": "Eldravane",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (Unity Bay W)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.066,
+     -0.022
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-3",
+    "name": "Unnamed city 3",
+    "rank": "city",
+    "kind": "city",
+    "province": "Vaelthorn",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (north river)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.09,
+     0.367
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-4",
+    "name": "Unnamed city 4",
+    "rank": "city",
+    "kind": "city",
+    "province": "Vaelthorn",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (east coast)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.438,
+     0.182
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-5",
+    "name": "Unnamed city 5",
+    "rank": "city",
+    "kind": "city",
+    "province": "Orrenfall",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (south lake)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.02,
+     -0.32
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-6",
+    "name": "Unnamed city 6",
+    "rank": "city",
+    "kind": "city",
+    "province": "Eldravane",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (west border)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.337,
+     -0.294
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-7",
+    "name": "Unnamed city 7",
+    "rank": "city",
+    "kind": "city",
+    "province": "Orrenfall",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (southwest)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.342,
+     -0.416
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-8",
+    "name": "Unnamed city 8",
+    "rank": "city",
+    "kind": "city",
+    "province": "Orrenfall",
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (eastern isle)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.383,
+     -0.352
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-unnamed-city-9",
+    "name": "Unnamed city 9",
+    "rank": "city",
+    "kind": "city",
+    "province": null,
+    "minzoom": 1,
+    "description": "",
+    "note": "Name not legible on the drawing (island east of Unity Bay)"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.28,
+     -0.143
+    ]
+   }
+  }
+ ]
+}

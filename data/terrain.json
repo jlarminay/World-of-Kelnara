@@ -1,0 +1,27 @@
+{
+ "cell_px": 4,
+ "width": 400,
+ "height": 592,
+ "km_per_cell": 15.908,
+ "classes": {
+  "0": "sea",
+  "1": "plains",
+  "2": "forest",
+  "3": "mountains",
+  "4": "lake",
+  "5": "river"
+ },
+ "travel_cost": {
+  "plains": 1.0,
+  "forest": 1.7,
+  "mountains": 6.0,
+  "river": 2.5,
+  "sea": null,
+  "lake": null
+ },
+ "origin_lnglat": [
+  -0.8,
+  1.185
+ ],
+ "deg_per_cell": 0.004
+}

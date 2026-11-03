@@ -1,0 +1,214 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-emerald-woods",
+    "name": "Emerald Woods",
+    "kind": "region",
+    "minzoom": 1
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.285,
+     0.043
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-vaelthorn",
+    "name": "Vaelthorn",
+    "kind": "province",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.2288,
+     0.1776
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-unity-bay",
+    "name": "Unity Bay",
+    "kind": "water",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1129,
+     0.0034
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-scorched-lands",
+    "name": "Scorched Lands",
+    "kind": "province",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.5906,
+     -0.1757
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-eldravane",
+    "name": "Eldravane",
+    "kind": "province",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.23,
+     -0.0629
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-orrenfall",
+    "name": "Orrenfall",
+    "kind": "province",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.1945,
+     -0.3839
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-discoverers-bay",
+    "name": "Discoverer's Bay",
+    "kind": "water",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.052,
+     -0.567
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-steel-spine-mountains",
+    "name": "Steel Spine Mountains",
+    "kind": "region",
+    "minzoom": 1
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1259,
+     -0.36
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-caldrith-strait",
+    "name": "Caldrith Strait",
+    "kind": "water",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.166,
+     -0.577
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-the-eastern-expanse",
+    "name": "The Eastern Expanse",
+    "kind": "water",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.542,
+     -0.183
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-sea-to-the-great-unknown",
+    "name": "Sea to the Great Unknown",
+    "kind": "water",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.44,
+     -0.645
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-heimdall",
+    "name": "Heimdall",
+    "kind": "region",
+    "minzoom": 1,
+    "note": "Sketched in pencil off the south-west coast; no land drawn yet"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.585,
+     -0.865
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-snow-capped-mountains",
+    "name": "Snow Capped Mountains",
+    "kind": "region",
+    "minzoom": 0
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.1478,
+     0.4685
+    ]
+   }
+  }
+ ]
+}
