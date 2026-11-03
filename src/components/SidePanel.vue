@@ -74,7 +74,7 @@ function close() {
       >
         <span class="h-1 w-9 rounded-full bg-black/20" />
       </div>
-      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]">
         <DirectionsPanel v-if="store.panel === 'directions'" />
         <SideMenu v-else-if="store.panel === 'menu'" />
         <template v-else-if="store.panel === 'details' && store.selection">
