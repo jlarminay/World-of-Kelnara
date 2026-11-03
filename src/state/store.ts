@@ -5,7 +5,7 @@ import { layers, placesData, settlementData, type LayerName } from '@/world/data
 import type { RouteResult } from '@/routing'
 
 export type Selection = { type: 'place'; id: string } | { type: 'feature'; layer: LayerName; id: string }
-export type Panel = 'none' | 'results' | 'details' | 'directions'
+export type Panel = 'none' | 'menu' | 'results' | 'details' | 'directions'
 
 export const store = reactive({
   /** Editable copies; the editor mutates these and saves them back to data/. */
@@ -27,7 +27,13 @@ export const store = reactive({
     error: '',
   },
   editor: { enabled: false, tool: 'select' as 'select' | 'add', dirty: false, status: '' },
+  /** Right-click menu: screen position and the map point under it. */
+  contextMenu: null as null | { x: number; y: number; lngLat: [number, number] },
+  /** Distance measuring: points of the path, and the kind of ground for the time estimate. */
+  measure: { active: false, points: [] as [number, number][], ground: 'open' as Ground },
 })
+
+export type Ground = 'road' | 'path' | 'open'
 
 export const mapRef = shallowRef<MlMap | null>(null)
 

@@ -10,6 +10,7 @@ import glyphBold from '@/assets/glyphs/noto-sans-bold-0-255.pbf?url'
 import glyphItalic from '@/assets/glyphs/noto-sans-italic-0-255.pbf?url'
 import { buildStyle } from './style'
 import { buildImages } from './icons'
+import { setupMeasure } from './measure'
 import { settlementRadiusDeg } from './procedural/city'
 import { bake, baked, bakeKey, toGeoJSON, type CityGeometry } from './procedural/bake'
 import { layers, type LayerName } from '@/world/data'
@@ -36,7 +37,7 @@ maplibregl.addProtocol('glyphs', async (params) => {
 })
 
 export const CLICKABLE_PLACES = ['place-poi', 'place-settlement', 'place-district']
-const CLICKABLE_FEATURES: [string, LayerName][] = [['lakes', 'lakes'], ['forests', 'forests'], ['mountains', 'mountains']]
+const CLICKABLE_FEATURES: [string, LayerName][] = [['heimdall', 'areas'], ['lakes', 'lakes'], ['forests', 'forests'], ['mountains', 'mountains']]
 
 /** Adds the per-feature styling props the map style reads (`_icon`, `_color`, `_sort`, `_pinned`). */
 function decoratePlaces(): FeatureCollection {
@@ -113,7 +114,17 @@ export async function createMap(container: HTMLElement) {
   refreshCities()
 
   // ---- interaction ----
+  setupMeasure(map)
+  // right-click menu
+  map.on('contextmenu', (e) => {
+    e.preventDefault()
+    store.contextMenu = { x: e.point.x, y: e.point.y, lngLat: [e.lngLat.lng, e.lngLat.lat] }
+  })
+  for (const ev of ['movestart', 'zoomstart'] as const) map.on(ev, () => (store.contextMenu = null))
+
   map.on('click', (e) => {
+    if (store.contextMenu) return void (store.contextMenu = null)
+    if (store.measure.active) return // handled by measure.ts
     if (store.editor.enabled && store.editor.tool === 'add') return // handled by the editor
     const hit = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_PLACES })[0]
     if (hit) return selectPlace(hit.properties.id)
@@ -126,7 +137,7 @@ export async function createMap(container: HTMLElement) {
     }
     clearSelection()
   })
-  for (const id of [...CLICKABLE_PLACES, 'lakes', 'forests', 'mountains']) {
+  for (const id of [...CLICKABLE_PLACES, ...CLICKABLE_FEATURES.map(([l]) => l)]) {
     map.on('mouseenter', id, (e) => {
       const f = e.features?.[0] as MapGeoJSONFeature | undefined
       if (CLICKABLE_PLACES.includes(id) || f?.properties.name) map.getCanvas().style.cursor = 'pointer'

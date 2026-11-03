@@ -1,60 +1,66 @@
 {
-  "name": "Kelnara of Thera",
-  "coordinate_system": {
-    "description": "Fake longitude/latitude so web-map libraries (MapLibre, Leaflet) work unchanged. 1 pixel of the straightened source drawing (reference/kelnara-original-straightened.png, 1600x2370) = 0.001 degrees. Kept near the equator so distortion is negligible.",
-    "source_image_px": [
-      1600,
-      2370
-    ],
-    "deg_per_px": 0.001,
-    "px_to_lnglat": "lng = (x - 800) * 0.001 ; lat = (1185 - y) * 0.001",
-    "lnglat_to_px": "x = lng / 0.001 + 800 ; y = 1185 - lat / 0.001",
-    "bounds_lnglat": [
-      [
-        -0.8,
-        -1.185
-      ],
-      [
-        0.8,
-        1.185
-      ]
-    ]
-  },
-  "scale": {
-    "km_per_px": 3.9769,
-    "km_per_degree": 3976.88,
-    "note": "From the hand-drawn scale bar (0-688 km = 173 px). Real-world distance helpers (turf.distance etc.) will be wrong; multiply their km by world_km_per_real_km.",
-    "world_km_per_real_km": 35.7247
-  },
-  "detail_levels": {
-    "note": "Every feature's 'minzoom' is a detail level. Map zoom = base_zoom + level. Levels 0-4 are the world/region scale, 5-12 are city scale.",
-    "base_zoom": 8,
-    "levels": {
-      "0": "continent: land, sea, mountains, capitals, highways, province + sea names",
-      "1": "region: forests, rivers, cities, roads, region names",
-      "2": "local: points of interest, trails",
-      "3": "towns, villages",
-      "4": "caves, ruins, minor landmarks",
-      "5": "city footprints + arteries (generated)",
-      "6": "city districts, major POIs inside cities",
-      "7": "farms, mills, named buildings; generated fields and secondary streets",
-      "8": "generated minor streets and blocks",
-      "9": "shops, inns, houses; generated buildings"
-    }
-  },
-  "travel": {
-    "km_per_day": {
-      "foot": 39,
-      "horse": 60,
-      "cart": 30
-    },
-    "source": "'1 day = 39 km' on the map legend; horse and cart are suggestions",
-    "terrain_cost_multiplier": {
-      "plains": 1.0,
-      "road": 0.8,
-      "forest": 1.7,
-      "mountains": 6.0,
-      "river_ford": 2.5
-    }
+ "name": "Kelnara of Thera",
+ "coordinate_system": {
+  "description": "Fake longitude/latitude so web-map libraries (MapLibre, Leaflet) work unchanged. 1 pixel of the straightened source drawing (reference/kelnara-original-straightened.png, 1600x2370) = 0.001 degrees. Kept near the equator so distortion is negligible.",
+  "source_image_px": [
+   1600,
+   2370
+  ],
+  "deg_per_px": 0.001,
+  "px_to_lnglat": "lng = (x - 800) * 0.001 ; lat = (1185 - y) * 0.001",
+  "lnglat_to_px": "x = lng / 0.001 + 800 ; y = 1185 - lat / 0.001",
+  "bounds_lnglat": [
+   [
+    -0.8,
+    -1.185
+   ],
+   [
+    0.8,
+    1.185
+   ]
+  ]
+ },
+ "scale": {
+  "km_per_px": 3.9769,
+  "km_per_degree": 3976.88,
+  "note": "From the hand-drawn scale bar (0-688 km = 173 px). Real-world distance helpers (turf.distance etc.) will be wrong; multiply their km by world_km_per_real_km.",
+  "world_km_per_real_km": 35.7247
+ },
+ "detail_levels": {
+  "note": "Every feature's 'minzoom' is a detail level. Map zoom = base_zoom + level. Levels 0-4 are the world/region scale, 5-12 are city scale.",
+  "base_zoom": 8,
+  "levels": {
+   "0": "continent: land, sea, mountains, capitals, highways, province + sea names",
+   "1": "region: forests, rivers, cities, roads, region names",
+   "2": "local: points of interest, trails",
+   "3": "towns, villages",
+   "4": "caves, ruins, minor landmarks",
+   "5": "city footprints + arteries (generated)",
+   "6": "city districts, major POIs inside cities",
+   "7": "farms, mills, named buildings; generated fields and secondary streets",
+   "8": "generated minor streets and blocks",
+   "9": "shops, inns, houses; generated buildings"
   }
+ },
+ "travel": {
+  "km_per_day": {
+   "foot": 39,
+   "horse": 60,
+   "cart": 30
+  },
+  "source": "'1 day = 39 km' on the map legend; horse and cart are suggestions",
+  "terrain_cost_multiplier": {
+   "plains": 1.0,
+   "road": 0.8,
+   "forest": 1.7,
+   "mountains": 6.0,
+   "river_ford": 2.5
+  },
+  "on_foot_km_per_day": {
+   "road": 46,
+   "path": 33,
+   "open": 39
+  },
+  "note": "Walking speed depends on the ground: 46 km/day on a road (the road from the Emerald Citadel's gate to the Northern Outpost, 649 km, is about 14 days), 33 on a path, 39 across open country (the map legend). Distances from a city are measured from outside its gate."
+ }
 }

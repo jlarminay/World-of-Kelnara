@@ -25,7 +25,6 @@ const results = computed(() => {
       <span class="min-w-0 flex-1">
         <span class="block text-base font-medium">{{ r.name }}</span>
         <span class="block text-sm text-muted-foreground">{{ r.subtitle }}</span>
-        <span v-if="r.text" class="mt-1 line-clamp-2 block text-sm text-muted-foreground">{{ r.text }}</span>
       </span>
       <span class="grid size-10 shrink-0 place-items-center rounded-full bg-muted" :style="{ color: r.category.color }">
         <LucideIcon :icon="r.category.icon" :size="20" />

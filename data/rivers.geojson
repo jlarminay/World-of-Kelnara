@@ -513,9 +513,10 @@
    "type": "Feature",
    "properties": {
     "id": "river-2",
-    "name": null,
+    "name": "Emerald River",
     "kind": "river",
-    "length_km": 827
+    "length_km": 827,
+    "description": "Flows from the Cerulean Lake south-west to the sea, along the northern edge of Emerald Woods. Allister's letter tells the commune to travel north to the Emerald River and follow it north-east to the lake."
    },
    "geometry": {
     "type": "LineString",

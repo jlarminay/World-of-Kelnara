@@ -14,12 +14,13 @@ import borders from '../../data/borders.geojson'
 import roads from '../../data/roads.geojson'
 import places from '../../data/places.geojson'
 import labels from '../../data/labels.geojson'
+import areas from '../../data/areas.geojson'
 
 export { world }
 export const settlementData = settlements as Settlement[]
 export const placesData = places as unknown as Places
 
-export const layers = { land, provinces, forests, mountains, ridges, lakes, rivers, borders, roads, labels } satisfies Record<
+export const layers = { land, provinces, forests, mountains, ridges, lakes, rivers, borders, roads, labels, areas } satisfies Record<
   string,
   FeatureCollection
 >

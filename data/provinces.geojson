@@ -16977,7 +16977,9 @@
     "id": "prov-scorched",
     "name": "Scorched Lands",
     "kind": "province",
-    "area_km2": 843464
+    "area_km2": 843464,
+    "description": "Land burned when the chromatic dragons scorched the Tree of Life. People are exiled here, and it is not a good place to live.",
+    "details": "The Tree of Life still stands within it. It was here that the gods' champions sealed the chromatic dragons in the abyss, becoming the first Meruions."
    },
    "geometry": {
     "type": "Polygon",

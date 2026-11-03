@@ -1017,9 +1017,10 @@
    "type": "Feature",
    "properties": {
     "id": "lake-1",
-    "name": null,
+    "name": "Cerulean Lake",
     "kind": "lake",
-    "area_km2": 36102
+    "area_km2": 36102,
+    "description": "A lake so wide that from its southern shore you can't see the other side. The Emerald Citadel stands at the end of a peninsula reaching into its middle, and the Emerald River flows out of it to the south-west."
    },
    "geometry": {
     "type": "Polygon",

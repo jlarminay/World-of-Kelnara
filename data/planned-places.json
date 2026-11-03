@@ -1,0 +1,4 @@
+{
+ "note": "Places from the session notes that are not on the map yet. Same fields as places.geojson, plus 'where' (from the notes) instead of coordinates. Not loaded by the app.",
+ "places": []
+}

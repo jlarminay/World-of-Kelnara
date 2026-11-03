@@ -160,6 +160,7 @@ const aliases = computed({
         <div class="grid gap-1.5"><Label>Also known as (comma separated)</Label><Input v-model="aliases" /></div>
         <div class="grid gap-1.5"><Label>Description</Label><Textarea v-model="place.properties.description" rows="2" /></div>
         <div class="grid gap-1.5"><Label>History</Label><Textarea v-model="place.properties.history" rows="4" /></div>
+        <div class="grid gap-1.5"><Label>Details (blank line between paragraphs)</Label><Textarea v-model="place.properties.details" rows="8" /></div>
         <div class="grid gap-1.5"><Label>Tags (comma separated)</Label><Input v-model="tags" /></div>
         <p class="text-xs text-muted-foreground">id: {{ place.properties.id }} · drag the red pin to move</p>
 

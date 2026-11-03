@@ -27,6 +27,7 @@ const nearby = computed(() => {
     .sort((a, b) => a.km - b.km)
     .slice(0, 5)
 })
+const details = computed(() => (p.value?.details ?? '').split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean))
 const coords = computed(() => place.value?.geometry.coordinates.map((c) => c.toFixed(5)).join(', '))
 
 function directions() {
@@ -54,10 +55,12 @@ const share = () => navigator.clipboard?.writeText(location.href)
         <Badge v-for="t in p.tags" :key="t" variant="secondary">{{ t }}</Badge>
       </div>
     </div>
-    <div class="flex justify-around px-4 pb-4">
+    <div v-if="FEATURES.directions || FEATURES.placeActions" class="flex justify-around px-4 pb-4">
       <ActionButton v-if="FEATURES.directions" label="Directions" primary @click="directions"><Navigation class="rotate-45" /></ActionButton>
-      <ActionButton label="Zoom to" :primary="!FEATURES.directions" @click="flyToPlace(id)"><LocateFixed /></ActionButton>
-      <ActionButton label="Share" @click="share"><Share2 /></ActionButton>
+      <template v-if="FEATURES.placeActions">
+        <ActionButton label="Zoom to" :primary="!FEATURES.directions" @click="flyToPlace(id)"><LocateFixed /></ActionButton>
+        <ActionButton label="Share" @click="share"><Share2 /></ActionButton>
+      </template>
     </div>
     <Separator />
 
@@ -102,6 +105,15 @@ const share = () => navigator.clipboard?.writeText(location.href)
       </section>
     </template>
 
+    <template v-if="details.length">
+      <Separator />
+      <section class="px-6 py-4">
+        <h2 class="mb-2 text-base font-medium">Details</h2>
+        <p v-for="(para, i) in details" :key="i" class="mb-3 text-sm leading-6 text-muted-foreground last:mb-0">{{ para }}</p>
+      </section>
+    </template>
+
+    <template v-if="FEATURES.nearby">
     <Separator />
     <section class="py-4">
       <h2 class="mb-1 px-6 text-base font-medium">Nearby</h2>
@@ -116,5 +128,6 @@ const share = () => navigator.clipboard?.writeText(location.href)
         <span class="text-xs text-muted-foreground">{{ formatKm(n.km) }}</span>
       </button>
     </section>
+    </template>
   </div>
 </template>

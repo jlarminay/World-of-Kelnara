@@ -2,7 +2,8 @@
 import { defineAsyncComponent } from 'vue'
 import MapView from '@/components/MapView.vue'
 import SearchBox from '@/components/SearchBox.vue'
-import CategoryChips from '@/components/CategoryChips.vue'
+import ContextMenu from '@/components/ContextMenu.vue'
+import MeasureCard from '@/components/MeasureCard.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import MapControls from '@/components/MapControls.vue'
 import { store } from '@/state/store'
@@ -17,9 +18,10 @@ const EditorPanel = import.meta.env.DEV ? defineAsyncComponent(() => import('@/e
     <SidePanel />
     <div class="pointer-events-none absolute top-3 left-3 z-20 flex items-start gap-2">
       <SearchBox v-if="store.panel !== 'directions'" class="pointer-events-auto" />
-      <CategoryChips v-if="store.panel === 'none'" class="pointer-events-auto" />
     </div>
     <MapControls />
+    <MeasureCard />
+    <ContextMenu />
     <component :is="EditorPanel" v-if="EditorPanel" />
   </div>
 </template>

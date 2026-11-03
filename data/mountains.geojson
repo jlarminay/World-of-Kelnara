@@ -6,7 +6,9 @@
    "properties": {
     "id": "range-north",
     "name": "Snow Capped Mountains",
-    "kind": "mountain_range"
+    "kind": "mountain_range",
+    "description": "The great mountain range across the north. It is incredibly perilous, and the Emerald Citadel is the last big city before it.",
+    "details": "Gold is mined in the eastern part of the mountains. Little is known about what lies in the west.\n\nThe masked man who took Dion seems to come from these mountains, and so does at least one of the gnolls who followed him. The temple of Freya sends only its most seasoned scouts to search them."
    },
    "geometry": {
     "type": "MultiPolygon",

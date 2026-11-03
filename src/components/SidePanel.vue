@@ -5,6 +5,7 @@ import ResultsList from './ResultsList.vue'
 import PlaceDetails from './PlaceDetails.vue'
 import FeatureDetails from './FeatureDetails.vue'
 import DirectionsPanel from './DirectionsPanel.vue'
+import SideMenu from './SideMenu.vue'
 </script>
 
 <template>
@@ -16,6 +17,7 @@ import DirectionsPanel from './DirectionsPanel.vue'
       <ScrollArea class="h-full">
         <div :class="store.panel === 'directions' ? '' : 'pt-[72px]'">
           <DirectionsPanel v-if="store.panel === 'directions'" />
+          <SideMenu v-else-if="store.panel === 'menu'" />
           <template v-else-if="store.panel === 'details' && store.selection">
             <PlaceDetails v-if="store.selection.type === 'place'" :id="store.selection.id" />
             <FeatureDetails v-else :layer="store.selection.layer" :id="store.selection.id" />

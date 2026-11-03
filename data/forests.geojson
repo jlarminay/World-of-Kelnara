@@ -28501,7 +28501,8 @@
    "properties": {
     "id": "forest-3",
     "name": "Emerald Woods",
-    "kind": "forest"
+    "kind": "forest",
+    "description": "Forest south of the Cerulean Lake, bounded on the north by the Emerald River. The hidden commune of Freya lay deep within it, until it was attacked and burned."
    },
    "geometry": {
     "type": "Polygon",

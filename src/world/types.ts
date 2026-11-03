@@ -17,6 +17,8 @@ export interface PlaceProps {
   minzoom: number
   description?: string
   history?: string
+  /** Long-form notes (several paragraphs, blank line between them). Shown above "Nearby". */
+  details?: string
   /** Other names the place is searchable by ("The Emerald City"). */
   aliases?: string[]
   tags?: string[]

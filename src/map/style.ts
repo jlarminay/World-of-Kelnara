@@ -16,7 +16,7 @@ export const C = {
   ridge: '#cfc8b8',
   lake: '#aadaff',
   river: '#aadaff',
-  border: '#9aa0a6',
+  border: '#c4615a', // muted red, like the drawing's dashed province lines (paths stay grey)
   urban: '#ebe9e4',
   block: '#e3e1dc',
   building: '#dddad4',
@@ -57,6 +57,9 @@ const cls = (...c: string[]): FilterSpecification => ['match', ['get', 'class'],
 /** Show a feature once the map reaches its detail level (`minzoom` property). */
 const atLevel: ExpressionSpecification = ['>=', ['zoom'], ['+', BASE_ZOOM, ['coalesce', ['get', 'minzoom'], 0]]]
 
+/** Screen px per drawing px (0.001°) at zoom 8; doubles every zoom level. */
+const PX8 = (512 * 2 ** 8 / 360) * 0.001
+
 const empty: FeatureCollection = { type: 'FeatureCollection', features: [] }
 
 export function buildStyle(): StyleSpecification {
@@ -71,6 +74,14 @@ export function buildStyle(): StyleSpecification {
     { id: 'ridges', type: 'line', source: 'ridges', layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': C.ridge, 'line-width': ramp2([z(0), 1], [z(4), 4], [z(8), 10]) } },
     { id: 'forests', type: 'fill', source: 'forests', paint: { 'fill-color': C.forest } },
+
+    // ---- hand-drawn city areas, walls and farmland (data/areas.geojson) ----
+    { id: 'area-farmland', type: 'fill', source: 'areas', minzoom: z(1.5), filter: ['==', ['get', 'kind'], 'farmland'],
+      paint: { 'fill-color': C.fields[0], 'fill-opacity': ramp([z(1.5), 0], [z(2.5), 1]) } },
+    { id: 'area-urban', type: 'fill', source: 'areas', minzoom: z(1), filter: ['==', ['get', 'kind'], 'urban'],
+      paint: { 'fill-color': C.urban, 'fill-opacity': ramp([z(1), 0], [z(2), 1]) } },
+    { id: 'area-wall', type: 'line', source: 'areas', minzoom: z(2.5), filter: ['==', ['get', 'kind'], 'wall'], layout: { 'line-cap': 'round' },
+      paint: { 'line-color': C.wall, 'line-width': ramp2([z(2.5), 1.5], [z(6), 5], [z(8), 10]) } },
 
     // ---- generated city + farmland (see procedural/city.ts) ----
     { id: 'city-urban', type: 'fill', source: 'city-areas', minzoom: 9.5, filter: cls('urban'),
@@ -112,6 +123,22 @@ export function buildStyle(): StyleSpecification {
     { id: 'rivers', type: 'line', source: 'rivers', layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': C.river, 'line-width': ramp2([z(0), 1], [z(2), 2.5], [z(6), 14], [z(10), 60]) } },
 
+    // Heimdall: a wall of water drawn as a band true to its width at every zoom; the ends fade out
+    // because it carries on beyond the known map
+    { id: 'heimdall', type: 'line', source: 'areas', filter: ['==', ['get', 'kind'], 'water_wall'],
+      layout: { 'line-cap': 'butt', 'line-join': 'round' },
+      paint: {
+        'line-width': ['interpolate', ['exponential', 2], ['zoom'], 8, PX8 * 120, 16, PX8 * 120 * 256] as unknown as Num,
+        'line-gradient': ['interpolate', ['linear'], ['line-progress'],
+          0, 'rgba(66, 125, 196, 0)', 0.2, 'rgba(66, 125, 196, 0.9)', 0.8, 'rgba(66, 125, 196, 0.9)', 1, 'rgba(66, 125, 196, 0)'],
+      } },
+    { id: 'heimdall-crest', type: 'line', source: 'areas', filter: ['==', ['get', 'kind'], 'water_wall'],
+      layout: { 'line-cap': 'butt', 'line-join': 'round' },
+      paint: {
+        'line-width': ['interpolate', ['exponential', 2], ['zoom'], 8, PX8 * 28, 16, PX8 * 28 * 256] as unknown as Num,
+        'line-gradient': ['interpolate', ['linear'], ['line-progress'],
+          0, 'rgba(255, 255, 255, 0)', 0.25, 'rgba(255, 255, 255, 0.35)', 0.75, 'rgba(255, 255, 255, 0.35)', 1, 'rgba(255, 255, 255, 0)'],
+      } },
     { id: 'original', type: 'raster', source: 'original', layout: { visibility: 'none' }, paint: { 'raster-fade-duration': 0 } },
 
     { id: 'borders', type: 'line', source: 'borders',
@@ -141,18 +168,31 @@ export function buildStyle(): StyleSpecification {
       paint: { 'line-color': C.route, 'line-width': ramp2([z(0), 4], [z(6), 9], [z(10), 12]) } },
 
     // ---- labels ----
-    { id: 'label-water', type: 'symbol', source: 'labels', maxzoom: z(4), filter: ['==', ['get', 'kind'], 'water'],
+    { id: 'label-water', type: 'symbol', source: 'labels', maxzoom: z(4), filter: ['all', ['==', ['get', 'kind'], 'water'], atLevel],
       layout: { 'text-field': ['get', 'name'], 'text-font': FONT.italic, 'text-size': ramp([z(0), 13], [z(3), 18]), 'text-letter-spacing': 0.1,
         'text-max-width': 8 },
       paint: { 'text-color': C.waterText, 'text-halo-color': 'rgba(255,255,255,.4)', 'text-halo-width': 1 } },
-    { id: 'label-province', type: 'symbol', source: 'labels', maxzoom: z(3), filter: ['==', ['get', 'kind'], 'province'],
+    // lakes: shown from their own detail level all the way in (hidden while a city name needs the space)
+    { id: 'label-lake', type: 'symbol', source: 'labels', filter: ['all', ['==', ['get', 'kind'], 'lake'], atLevel],
+      layout: { 'text-field': ['get', 'name'], 'text-font': FONT.italic, 'text-size': ramp([z(2), 12], [z(6), 16]), 'text-letter-spacing': 0.08,
+        'text-max-width': 8 },
+      paint: { 'text-color': C.waterText, 'text-halo-color': 'rgba(255,255,255,.4)', 'text-halo-width': 1 } },
+    { id: 'label-province', type: 'symbol', source: 'labels', maxzoom: z(3), filter: ['all', ['==', ['get', 'kind'], 'province'], atLevel],
       layout: { 'text-field': ['upcase', ['get', 'name']], 'text-font': FONT.regular, 'text-size': ramp([z(0), 12], [z(3), 16]),
         'text-letter-spacing': 0.25 },
       paint: { 'text-color': C.textFaint, 'text-halo-color': C.halo, 'text-halo-width': 1.5 } },
-    { id: 'label-region', type: 'symbol', source: 'labels', minzoom: z(0.5), maxzoom: z(5), filter: ['==', ['get', 'kind'], 'region'],
+    { id: 'label-region', type: 'symbol', source: 'labels', minzoom: z(0.5), maxzoom: z(5), filter: ['all', ['==', ['get', 'kind'], 'region'], atLevel],
       layout: { 'text-field': ['get', 'name'], 'text-font': FONT.italic, 'text-size': ramp([z(1), 12], [z(4), 15]), 'text-letter-spacing': 0.08 },
       paint: { 'text-color': ['match', ['get', 'name'], 'Emerald Woods', '#2d7a3a', 'Steel Spine Mountains', '#8d6e63', 'Snow Capped Mountains', '#8d6e63', C.textMuted],
         'text-halo-color': C.halo, 'text-halo-width': 1.5 } },
+    { id: 'label-river', type: 'symbol', source: 'rivers', minzoom: z(2), filter: ['has', 'name'],
+      layout: { 'symbol-placement': 'line', 'text-field': ['get', 'name'], 'text-font': FONT.italic, 'text-size': ramp([z(2), 11], [z(6), 14]),
+        'symbol-spacing': 300, 'text-letter-spacing': 0.05 },
+      paint: { 'text-color': C.waterText, 'text-halo-color': C.halo, 'text-halo-width': 1.5 } },
+    { id: 'label-heimdall', type: 'symbol', source: 'areas', filter: ['==', ['get', 'kind'], 'water_wall'],
+      layout: { 'symbol-placement': 'line', 'text-field': ['upcase', ['get', 'name']], 'text-font': FONT.bold, 'symbol-spacing': 600,
+        'text-size': ramp([z(0), 12], [z(4), 18]), 'text-letter-spacing': 0.4, 'text-keep-upright': true },
+      paint: { 'text-color': '#ffffff', 'text-halo-color': 'rgba(40, 90, 150, 0.6)', 'text-halo-width': 1.5 } },
     { id: 'label-artery', type: 'symbol', source: 'city-lines', minzoom: 13.5, filter: cls('artery'),
       layout: { 'symbol-placement': 'line', 'text-field': ['get', 'name'], 'text-font': FONT.regular, 'text-size': ramp([13.5, 10], [18, 13]),
         'symbol-spacing': 400 },
@@ -190,7 +230,7 @@ export function buildStyle(): StyleSpecification {
     glyphs: 'glyphs://{fontstack}/{range}',
     sources: {
       // low simplification tolerance keeps coastlines and lakes round at low zoom instead of angular
-      ...Object.fromEntries(Object.entries(layers).map(([k, v]) => [k, geo(v, { tolerance: 0.08 })])),
+      ...Object.fromEntries(Object.entries(layers).map(([k, v]) => [k, geo(v, { tolerance: 0.08, ...(k === 'areas' ? { lineMetrics: true } : {}) })])),
       places: geo(empty),
       route: geo(empty),
       'city-areas': geo(empty, { maxzoom: 18, tolerance: 0.2 }),

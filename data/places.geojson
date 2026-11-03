@@ -10,7 +10,8 @@
     "kind": "capital",
     "province": "Vaelthorn",
     "minzoom": 0,
-    "description": ""
+    "description": "",
+    "details": "Pale travellers in black robes, met on the main road north with a caravan, claimed to have come from Olympus in the north."
    },
    "geometry": {
     "type": "Point",
@@ -29,7 +30,7 @@
     "kind": "mine",
     "province": "Vaelthorn",
     "minzoom": 2,
-    "description": ""
+    "description": "Gold is mined here, in the eastern part of the northern mountains."
    },
    "geometry": {
     "type": "Point",
@@ -48,11 +49,16 @@
     "kind": "capital",
     "province": "Eldravane",
     "minzoom": 0,
-    "description": "",
+    "description": "The great city of Freya's faithful, standing at the end of a peninsula in the middle of the Cerulean Lake. It is the last big city before the northern mountains.",
     "aliases": [
      "The Emerald City"
     ],
-    "history": ""
+    "history": "",
+    "details": "The citadel stands at the far end of a peninsula that reaches out into the middle of the Cerulean Lake, so that the water wraps around it. The land rises along the peninsula to sheer cliffs at its tip, with the citadel at the top. Travellers coming around the lake first see a small spire rising out of what looks like land in the middle of the water.\n\nIt has the elegance of an elven city crossed with the massive power of dwarven architecture: white marble walls and green, white and silver spires. The streets are busy, with forges, barracks and guards on patrol, and holy symbols of Freya on people and buildings alike. Farming communities surround it along the lake shore, most of them worked by the same families for generations.\n\nThe grand temple of Freya stands at the end of the city and is open to the community. In its great sanctum a tree of life is set into the floor in Freya's honour. The current Meruion, a very old half-elf, sits on a throne there, and people line up to receive his blessing. Beyond the throne a glowing green crystalline female figure hangs suspended in the air.\n\nBehind the sanctum are a council room with a long table and large windows overlooking the lake, a war room, and a library. The high priests, like most of the temple's priests and leaders, are elven. The temple checks on the hidden commune of Freya every day through the power of Freya.",
+    "gate": [
+     -0.243154,
+     0.128084
+    ]
    },
    "geometry": {
     "type": "Point",
@@ -71,7 +77,8 @@
     "kind": "landmark",
     "province": "Scorched Lands",
     "minzoom": 2,
-    "description": ""
+    "description": "The world's genesis: the tree the gods made, from which everything known to exist has sprung.",
+    "details": "The gods made the Tree of Life, and it has spawned everything known to exist so far. All the creatures in the books are Sentients. The elves were the first, and the dragonborn are the youngest.\n\nThe chromatic dragons were the first to spring from the tree. They were destructive and set out to annihilate the world, so the tree brought forth other species to slow them down. Among them were the giants, who lost their war against the dragons and are now believed to be gone. The last thing the tree brought forth were the metallic dragons.\n\nTo stop the tree creating more life, the chromatic dragons scorched it, and the land around it became the Scorched Lands. No new life has come from the tree in thousands of years.\n\nWith the metallic dragons still losing, the gods raised a champion in each of the realms and brought them to the Scorched Lands, where they sealed the chromatic dragons in the abyss. It took so much magic that the champions crystallized. They were the first Meruions, and every Meruion since must go to renew the seal."
    },
    "geometry": {
     "type": "Point",
@@ -128,7 +135,8 @@
     "kind": "mine",
     "province": "Orrenfall",
     "minzoom": 2,
-    "description": ""
+    "description": "Where all the steel on the continent is mined.",
+    "details": "Every bit of steel in Kelnara comes from these mines. Supply routes north take a great deal of effort, so steel is in short supply in the north."
    },
    "geometry": {
     "type": "Point",
@@ -179,13 +187,14 @@
   {
    "type": "Feature",
    "properties": {
-    "id": "place-northern-shrine",
-    "name": "Northern Shrine",
+    "id": "place-northern-outpost",
+    "name": "Northern Outpost",
     "rank": "poi",
-    "kind": "shrine",
+    "kind": "outpost",
     "province": "Eldravane",
     "minzoom": 2,
-    "description": ""
+    "description": "The Emerald Citadel's outpost on the road north, about two weeks' travel along the main road.",
+    "details": "A crew from the citadel is stationed here. Three years after Dion was taken, they detained a caravan coming from the north because it raised concern: one of those travelling with it was said to resemble the Meruion."
    },
    "geometry": {
     "type": "Point",
@@ -204,8 +213,7 @@
     "kind": "city",
     "province": "Vaelthorn",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (Unity Bay N)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -224,8 +232,7 @@
     "kind": "city",
     "province": "Eldravane",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (Unity Bay W)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -244,8 +251,7 @@
     "kind": "city",
     "province": "Vaelthorn",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (north river)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -264,8 +270,7 @@
     "kind": "city",
     "province": "Vaelthorn",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (east coast)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -284,8 +289,7 @@
     "kind": "city",
     "province": "Orrenfall",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (south lake)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -304,8 +308,7 @@
     "kind": "city",
     "province": "Eldravane",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (west border)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -324,8 +327,7 @@
     "kind": "city",
     "province": "Orrenfall",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (southwest)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -344,8 +346,7 @@
     "kind": "city",
     "province": "Orrenfall",
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (eastern isle)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
@@ -364,14 +365,117 @@
     "kind": "city",
     "province": null,
     "minzoom": 1,
-    "description": "",
-    "note": "Name not legible on the drawing (island east of Unity Bay)"
+    "description": ""
    },
    "geometry": {
     "type": "Point",
     "coordinates": [
      0.28,
      -0.143
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-commune-of-freya",
+    "name": "The Commune",
+    "rank": "village",
+    "kind": "camp",
+    "province": "Eldravane",
+    "description": "A hidden commune of about twenty people devoted to Freya, which raised the child Dion. Now burned.",
+    "details": "About twenty people lived here, each for at least ten years. It is not a cult: the commune follows the trinity of Lunareti (god of night and sea), Celestia (the sun goddess) and Freya (the goddess of nature), and prays to Freya most because hers is the work seen most in the world.\n\nThe commune was dedicated to raising the child Dion, a half-elf and halfling child of Freya with unique features, who is to become the next Meruion when he ascends at nineteen. Everyone here helped raise him. Allister, the archdruid, was his teacher and kept the settlement safe: totems around the clearing showed anyone approaching an illusion of a rock face, and guards dissuaded anyone who looked ready to climb it. If the Meruion or the archdruid were ever interfered with, the commune was to go to the temple of Freya near the Emerald Citadel.\n\nA masked man with a white skull on his mask, leading gnolls branded with the same mark, attacked the commune. He killed Allister and Po and carried Dion away. Six villagers survived. With no one left to charge the totems the illusion faded, and the commune, now compromised, was burned by its own people and the citadel's guards.",
+    "minzoom": 2
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.276672,
+     0.05956
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-gnoll-cave",
+    "name": "Gnoll Cave",
+    "rank": "poi",
+    "kind": "cave",
+    "province": "Eldravane",
+    "description": "A gnoll den in a cave beneath a mound, where the masked man took Dion after the attack.",
+    "details": "The cave sits under a mound with a small vent hole on top, opening onto a clearing. Inside, passages climb upward, and a boulder trap sits above a lower passage. The gnolls who lived here bore the horned skull, the sign of Xezus; the masked man found them in this den and taught them about Xezus and their own power.\n\nDeeper in is a throne-like chair made of bone, where Dion's twine pendant with the symbol of Freya was found hanging. Tracks of an adult and a halfling end in front of a wall near the throne, as if they left by dimension door.",
+    "minzoom": 2
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.285606,
+     0.06259
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "farm-roslows-radishes",
+    "name": "Roslow's Radish Farm",
+    "rank": "farm",
+    "kind": "farm",
+    "province": "Eldravane",
+    "description": "A brand-new farmstead claiming to grow the best radishes, which Roslow hopes to sell to the citadel.",
+    "details": "Roslow is a rough, bearded man in a white tunic, baggy pants and muddy boots, and the only one working the farm. The house is very new, which stands out: most farms around the city have been worked for generations. He says he farmed elsewhere before this, and seems genuine. He is a fan of Gilgamutt's book and asks travellers to talk up Roslow's radishes in town.",
+    "minzoom": 2
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.212105,
+     0.137552
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "farm-jimothys-radishes",
+    "name": "Green Rock Farm",
+    "rank": "farm",
+    "kind": "farm",
+    "province": "Eldravane",
+    "description": "Jimothy's radish farm, about twenty years old, on the road where the town of Green Rock once stood. He kept the old town's name in its memory.",
+    "details": "Around the farm are the ruins of Green Rock, a town about a hundred years old that stood on the road until it was destroyed. Jimothy named the farm after it in remembrance. Jimothy, a tall, slender man with blond hair, was raised there. When the village was attacked he was taken away with other survivors, and he later came back with his friend Roslow to start the farm. He sells radishes to local towns and passing travellers, since they travel well. His cooking is almost exactly like Roslow's: the same spices and the same preparation.\n\nThe house has three rooms: one with a couple of unused beds, one well decorated but not lived in lately, and Jimothy's own. In his room is a crumpled letter to Roslow confessing his love. Side quest: Radish Me Lover.",
+    "minzoom": 2,
+    "aliases": [
+     "Jimothy's Farmstead"
+    ]
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.197325,
+     0.155448
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-grand-citadel",
+    "name": "The Grand Citadel",
+    "rank": "poi",
+    "kind": "castle",
+    "province": "Eldravane",
+    "minzoom": 3,
+    "parent": "place-emerald-citadel",
+    "description": "The citadel itself, at the top of the sheer cliffs at the tip of the peninsula. The grand temple of Freya is here.",
+    "details": "The grand temple is open to the community. In its great sanctum a tree of life is set into the floor in Freya's honour, the current Meruion sits on a throne giving blessings, and beyond the throne a glowing green crystalline female figure hangs suspended in the air. Behind the sanctum are the council room, with large windows overlooking the Cerulean Lake, the war room and the library."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.255847,
+     0.133608
     ]
    }
   }

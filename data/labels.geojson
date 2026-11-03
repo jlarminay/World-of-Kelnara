@@ -180,23 +180,6 @@
   {
    "type": "Feature",
    "properties": {
-    "id": "label-heimdall",
-    "name": "Heimdall",
-    "kind": "region",
-    "minzoom": 1,
-    "note": "Sketched in pencil off the south-west coast; no land drawn yet"
-   },
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -0.585,
-     -0.865
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "properties": {
     "id": "label-snow-capped-mountains",
     "name": "Snow Capped Mountains",
     "kind": "region",
@@ -207,6 +190,22 @@
     "coordinates": [
      -0.1478,
      0.4685
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "label-cerulean-lake",
+    "name": "Cerulean Lake",
+    "kind": "lake",
+    "minzoom": 3
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.2803,
+     0.1283
     ]
    }
   }

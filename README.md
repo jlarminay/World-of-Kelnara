@@ -22,6 +22,8 @@ The **Editor** button (top right) only exists in `npm run dev`. It edits places 
 data/                   all map content (plain JSON/GeoJSON, edit by hand, in the editor, or in geojson.io/QGIS)
   world.json            coordinate system, scale, detail levels, travel speeds  ← read this first
   places.geojson        capitals, cities, districts, farms, points of interest (Point)
+  areas.geojson         hand-drawn city areas (urban), city walls and farmland
+  planned-places.json   notes for places not on the map yet (not loaded by the app)
   settlements.json      procedural city parameters (seed, radii, arteries) per settlement
   generated/            baked procedural geometry, one file per settlement (do not edit by hand)
   land / provinces / borders / forests / mountains / ridges / lakes / rivers / roads / labels .geojson
@@ -82,7 +84,7 @@ Levels 5 and up are city scale (districts, farms, generated streets and building
   "minzoom": 0, "description": "", "history": "", "aliases": [], "tags": [], "parent": "place-id (optional)", "note": "optional" }
 ```
 **roads.geojson**: `rank` (highway | road | trail), `from`, `to` (place names), `length_km`, `minzoom`, `draft: true`, `through` (cells of forest/mountain crossed).
-**labels.geojson**: `name`, `kind` (province | water | region), `minzoom`. Labels are always drawn horizontally.
+**labels.geojson**: `name`, `kind` (province | water | lake | region), `minzoom`. Labels are always drawn horizontally.
 **provinces / land / forests / mountains / lakes / rivers**: `id`, `name` (null where the drawing doesn't name it), `kind`, plus `area_km2` or `length_km` where useful.
 
 ## Journey planner (src/routing)
@@ -92,7 +94,7 @@ Currently **disabled** (`src/features.ts`) until roads exist and `terrain.png` i
 
 - **Follow roads:** Dijkstra over the road graph (place → place edges, weight = `length_km`).
 - **Cross country:** A* over `terrain.png`. Roads are burned into the grid as cheap cells, so it mixes roads and open ground. Cost multipliers are in `world.json → travel.terrain_cost_multiplier`: plains 1, road 0.8, forest 1.7, mountains 6, river ford 2.5, sea/lake impassable.
-- Time = effective km ÷ km/day (foot 39, horse 60, cart 30). The result shows a breakdown (km on road, forest, mountains…).
+- Time = effective km ÷ km/day (foot 39, horse 60, cart 30). On foot, `world.json → travel.on_foot_km_per_day` refines this by ground: road, path, open country (shown in the map footer). Distances from a city are measured from outside its gate (`gate` on the place). The result shows a breakdown (km on road, forest, mountains…).
 
 Ideas for later: mountain passes (cheap cells cut through ranges), sea routes between ports, terrain-specific speeds per travel mode, waypoints.
 
@@ -101,7 +103,7 @@ Ideas for later: mountain passes (cheap cells cut through ranges), sea routes be
 - **There are no roads yet.** The traced draft roads were removed; `roads.geojson` is an empty collection until roads are drawn in the editor.
 - **Land, lakes and rivers were re-traced** from the drawing at 1 px (inlets, the Emerald Citadel's lake peninsula, river source ponds). All rivers connect to a lake, a pond, the sea or another river.
 - **The Emerald Citadel** sits at the tip of a peninsula in its lake and is a capital.
-- **Nine cities are "Unnamed city N"**: the drawing had dots without readable names. Each has a `note` saying where it is.
+- **Nine cities are "Unnamed city N"**: the drawing had dots without readable names. Name them in the editor.
 - **Province names** are inferred from which side of the dashed border each label sat on. The south-east lands (Caldrith, eastern peninsula) have no drawn border, so they're currently part of Orrenfall. The north-west islands belong to no province.
 - Lakes, rivers, forests and most mountain ranges are unnamed (`name: null`). Emerald Woods and the Steel Spine Mountains are named.
 - Heimdall is only a label, because the drawing shows it as a pencil sketch with no land.

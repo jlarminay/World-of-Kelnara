@@ -2,7 +2,7 @@
 import type { IconNode } from 'lucide'
 import {
   Anchor, Apple, Beer, Castle, Church, Crown, Gem, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
-  Building2, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag,
+  Building2, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
 
@@ -17,6 +17,7 @@ export const KINDS: Record<string, Category> = {
   castle: { label: 'Castle', color: '#129eaf', icon: Castle },
   landmark: { label: 'Landmark', color: '#129eaf', icon: Landmark },
   watchtower: { label: 'Watchtower', color: '#129eaf', icon: TowerControl },
+  outpost: { label: 'Outpost', color: '#129eaf', icon: Shield },
   shrine: { label: 'Shrine', color: '#8e63ce', icon: Church },
   temple: { label: 'Temple', color: '#8e63ce', icon: Church },
   mine: { label: 'Mine', color: '#8d6e63', icon: Pickaxe },
@@ -51,6 +52,7 @@ export const FEATURE_INFO: Record<string, Category> = {
   mountain_range: { label: 'Mountain range', color: '#8d6e63', icon: Mountain },
   province: { label: 'Province', color: '#5f6368', icon: Flag },
   water: { label: 'Sea', color: '#1a73e8', icon: Waves },
+  water_wall: { label: 'Wall of water', color: '#1a73e8', icon: Waves },
   region: { label: 'Region', color: '#5f6368', icon: MapPin },
 }
 

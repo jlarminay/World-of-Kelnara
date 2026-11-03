@@ -3,6 +3,9 @@ import { computed } from 'vue'
 import { Plus, Minus, Layers } from 'lucide-vue-next'
 import { mapRef, store } from '@/state/store'
 import { kmPerPixel, zoomToLevel } from '@/world/coords'
+import { world } from '@/world/data'
+
+const foot = world.travel.on_foot_km_per_day
 
 // Google-style scale bar: pick a round distance that is at most ~80 px wide.
 const scale = computed(() => {
@@ -37,6 +40,9 @@ const toggle = () => (store.baseLayer = store.baseLayer === 'map' ? 'original' :
   <!-- footer strip with scale, like Google's -->
   <div class="absolute right-0 bottom-0 z-10 flex items-center gap-3 bg-white/80 px-2 py-0.5 text-[11px] text-[#3c4043]">
     <span>Kelnara of Thera</span>
+    <span class="text-muted-foreground" title="Walking speed by ground. Distances from a city start outside its gate.">
+      On foot: road {{ foot.road }} · path {{ foot.path }} · open {{ foot.open }} km/day
+    </span>
     <span class="text-muted-foreground">z{{ store.zoom.toFixed(1) }} · level {{ zoomToLevel(store.zoom) }}</span>
     <span class="flex items-center gap-1.5">
       {{ scale.label }}
