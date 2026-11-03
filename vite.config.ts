@@ -1,6 +1,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
@@ -22,7 +23,25 @@ function geojson(): Plugin {
 export default defineConfig({
   // relative paths, so the site works from any folder (e.g. GitHub Pages' /World-of-Kelnara/)
   base: './',
-  plugins: [geojson(), vue(), tailwindcss()],
+  plugins: [
+    geojson(),
+    vue(),
+    tailwindcss(),
+    // Offline app: a service worker caches the whole site; new versions are picked up automatically
+    // (see src/components/AutoUpdate.vue). The manifest is the hand-written public/manifest.webmanifest.
+    VitePWA({
+      registerType: 'autoUpdate', // new versions take over immediately and open pages reload
+      injectRegister: false,
+      manifest: false,
+      workbox: {
+        globPatterns: ['**/*.{html,js,mjs,css,woff2,pbf,png,svg,webp,webmanifest}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        cleanupOutdatedCaches: true,
+        skipWaiting: true, // a new version takes over as soon as it is downloaded
+        clientsClaim: true, // including pages that are already open
+      },
+    }),
+  ],
   resolve: { alias: { '@': path.join(root, 'src') } },
   build: {
     chunkSizeWarningLimit: 2_000,
