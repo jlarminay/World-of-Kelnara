@@ -1,7 +1,6 @@
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
-import { viteSingleFile } from 'vite-plugin-singlefile'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
@@ -21,7 +20,22 @@ function geojson(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [geojson(), vue(), tailwindcss(), viteSingleFile()],
+  // relative paths, so the site works from any folder (e.g. GitHub Pages' /World-of-Kelnara/)
+  base: './',
+  plugins: [geojson(), vue(), tailwindcss()],
   resolve: { alias: { '@': path.join(root, 'src') } },
-  build: { chunkSizeWarningLimit: 10_000 },
+  build: {
+    chunkSizeWarningLimit: 2_000,
+    rollupOptions: {
+      output: {
+        // separate files so browsers keep the big, rarely-changing parts cached when places/lore change
+        manualChunks(id) {
+          if (id.includes('node_modules/maplibre-gl')) return 'maplibre'
+          if (id.endsWith('places.geojson')) return 'places'
+          if (id.includes('/data/')) return 'world'
+          if (id.includes('node_modules')) return 'vendor'
+        },
+      },
+    },
+  },
 })

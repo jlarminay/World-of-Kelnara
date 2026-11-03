@@ -10,7 +10,7 @@ The roadmap, open decisions and build phases are in `.claude/PLAN.md`.
 npm install
 npm run dev        # local app at http://localhost:5173
 npm run bake       # regenerate data/generated/*.json from data/settlements.json
-npm run build      # dist/index.html: one self-contained, read-only file
+npm run build      # dist/: a small static site (HTML, JS, images), read-only
 npm run preview    # serve the build (it must be served over http; file:// is blocked by Chrome)
 ```
 
@@ -37,9 +37,16 @@ src/
   components/           Google-Maps-style UI (search, side panel, details, directions, controls)
   components/ui/        shadcn-vue components
 tools/bake.ts           `npm run bake`
-vite.config.ts          .geojson loader, dev-only save/bake endpoints, single-file build
+vite.config.ts          .geojson loader, static build split into cacheable chunks
+.github/workflows/      GitHub Pages deployment
 legacy/viewer/          the original plain-JS viewer, kept for reference
 ```
+
+## Deploying (GitHub Pages)
+
+Every push to `main` builds the site and publishes it with GitHub Actions (`.github/workflows/deploy.yml`). One-time setup: in the repo's **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. The site is then at `https://jlarminay.github.io/World-of-Kelnara/`.
+
+The build is static files only (about 0.8 MB compressed on first load) and can be hosted anywhere that serves files over http(s); it does not work opened straight from disk. The map engine, the map shapes and the places are separate files, so editing a place's text only changes the small `places` file and visitors keep the rest cached. The original drawing is only downloaded when someone turns it on.
 
 ## Procedural cities and baking
 

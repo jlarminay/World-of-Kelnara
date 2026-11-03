@@ -3,11 +3,11 @@ import * as maplibregl from 'maplibre-gl'
 import { type GeoJSONSource, type LngLatBoundsLike, type MapGeoJSONFeature } from 'maplibre-gl'
 import { watch } from 'vue'
 import type { Feature, FeatureCollection, Position } from 'geojson'
-// The worker and the glyphs are inlined so the build is a single self-contained HTML file.
-import workerSource from 'maplibre-gl/dist/maplibre-gl-worker.mjs?raw'
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import glyphRegular from '@/assets/glyphs/noto-sans-regular-0-255.pbf?url'
 import glyphBold from '@/assets/glyphs/noto-sans-bold-0-255.pbf?url'
 import glyphItalic from '@/assets/glyphs/noto-sans-italic-0-255.pbf?url'
+import drawingUrl from '@/assets/kelnara-drawing.webp?url'
 import { buildStyle } from './style'
 import { buildImages } from './icons'
 import { setupMeasure } from './measure'
@@ -20,8 +20,8 @@ import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
 import { clearSelection, mapRef, placeById, selectPlace, sheetPeekPx, store } from '@/state/store'
 
-// Note: Chrome blocks workers on file:// pages, so dist/index.html must be served over http(s).
-maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([workerSource], { type: 'text/javascript' })))
+// The site must be served over http(s): browsers block workers on file:// pages.
+maplibregl.setWorkerUrl(workerUrl)
 
 const GLYPHS: Record<string, string> = {
   'Noto Sans Regular': glyphRegular,
@@ -185,8 +185,16 @@ export async function createMap(container: HTMLElement) {
   })
 
   // ---- base layer toggle ----
-  watch(() => store.baseLayer, (b) => map.setLayoutProperty('original', 'visibility', b === 'original' ? 'visible' : 'none'), { immediate: true })
-  watch(() => store.drawingOpacity, (o) => map.setPaintProperty('original', 'raster-opacity', o), { immediate: true })
+  // the original drawing is only downloaded the first time someone turns it on
+  const showDrawing = (on: boolean) => {
+    if (on && !map.getSource('original')) {
+      map.addSource('original', { type: 'image', url: drawingUrl, coordinates: [[-0.8, 1.185], [0.8, 1.185], [0.8, -1.185], [-0.8, -1.185]] })
+      map.addLayer({ id: 'original', type: 'raster', source: 'original', paint: { 'raster-fade-duration': 0, 'raster-opacity': store.drawingOpacity } }, 'borders')
+    }
+    if (map.getLayer('original')) map.setLayoutProperty('original', 'visibility', on ? 'visible' : 'none')
+  }
+  watch(() => store.baseLayer, (b) => showDrawing(b === 'original'), { immediate: true })
+  watch(() => store.drawingOpacity, (o) => map.getLayer('original') && map.setPaintProperty('original', 'raster-opacity', o))
 
   // ---- URL hash: #lng,lat,zoomz[/place-id] ----
   const writeHash = () => {

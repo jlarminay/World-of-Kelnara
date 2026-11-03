@@ -5,7 +5,6 @@ import type {
 import type { FeatureCollection } from 'geojson'
 import { layers } from '@/world/data'
 import { BASE_ZOOM } from '@/world/coords'
-import referenceUrl from '../../reference/kelnara-original-straightened.png?url'
 
 export const C = {
   sea: '#aadaff',
@@ -139,7 +138,7 @@ export function buildStyle(): StyleSpecification {
         'line-gradient': ['interpolate', ['linear'], ['line-progress'],
           0, 'rgba(255, 255, 255, 0)', 0.25, 'rgba(255, 255, 255, 0.35)', 0.75, 'rgba(255, 255, 255, 0.35)', 1, 'rgba(255, 255, 255, 0)'],
       } },
-    { id: 'original', type: 'raster', source: 'original', layout: { visibility: 'none' }, paint: { 'raster-fade-duration': 0 } },
+    // the original drawing (raster) is added here on demand by controller.ts, before 'borders'
 
     { id: 'borders', type: 'line', source: 'borders',
       paint: { 'line-color': C.border, 'line-width': ramp([z(0), 1], [z(4), 2]), 'line-dasharray': [3, 2], 'line-opacity': ramp([z(3), 1], [z(5), 0]) } },
@@ -235,7 +234,6 @@ export function buildStyle(): StyleSpecification {
       route: geo(empty),
       'city-areas': geo(empty, { maxzoom: 18, tolerance: 0.2 }),
       'city-lines': geo(empty, { maxzoom: 18, tolerance: 0.2 }),
-      original: { type: 'image', url: referenceUrl, coordinates: [[-0.8, 1.185], [0.8, 1.185], [0.8, -1.185], [-0.8, -1.185]] },
     },
     layers: L,
   }
