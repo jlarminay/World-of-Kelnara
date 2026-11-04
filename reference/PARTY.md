@@ -17,4 +17,4 @@ The players of the Kelnara campaign and their characters. These are the official
 
 ## On the map
 
-- **Golgamutt**: his house is in The Heights, Emerald Citadel (`place-golgamutts-house`), bought with the earnings from his best seller *Unique Insights on Events That Already Happened*.
+- **Golgamutt**: his house is in The Heights, Emerald Citadel (`place-golgamutts-house`), bought with the earnings from his best seller *A Unique Perspective on Things That Already Happened*.
