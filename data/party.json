@@ -1,0 +1,11 @@
+{
+ "current_location": {
+  "description": "Where the party is right now. Update this after each session. Shown as the blue dot, and offered as 'Current location' in directions.",
+  "at": [
+   -0.179535,
+   0.170121
+  ],
+  "radius_km": 15,
+  "note": "On the main road north, where we met the black-robed caravan (end of session 4)."
+ }
+}

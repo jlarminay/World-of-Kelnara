@@ -4,7 +4,8 @@ import type {
 } from 'maplibre-gl'
 import type { FeatureCollection } from 'geojson'
 import { layers } from '@/world/data'
-import { BASE_ZOOM } from '@/world/coords'
+import { BASE_ZOOM, offsetKm } from '@/world/coords'
+import { hereAt, hereRadiusKm } from '@/world/party'
 
 export const C = {
   sea: '#aadaff',
@@ -35,6 +36,7 @@ export const C = {
   wall: '#b5a58e',
   selected: '#db4437', // outline of the selected city or district, like Google's boundary highlight
   route: '#1a73e8',
+  here: '#4285f4', // the current-location dot
   routeCase: '#1557b0',
   text: '#202124',
   textMuted: '#5f6368',
@@ -61,6 +63,18 @@ const atLevel: ExpressionSpecification = ['>=', ['zoom'], ['+', BASE_ZOOM, ['coa
 const PX8 = (512 * 2 ** 8 / 360) * 0.001
 
 const empty: FeatureCollection = { type: 'FeatureCollection', features: [] }
+
+/** The party's current location: a circle as wide as the guess is rough, and the dot in its middle. */
+const here: FeatureCollection = {
+  type: 'FeatureCollection',
+  features: [
+    { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [Array.from({ length: 65 }, (_, i) => {
+      const a = (i / 64) * Math.PI * 2
+      return offsetKm(hereAt, Math.cos(a) * hereRadiusKm, Math.sin(a) * hereRadiusKm)
+    })] } },
+    { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: hereAt } },
+  ],
+}
 
 export function buildStyle(): StyleSpecification {
   const geo = (data: FeatureCollection, extra = {}) => ({ type: 'geojson' as const, data, ...extra })
@@ -179,6 +193,10 @@ export function buildStyle(): StyleSpecification {
       paint: { 'circle-radius': 6, 'circle-color': ['match', ['get', 'end'], 'to', '#ea4335', '#ffffff'],
         'circle-stroke-color': ['match', ['get', 'end'], 'to', '#b31412', '#202124'], 'circle-stroke-width': 2.5 } },
 
+    // ---- current location: pale blue circle for how rough the guess is ----
+    { id: 'here-accuracy', type: 'fill', source: 'here', filter: ['==', ['geometry-type'], 'Polygon'],
+      paint: { 'fill-color': C.here, 'fill-opacity': 0.15, 'fill-outline-color': 'rgba(66,133,244,.4)' } },
+
     // ---- labels ----
     { id: 'label-water', type: 'symbol', source: 'labels', maxzoom: z(4), filter: ['all', ['==', ['get', 'kind'], 'water'], atLevel],
       layout: { 'text-field': ['get', 'name'], 'text-font': FONT.italic, 'text-size': ramp([z(0), 13], [z(3), 18]), 'text-letter-spacing': 0.1,
@@ -235,6 +253,12 @@ export function buildStyle(): StyleSpecification {
         'text-max-width': 9, 'symbol-sort-key': ['get', '_sort'],
       },
       paint: { 'text-color': ['match', ['get', 'rank'], ['capital', 'city'], C.text, C.textMuted], 'text-halo-color': C.halo, 'text-halo-width': 2 } },
+
+    // ---- current location: blue dot with a white ring, drawn over everything like Google's ----
+    { id: 'here-shadow', type: 'circle', source: 'here', filter: ['==', ['geometry-type'], 'Point'],
+      paint: { 'circle-radius': 10, 'circle-color': '#000', 'circle-opacity': 0.25, 'circle-blur': 0.6, 'circle-translate': [0, 1] } },
+    { id: 'here-dot', type: 'circle', source: 'here', filter: ['==', ['geometry-type'], 'Point'],
+      paint: { 'circle-radius': 7, 'circle-color': C.here, 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 } },
   ]
 
   return {
@@ -245,6 +269,7 @@ export function buildStyle(): StyleSpecification {
       ...Object.fromEntries(Object.entries(layers).map(([k, v]) => [k, geo(v, { tolerance: 0.08, ...(k === 'areas' ? { lineMetrics: true } : {}) })])),
       places: geo(empty),
       route: geo(empty),
+      here: geo(here),
       'route-hover': geo(empty),
       'city-areas': geo(empty, { maxzoom: 18, tolerance: 0.2 }),
       'city-lines': geo(empty, { maxzoom: 18, tolerance: 0.2 }),

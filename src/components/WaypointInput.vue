@@ -6,6 +6,7 @@ import { MapPin } from 'lucide-vue-next'
 import { entries, search } from '@/search'
 import { waypointLabel } from '@/routing'
 import { store } from '@/state/store'
+import { HERE, HERE_LABEL, hereNote } from '@/world/party'
 import LucideIcon from './LucideIcon.vue'
 
 const model = defineModel<string>({ required: true })
@@ -17,12 +18,15 @@ const active = ref(0)
 
 const options = computed(() => {
   if (!editing.value) return []
+  const here = { key: HERE, name: HERE_LABEL, subtitle: hereNote, category: null, here: true }
   const pin = model.value.startsWith('pt:') ? [{ key: model.value, name: waypointLabel(model.value), subtitle: 'Point on the map', category: null }] : []
   // nothing typed yet: every place, A–Z (scrolls); otherwise the best matches
   const places = text.value.trim()
     ? search(text.value, 40).filter((e) => e.selection.type === 'place').slice(0, 8)
     : entries.value.filter((e) => e.selection.type === 'place').sort((a, b) => a.name.localeCompare(b.name))
-  return [...(text.value ? [] : pin), ...places]
+  // current location always comes first, unless something else is being typed
+  const showHere = !text.value.trim() || 'current location'.includes(text.value.trim().toLowerCase())
+  return [...(showHere ? [here] : []), ...(text.value ? [] : pin), ...places]
 })
 
 function focus(e: FocusEvent) {
@@ -62,7 +66,8 @@ function key(e: KeyboardEvent) {
         @mousedown.prevent="pick(o.key)" @mouseenter="active = i"
       >
         <span class="grid size-7 shrink-0 place-items-center rounded-full bg-muted" :style="{ color: o.category?.color }">
-          <LucideIcon v-if="o.category" :icon="o.category.icon" :size="14" />
+          <span v-if="'here' in o" class="size-3 rounded-full border-2 border-white bg-[#4285f4] shadow" />
+          <LucideIcon v-else-if="o.category" :icon="o.category.icon" :size="14" />
           <MapPin v-else class="size-3.5 text-[#ea4335]" />
         </span>
         <span class="min-w-0">

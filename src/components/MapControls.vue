@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Plus, Minus, Layers } from 'lucide-vue-next'
+import { Plus, Minus, Layers, LocateFixed } from 'lucide-vue-next'
 import { mapRef, store } from '@/state/store'
 import { kmPerPixel, zoomToLevel } from '@/world/coords'
 import { world } from '@/world/data'
+import { flyToHere } from '@/map/controller'
 
 const foot = world.travel.on_foot_km_per_day
 
@@ -30,6 +31,13 @@ const toggle = () => (store.baseLayer = store.baseLayer === 'map' ? 'original' :
   >
     <span class="flex items-center gap-1 rounded bg-black/45 px-1.5 py-0.5"><Layers class="size-3.5" />{{ store.baseLayer === 'map' ? 'Drawing' : 'Map' }}</span>
   </button>
+
+  <!-- current location, above the zoom buttons (bottom right on its own on phones, where zoom is hidden) -->
+  <button
+    v-show="!(store.mobile && store.panel !== 'none')"
+    class="absolute right-3 bottom-[125px] z-10 grid size-10 place-items-center rounded-lg bg-white text-muted-foreground shadow-gm hover:text-[#1a73e8] max-sm:bottom-8"
+    title="Show current location" @click="flyToHere"
+  ><LocateFixed class="size-5" /></button>
 
   <!-- zoom, bottom right -->
   <div class="absolute right-3 bottom-9 z-10 flex flex-col overflow-hidden rounded-lg bg-white shadow-gm max-sm:hidden">

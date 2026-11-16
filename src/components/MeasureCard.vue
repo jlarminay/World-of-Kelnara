@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { X } from 'lucide-vue-next'
 import { store, type Ground } from '@/state/store'
 import { pathKm, stopMeasure } from '@/map/measure'
-import { formatKm } from '@/world/coords'
+import { formatKm, formatTravel } from '@/world/coords'
 import { world } from '@/world/data'
 
 const speeds = world.travel.on_foot_km_per_day as Record<Ground, number>
@@ -15,12 +15,7 @@ const grounds: { id: Ground; label: string }[] = [
 ]
 const km = computed(() => pathKm(store.measure.points))
 const days = computed(() => km.value / speeds[store.measure.ground])
-const duration = computed(() => {
-  const d = days.value
-  if (d < 0.1) return 'under an hour or two'
-  if (d < 1) return `about ${Math.round(d * 10) / 10} of a day`
-  return `about ${d < 10 ? d.toFixed(1) : Math.round(d)} days`
-})
+const duration = computed(() => `about ${formatTravel(days.value)}`)
 </script>
 
 <template>

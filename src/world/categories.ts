@@ -1,10 +1,16 @@
 // One registry for how each kind of place looks, shared by map pins and UI.
 import type { IconNode } from 'lucide'
 import {
-  Anchor, Apple, Beer, Castle, Church, Crown, Gem, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
+  Anchor, Apple, Beer, Castle, Church, Crown, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
   Building2, CircleAlert, DoorOpen, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
+
+/** Lucide has no cave: a rocky hill with an arched opening at its foot. */
+const Cave: IconNode = [
+  ['path', { d: 'M2 20 7.5 9.5l2.5 2L13.5 5 18 12l4 8' }],
+  ['path', { d: 'M2 20h6v-2a4 4 0 0 1 8 0v2h6' }],
+]
 
 export interface Category {
   label: string
@@ -33,7 +39,7 @@ export const KINDS: Record<string, Category> = {
   port: { label: 'Port', color: '#1a73e8', icon: Anchor },
   camp: { label: 'Camp', color: '#e8710a', icon: Tent },
   ruin: { label: 'Ruin', color: '#5f6368', icon: Skull },
-  cave: { label: 'Cave', color: '#5f6368', icon: Gem },
+  cave: { label: 'Cave', color: '#5f6368', icon: Cave },
   event: { label: 'Event', color: '#d93025', icon: CircleAlert },
   default: { label: 'Point of interest', color: '#5f6368', icon: MapPin },
 }

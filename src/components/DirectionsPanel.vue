@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { store } from '@/state/store'
 import { MAX_OFF_ROAD_KM, planJourney, speedOn, waypointCoord, waypointLabel, type Ground, type Mode } from '@/routing'
 import { startMeasure } from '@/map/measure'
-import { distanceKm, formatKm } from '@/world/coords'
+import { distanceKm, formatKm, formatTravel } from '@/world/coords'
 import HorseIcon from './icons/HorseIcon.vue'
 import CartIcon from './icons/CartIcon.vue'
 import WaypointInput from './WaypointInput.vue'
@@ -34,7 +34,7 @@ function plan() {
 watch(() => [d.from, d.to, ...d.via], plan, { immediate: true })
 
 const days = (km: number, g: Ground) => km / speedOn(d.mode, g)
-const fmtDays = (n: number) => (n < 1 ? `${Math.max(1, Math.round(n * 24))} hr` : `${n.toFixed(1)} days`)
+const fmtDays = formatTravel
 /** Rows of the "how it's worked out" table: km, speed and time on each kind of ground. */
 const rows = computed(() =>
   GROUNDS.map((g) => ({ ...g, km: d.result?.breakdown?.[g.id] ?? 0 }))

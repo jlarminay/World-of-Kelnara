@@ -7,6 +7,7 @@ import type { Feature, LineString, Polygon, Position } from 'geojson'
 import { layers, world } from '@/world/data'
 import { ancestorsOf, placeById, store } from '@/state/store'
 import type { Place } from '@/world/types'
+import { HERE, HERE_LABEL, hereAt } from '@/world/party'
 import { routeOnRoads, snapToRoad, type Endpoint, type Ground } from './roads'
 export { snapToRoad }
 import terrainUrl from '../../data/terrain.png?url'
@@ -42,13 +43,14 @@ export const speedOn = (mode: Mode, ground: Ground) =>
   (KM_PER_DAY[mode] * world.travel.on_foot_km_per_day[ground]) / world.travel.on_foot_km_per_day.open
 export const MAX_OFF_ROAD_KM = world.travel.max_off_road_km
 
-// ---- waypoints: a place id, or "pt:lng,lat" for a point picked on the map ----
+// ---- waypoints: a place id, "pt:lng,lat" for a point picked on the map, or HERE for the party's current location ----
 
 export const pointWaypoint = ([lng, lat]: [number, number]) => `pt:${lng.toFixed(5)},${lat.toFixed(5)}`
 export const waypointCoord = (w: string): Position | null => parsePoint(w) ?? placeById.value.get(w)?.geometry.coordinates ?? null
-const parsePoint = (w: string): Position | null => (w.startsWith('pt:') ? w.slice(3).split(',').map(Number) : null)
+const parsePoint = (w: string): Position | null => (w === HERE ? hereAt : w.startsWith('pt:') ? w.slice(3).split(',').map(Number) : null)
 
 export function waypointLabel(w: string): string {
+  if (w === HERE) return HERE_LABEL
   const pt = parsePoint(w)
   if (pt) return `Dropped pin (${pt[1].toFixed(4)}, ${pt[0].toFixed(4)})`
   return placeById.value.get(w)?.properties.name ?? ''
@@ -70,7 +72,7 @@ const insideArea = (p: Position, place: Place) => {
 /** Where a waypoint can be left from or arrived at. `other` is the far end, so trips within a city skip its gates. */
 function endpoints(w: string, other: string, leaving: boolean): Endpoint[] | null {
   const pt = parsePoint(w)
-  if (pt) return [{ at: pt, step: leaving ? 'Head to the nearest road' : 'Leave the road for the dropped pin' }]
+  if (pt) return [{ at: pt, step: leaving ? 'Head to the nearest road' : `Leave the road for ${w === HERE ? 'your current location' : 'the dropped pin'}` }]
   const place = placeById.value.get(w)
   if (!place) return null
   const at = place.geometry.coordinates

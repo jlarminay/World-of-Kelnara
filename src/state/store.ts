@@ -3,6 +3,7 @@ import type { Map as MlMap } from 'maplibre-gl'
 import type { Place, Places, Settlement } from '@/world/types'
 import { placesData, settlementData, type LayerName } from '@/world/data'
 import type { RouteResult } from '@/routing'
+import { HERE } from '@/world/party'
 
 export type Selection = { type: 'place'; id: string } | { type: 'feature'; layer: LayerName; id: string }
 export type Panel = 'none' | 'menu' | 'results' | 'details' | 'directions'
@@ -77,12 +78,14 @@ export function selectPlace(id: string) {
   store.panel = 'details'
 }
 
-/** Opens the directions panel with one end filled in (the other end is kept if it is set). */
+/** Opens the directions panel with one end filled in (the other end is kept if it is set).
+ * Like Google, directions *to* somewhere start from the current location unless a start is already chosen. */
 export function openDirections(end: 'from' | 'to', waypoint: string) {
   const d = store.directions
   const other = end === 'from' ? 'to' : 'from'
   if (d[other] === waypoint) d[other] = ''
   d[end] = waypoint
+  if (end === 'to' && !d.from && waypoint !== HERE) d.from = HERE
   d.via = [] // stops belonged to the old route
   d.result = null
   store.contextMenu = null

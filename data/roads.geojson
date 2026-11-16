@@ -1465,7 +1465,7 @@
     "rank": "trail",
     "from": "road-north",
     "to": "Roslow's Radish Farm",
-    "length_km": 8,
+    "length_km": 1.4,
     "minzoom": 2
    },
    "geometry": {
@@ -1476,8 +1476,8 @@
       0.128424
      ],
      [
-      -0.22024,
-      0.129534
+      -0.218873,
+      0.12862
      ]
     ]
    }

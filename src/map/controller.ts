@@ -20,6 +20,7 @@ import { BASE_ZOOM, MAX_ZOOM, levelToZoom } from '@/world/coords'
 import { bboxOf } from '@/world/geo'
 import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
+import { hereAt } from '@/world/party'
 import { clearSelection, mapRef, placeById, selectPlace, sheetPeekPx, store } from '@/state/store'
 
 // The site must be served over http(s): browsers block workers on file:// pages.
@@ -274,6 +275,14 @@ export function flyToPlace(id: string) {
   const settlement = store.settlements.find((s) => s.placeId === id)
   const target = settlement ? 12.2 : levelToZoom(p.minzoom) + 1.5
   map.flyTo({ center: place.geometry.coordinates as [number, number], zoom: Math.max(map.getZoom(), target), padding: { left: panelInset().left, top: store.mobile ? 60 : 0, right: 0, bottom: panelInset().bottom }, duration: 1200 })
+}
+
+/** The "your location" button: centre on the current location, close enough to see its circle. */
+export function flyToHere() {
+  const map = mapRef.value
+  if (!map) return
+  const inset = panelInset()
+  map.flyTo({ center: hereAt, zoom: Math.max(map.getZoom(), levelToZoom(4)), padding: { left: inset.left, top: store.mobile ? 60 : 0, right: 0, bottom: inset.bottom }, duration: 1200 })
 }
 
 export function flyToFeature(layer: LayerName, id: string) {
