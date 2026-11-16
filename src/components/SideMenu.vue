@@ -8,12 +8,14 @@ import { store } from '@/state/store'
 import { startMeasure } from '@/map/measure'
 import { openCompare } from '@/map/compare'
 import { world } from '@/world/data'
+import LegalDialog from './LegalDialog.vue'
 
 const foot = world.travel.on_foot_km_per_day
 const open = ref<Record<string, boolean>>({ explore: true, tools: true, map: false, travel: false })
 const toggle = (k: string) => (open.value[k] = !open.value[k])
 
 const showIosSteps = ref(false)
+const legal = ref(false)
 async function installApp() {
   if (!(await promptInstall())) showIosSteps.value = !showIosSteps.value
 }
@@ -100,5 +102,10 @@ function compare() {
         <p class="mt-2 ml-9 text-xs">Distances from a city are measured from outside its gate.</p>
       </div>
     </section>
+
+    <footer class="border-t px-6 py-3">
+      <button class="text-xs text-muted-foreground hover:text-foreground hover:underline" @click="legal = true">Legal</button>
+    </footer>
+    <LegalDialog v-model:open="legal" />
   </div>
 </template>

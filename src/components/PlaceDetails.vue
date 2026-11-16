@@ -37,6 +37,10 @@ const coords = computed(() => place.value?.geometry.coordinates.map((c) => c.toF
 
 /** Sessions that visit the place (the trail) or name it (the notes). */
 const inSessions = computed(() => [...new Set([...sessionsVisiting(props.id), ...sessionsMentioning(props.id)])].sort((a, b) => a - b))
+/** The `when` text split so "Session N" in it becomes a link to that session. */
+const whenParts = computed(() => (p.value?.when ?? '').split(/(Session \d+)/).filter(Boolean).map((text) => ({ text, n: Number(text.match(/^Session (\d+)$/)?.[1]) || null })))
+/** When the date line already names a session, the "In session" row would only repeat it. */
+const whenNamesSession = computed(() => whenParts.value.some((x) => x.n))
 /** Characters this place matters to (data/party.json), and why. */
 const people = computed(() => membersAt(props.id).map((m) => ({ m, why: m.places.find((p) => p.id === props.id)!.why })))
 const directions = () => openDirections('to', props.id)
@@ -91,9 +95,14 @@ const share = () => navigator.clipboard?.writeText(location.href)
       <li v-if="FEATURES.detailLevel" class="flex items-center gap-6 px-6 py-3">
         <Layers class="size-5 text-primary" />Shown from zoom {{ levelToZoom(p.minzoom) }} (detail level {{ p.minzoom }})
       </li>
-      <li v-if="p.when" class="flex items-center gap-6 px-6 py-3"><CalendarDays class="size-5 shrink-0 text-primary" />{{ p.when }}</li>
+      <li v-if="p.when" class="flex items-center gap-6 px-6 py-3">
+        <CalendarDays class="size-5 shrink-0 text-primary" />
+        <span><template v-for="(x, i) in whenParts" :key="i"
+          ><button v-if="x.n" class="text-primary hover:underline" @click="selectSession(x.n)">{{ x.text }}</button
+          ><template v-else>{{ x.text }}</template></template></span>
+      </li>
       <li v-if="p.note" class="flex items-center gap-6 px-6 py-3"><Info class="size-5 text-primary" />{{ p.note }}</li>
-      <li v-if="inSessions.length" class="flex items-center gap-6 px-6 py-3">
+      <li v-if="inSessions.length && !whenNamesSession" class="flex items-center gap-6 px-6 py-3">
         <ScrollText class="size-5 shrink-0 text-primary" />
         <span>In session{{ inSessions.length > 1 ? 's' : '' }}
           <template v-for="(n, i) in inSessions" :key="n"
