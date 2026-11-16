@@ -5,8 +5,8 @@ import { placesData, settlementData, type LayerName } from '@/world/data'
 import type { RouteResult } from '@/routing'
 import { HERE } from '@/world/party'
 
-export type Selection = { type: 'place'; id: string } | { type: 'feature'; layer: LayerName; id: string }
-export type Panel = 'none' | 'menu' | 'results' | 'details' | 'directions'
+export type Selection = { type: 'place'; id: string } | { type: 'feature'; layer: LayerName; id: string } | { type: 'session'; n: number } | { type: 'member'; id: string }
+export type Panel = 'none' | 'menu' | 'results' | 'details' | 'directions' | 'sessions' | 'party'
 
 export const store = reactive({
   /** Copies of the bundled data (the city generator watches these). */
@@ -90,6 +90,18 @@ export function openDirections(end: 'from' | 'to', waypoint: string) {
   d.result = null
   store.contextMenu = null
   store.panel = 'directions'
+}
+
+/** Opens a session's page (reference/sessions/<n>.md). */
+export function selectSession(n: number) {
+  store.selection = { type: 'session', n }
+  store.panel = 'details'
+}
+
+/** Opens a character's profile (data/party.json). */
+export function selectMember(id: string) {
+  store.selection = { type: 'member', id }
+  store.panel = 'details'
 }
 
 export function clearSelection() {

@@ -13,6 +13,7 @@ import { buildImages } from './icons'
 import { setupMeasure } from './measure'
 import { setupRouteEdit } from './routeEdit'
 import { setupCompare } from './compare'
+import { setupJourney } from './journey'
 import { settlementRadiusDeg } from './procedural/city'
 import { bake, baked, bakeKey, toGeoJSON, type CityGeometry } from './procedural/bake'
 import { layers, type LayerName } from '@/world/data'
@@ -21,7 +22,7 @@ import { bboxOf } from '@/world/geo'
 import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
 import { hereAt } from '@/world/party'
-import { clearSelection, mapRef, placeById, selectPlace, sheetPeekPx, store } from '@/state/store'
+import { clearSelection, mapRef, placeById, selectMember, selectPlace, selectSession, sheetPeekPx, store } from '@/state/store'
 
 // The site must be served over http(s): browsers block workers on file:// pages.
 maplibregl.setWorkerUrl(workerUrl)
@@ -120,6 +121,7 @@ export async function createMap(container: HTMLElement) {
   setupMeasure(map)
   setupRouteEdit(map)
   setupCompare(map)
+  setupJourney(map)
   // right-click menu
   map.on('contextmenu', (e) => {
     e.preventDefault()
@@ -150,6 +152,9 @@ export async function createMap(container: HTMLElement) {
     if (map.queryRenderedFeatures(e.point, { layers: ['compare-fill'] }).length) return // handled by compare.ts
     const hit = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_PLACES })[0]
     if (hit) return selectPlace(hit.properties.id)
+    // the trail is only drawn while sessions are open (journey.ts); hidden layers never match
+    const leg = map.queryRenderedFeatures(e.point, { layers: ['journey-hit', 'journey-stops'] })[0]
+    if (leg) return selectSession(leg.properties.session)
     const area = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_FEATURES.map(([l]) => l) }).find((f) => f.properties.name)
     if (area) {
       const layer = CLICKABLE_FEATURES.find(([l]) => l === area.layer.id)![1]
@@ -223,14 +228,19 @@ export async function createMap(container: HTMLElement) {
   // ---- URL hash: #lng,lat,zoomz[/place-id] ----
   const writeHash = () => {
     const c = map.getCenter()
-    const sel = store.selection?.type === 'place' ? '/' + store.selection.id : ''
+    const s = store.selection
+    const sel = s?.type === 'place' ? '/' + s.id : s?.type === 'session' ? `/session/${s.n}` : s?.type === 'member' ? `/party/${s.id}` : ''
     history.replaceState(null, '', `#${c.lng.toFixed(5)},${c.lat.toFixed(5)},${map.getZoom().toFixed(2)}z${sel}`)
   }
   map.on('moveend', writeHash)
   watch(() => store.selection, writeHash)
   map.on('zoom', () => (store.zoom = map.getZoom()))
   store.zoom = map.getZoom()
-  if (initial?.place && placeById.value.has(initial.place)) selectPlace(initial.place)
+  const linkedSession = initial?.place?.match(/^session\/(\d+)$/)
+  const linkedMember = initial?.place?.match(/^party\/(.+)$/)
+  if (linkedSession) selectSession(Number(linkedSession[1]))
+  else if (linkedMember) selectMember(linkedMember[1])
+  else if (initial?.place && placeById.value.has(initial.place)) selectPlace(initial.place)
 
   return map
 }
@@ -263,7 +273,7 @@ export function fitCoords(coords: Position[], padding = 60, maxZoom = MAX_ZOOM -
 /** Room taken by the panel: on the left on desktop, the bottom sheet on phones. */
 const panelInset = () => {
   if (store.panel === 'none') return { left: 0, bottom: 0 }
-  return store.mobile ? { left: 0, bottom: sheetPeekPx() } : { left: 408, bottom: 0 }
+  return store.mobile ? { left: 0, bottom: sheetPeekPx() } : { left: 440, bottom: 0 }
 }
 
 export function flyToPlace(id: string) {

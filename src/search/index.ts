@@ -3,7 +3,9 @@ import { computed, type Component } from 'vue'
 import { Building2, Flag, Wheat, Landmark, Pickaxe, Trees, CircleAlert } from 'lucide-vue-next'
 import type { Feature } from 'geojson'
 import { layers, type LayerName } from '@/world/data'
-import { categoryOf, FEATURE_INFO, type Category } from '@/world/categories'
+import { categoryOf, FEATURE_INFO, MEMBER_INFO, SESSION_INFO, type Category } from '@/world/categories'
+import { members } from '@/world/party'
+import { sessions } from '@/world/sessions'
 import { store, type Selection } from '@/state/store'
 
 export interface SearchEntry {
@@ -41,7 +43,20 @@ function featureEntries(): SearchEntry[] {
   return out
 }
 
-const staticEntries = featureEntries()
+/** Sessions are searchable by their title and notes ("owlbear" finds session 3). */
+const sessionEntries: SearchEntry[] = sessions.map((s) => ({
+  key: `session:${s.n}`, name: `Session ${s.n}: ${s.title}`, aliases: [], kind: 'session', subtitle: `Session ${s.n}`,
+  summary: s.summary, text: [s.summary, ...s.party.map((m) => m.name), s.markdown].join(' '), category: SESSION_INFO, selection: { type: 'session', n: s.n },
+}))
+
+/** Characters: by name, race and class, and their story. */
+const memberEntries: SearchEntry[] = members.map((m) => ({
+  key: `member:${m.id}`, name: m.name, aliases: [], kind: 'member', subtitle: `${m.race} ${m.class} · Party member`,
+  summary: m.summary, text: [m.summary, ...m.story.map((e) => e.text)].join(' '), category: { ...MEMBER_INFO, color: m.color },
+  selection: { type: 'member', id: m.id },
+}))
+
+const staticEntries = [...memberEntries, ...featureEntries(), ...sessionEntries]
 
 export const entries = computed<SearchEntry[]>(() => [
   ...store.places.features.map((f) => {

@@ -4,7 +4,7 @@ A Google-Maps-style map of the Kelnara campaign world (Vue 3 + TypeScript + Tail
 
 The roadmap, open decisions and build phases are in [`reference/PLAN.md`](reference/PLAN.md).
 
-The players and their characters (with the official spellings of their names) are in [`reference/PARTY.md`](reference/PARTY.md), and the session notes in [`reference/sessions/`](reference/sessions/).
+The players and their characters (with the official spellings of their names) are in [`reference/players/PARTY.md`](reference/players/PARTY.md), and the session notes in [`reference/sessions/`](reference/sessions/).
 
 ## Quick start
 
@@ -31,7 +31,7 @@ data/                   all map content (plain JSON/GeoJSON, edit by hand or in 
   land / provinces / borders / forests / mountains / ridges / lakes / rivers / roads / labels .geojson
   terrain.png + .json   400x592 terrain-class grid for cross-country routing
 reference/              the original drawing (all data is aligned to kelnara-original-straightened.png),
-                        PLAN.md (roadmap), PARTY.md (the players), sessions/ (session notes)
+                        PLAN.md (roadmap), players/PARTY.md (the players), sessions/ (session notes)
 src/
   world/                data loading, types, coordinates, place categories (icons + colours)
   map/                  MapLibre style, controller, icons, procedural/ (city generator + baking)

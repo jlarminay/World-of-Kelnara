@@ -37,6 +37,8 @@ export const C = {
   selected: '#db4437', // outline of the selected city or district, like Google's boundary highlight
   route: '#1a73e8',
   here: '#4285f4', // the current-location dot
+  journeyOld: '#b39ddb', // the party's trail: oldest session …
+  journeyNew: '#5e35b1', // … to the latest, darker
   routeCase: '#1557b0',
   text: '#202124',
   textMuted: '#5f6368',
@@ -75,6 +77,8 @@ const here: FeatureCollection = {
     { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: hereAt } },
   ],
 }
+
+const journeyColor: ExpressionSpecification = ['interpolate', ['linear'], ['get', 'shade'], 0, C.journeyOld, 1, C.journeyNew]
 
 export function buildStyle(): StyleSpecification {
   const geo = (data: FeatureCollection, extra = {}) => ({ type: 'geojson' as const, data, ...extra })
@@ -175,6 +179,22 @@ export function buildStyle(): StyleSpecification {
       ]
     }),
 
+    // ---- the party's trail (src/map/journey.ts): `shade` is 0 for the first session, 1 for the latest ----
+    { id: 'journey-line', type: 'line', source: 'journey', filter: ['all', ['==', ['geometry-type'], 'LineString'], ['!', ['get', 'approx']]],
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': journeyColor, 'line-width': ramp2([z(0), 2.5], [z(6), 5], [z(10), 7]), 'line-opacity': 0.9 } },
+    { id: 'journey-approx', type: 'line', source: 'journey', filter: ['all', ['==', ['geometry-type'], 'LineString'], ['get', 'approx']],
+      layout: { 'line-join': 'round' },
+      paint: { 'line-color': journeyColor, 'line-width': ramp2([z(0), 2.5], [z(6), 4], [z(10), 6]), 'line-dasharray': [1.5, 1.5], 'line-opacity': 0.9 } },
+    // invisible, wider copy: what a click or tap hits
+    { id: 'journey-hit', type: 'line', source: 'journey', filter: ['==', ['geometry-type'], 'LineString'],
+      paint: { 'line-color': '#000', 'line-opacity': 0, 'line-width': 16 } },
+    { id: 'journey-stops', type: 'circle', source: 'journey', filter: ['==', ['geometry-type'], 'Point'],
+      paint: { 'circle-radius': ramp([z(0), 3], [z(6), 5]), 'circle-color': '#ffffff', 'circle-stroke-color': journeyColor, 'circle-stroke-width': 2 } },
+    { id: 'journey-label', type: 'symbol', source: 'journey', minzoom: z(3), filter: ['all', ['==', ['geometry-type'], 'Point'], ['!', ['has', 'place']]],
+      layout: { 'text-field': ['get', 'label'], 'text-font': FONT.italic, 'text-size': 11.5, 'text-variable-anchor': ['left', 'right', 'top'], 'text-radial-offset': 0.8 },
+      paint: { 'text-color': C.journeyNew, 'text-halo-color': C.halo, 'text-halo-width': 1.5 } },
+
     // ---- boundary of the selected city/district (place.area); the filter is set by controller.ts ----
     { id: 'area-selected', type: 'line', source: 'areas', filter: ['==', ['get', 'id'], ''], layout: { 'line-join': 'round' },
       paint: { 'line-color': C.selected, 'line-width': ramp([z(0), 1.5], [z(6), 2.5]), 'line-dasharray': [3, 1.5] } },
@@ -270,6 +290,7 @@ export function buildStyle(): StyleSpecification {
       places: geo(empty),
       route: geo(empty),
       here: geo(here),
+      journey: geo(empty),
       'route-hover': geo(empty),
       'city-areas': geo(empty, { maxzoom: 18, tolerance: 0.2 }),
       'city-lines': geo(empty, { maxzoom: 18, tolerance: 0.2 }),

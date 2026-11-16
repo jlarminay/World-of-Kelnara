@@ -2,7 +2,7 @@
 
 A Google-Maps-style map of the Kelnara D&D world. The world grows over time: a few areas get hand-written detail, and procedural generation can make the rest feel huge (sprawling cities, miles of farmland). All content is edited by hand in `data/`. The deployed site is a read-only static build on GitHub Pages that also installs as an offline app.
 
-Campaign reference: the players are in [PARTY.md](PARTY.md) and the session notes in [sessions/](sessions/).
+Campaign reference: the players are in [players/PARTY.md](players/PARTY.md) and the session notes in [sessions/](sessions/).
 
 ---
 
@@ -13,7 +13,7 @@ Campaign reference: the players are in [PARTY.md](PARTY.md) and the session note
 3. **Hand-made beats generated.** Generated geometry is backdrop: streets, blocks, fields. Anything with a name, history or game meaning is a hand-placed feature in `places.geojson` / `areas.geojson` that sits on top.
 4. **Read-only in production.** The site only shows data; nothing in it writes files.
 5. **It looks like Google Maps, light mode only.** The palette, label hierarchy, panel layout, pins, chips and controls all copy Google's conventions. When in doubt, open Google Maps and match it.
-6. **Lore matches the session notes.** Distances and travel times are tuned to what happened at the table (see §2, "Travel times"). Names use the official spellings in `PARTY.md`.
+6. **Lore matches the session notes.** Distances and travel times are tuned to what happened at the table (see §2, "Travel times"). Names use the official spellings in `players/PARTY.md`.
 
 ---
 
@@ -131,7 +131,9 @@ Removed in Nov 2026; all edits are made directly in `data/`. A future "dev overl
 
 - [ ] DM/player builds (open decision 2).
 - [ ] Fog of war: a `discovered` flag on places and areas.
-- [ ] **Party travel log**: a timeline of where the party was each session, drawn from `reference/sessions/` (commune → citadel → cave → citadel → north road).
+- [x] **Party travel log**: Menu → Sessions shows each session's notes (`reference/sessions/*.md`, rendered as Markdown, with place names linked), and, while sessions are open, the map draws the party's trail from `data/journey.json` (all of it on the list, one session on its page) (legs follow the roads; dashed where cross-country and guessed). Place pages say which sessions they appear in. URL `#…/session/3`.
+- [x] **Party profiles**: Menu → Party, one page per character (summary, player, sessions attended, story by session, places), from `data/party.json` `members`. Coloured initials with a class badge until there are portraits (`portrait`: an image in `public/party/`). Linked from session pages ("Who was there"), place pages ("Party") and search. URL `#…/party/golgamutt`.
+- [x] **Current location**: the blue dot and "Current location" in Directions (`data/party.json`).
 - [ ] Per-session "what's new" highlights.
 - [ ] Heimdall and other new lands as the world expands (widen `maxBounds` in `controller.ts`).
 - [ ] Places still to add from the notes: the Green Rock ruins next to Jimothy's farm (a `ruin` pin), and optionally the temple of Freya, the grand library and the barracks as named spots in the Emerald Citadel.
@@ -185,9 +187,17 @@ Removed in Nov 2026; all edits are made directly in `data/`. A future "dev overl
 - **minzoom** = detail level, not map zoom (zoom = 8 + level).
 - **parent** links a place to the place it is part of; it can chain (Golgamutt's House → The Heights → Emerald Citadel).
 - **area** on a place names its polygon in `areas.geojson`; **gates** list where roads cross a city's boundary.
-- **Names** use the official spellings in `reference/PARTY.md`.
+- **Names** use the official spellings in `reference/players/PARTY.md`.
 
-## 8. Commands
+## 8. After each session
+
+1. **Notes:** add `reference/sessions/<n>.md`. Start it with a header block (`title`, `summary`, `party`: the characters who were there, comma-separated; optional `date`, `when`), then `# Session <n>` and the notes. It appears under Menu → Sessions on the next build. Place names written exactly as on the map (or an alias) become links.
+2. **Trail:** add `{ "session": <n>, "stops": [...] }` to `data/journey.json`. The session starts where the last one ended; list where the party went in order, as place ids, or `{ "at": [lng, lat], "label": "…", "approx": true }` for spots with no pin (add `"cross": true` if they went cross-country, not by road). New places go in `places.geojson` first.
+3. **Dot:** move `current_location` in `data/party.json` (`at`, `radius_km`, `note`) to the trail's last stop. In dev, the console warns if they disagree.
+4. **Profiles:** add a line to each character's `story` in `data/party.json` for what they did (`{ "session": <n>, "text": "…" }`), and any new `places`. Only what the notes say, and only what is particular to that character.
+5. `npm run build` and check the session page, the trail and the profiles.
+
+## 9. Commands
 
 ```bash
 npm start          # local app (http://localhost:5173)

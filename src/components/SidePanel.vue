@@ -9,6 +9,10 @@ import PlaceDetails from './PlaceDetails.vue'
 import FeatureDetails from './FeatureDetails.vue'
 import DirectionsPanel from './DirectionsPanel.vue'
 import SideMenu from './SideMenu.vue'
+import SessionList from './SessionList.vue'
+import SessionDetails from './SessionDetails.vue'
+import PartyList from './PartyList.vue'
+import CharacterDetails from './CharacterDetails.vue'
 
 const vh = ref(appHeightPx())
 const onResize = () => (vh.value = appHeightPx())
@@ -77,8 +81,12 @@ function close() {
       <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <DirectionsPanel v-if="store.panel === 'directions'" />
         <SideMenu v-else-if="store.panel === 'menu'" />
+        <SessionList v-else-if="store.panel === 'sessions'" />
+        <PartyList v-else-if="store.panel === 'party'" />
         <template v-else-if="store.panel === 'details' && store.selection">
           <PlaceDetails v-if="store.selection.type === 'place'" :id="store.selection.id" />
+          <SessionDetails v-else-if="store.selection.type === 'session'" :n="store.selection.n" />
+          <CharacterDetails v-else-if="store.selection.type === 'member'" :id="store.selection.id" />
           <FeatureDetails v-else :layer="store.selection.layer" :id="store.selection.id" />
         </template>
         <ResultsList v-else />
@@ -91,13 +99,17 @@ function close() {
     enter-from-class="-translate-x-full" leave-to-class="-translate-x-full"
     enter-active-class="transition-transform duration-200" leave-active-class="transition-transform duration-200"
   >
-    <aside v-if="!store.mobile && store.panel !== 'none'" class="absolute inset-y-0 left-0 z-10 w-[408px] bg-white shadow-[0_0_20px_rgba(0,0,0,.2)]">
+    <aside v-if="!store.mobile && store.panel !== 'none'" class="absolute inset-y-0 left-0 z-10 w-[440px] bg-white shadow-[0_0_20px_rgba(0,0,0,.2)]">
       <ScrollArea class="h-full">
         <div :class="store.panel === 'directions' ? '' : 'pt-[72px]'">
           <DirectionsPanel v-if="store.panel === 'directions'" />
           <SideMenu v-else-if="store.panel === 'menu'" />
+          <SessionList v-else-if="store.panel === 'sessions'" />
+        <PartyList v-else-if="store.panel === 'party'" />
           <template v-else-if="store.panel === 'details' && store.selection">
             <PlaceDetails v-if="store.selection.type === 'place'" :id="store.selection.id" />
+            <SessionDetails v-else-if="store.selection.type === 'session'" :n="store.selection.n" />
+          <CharacterDetails v-else-if="store.selection.type === 'member'" :id="store.selection.id" />
             <FeatureDetails v-else :layer="store.selection.layer" :id="store.selection.id" />
           </template>
           <ResultsList v-else />

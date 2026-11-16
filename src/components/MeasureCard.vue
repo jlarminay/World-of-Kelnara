@@ -22,7 +22,7 @@ const duration = computed(() => `about ${formatTravel(days.value)}`)
   <div
     v-if="store.measure.active"
     class="absolute bottom-8 left-1/2 z-30 w-[360px] max-sm:bottom-6 max-sm:w-[calc(100vw-24px)] -translate-x-1/2 rounded-xl bg-white p-4 shadow-gm transition-[margin]"
-    :class="store.panel !== 'none' && !store.mobile ? 'ml-[204px]' : ''"
+    :class="store.panel !== 'none' && !store.mobile ? 'ml-[220px]' : ''"
   >
     <div class="flex items-start justify-between">
       <div>

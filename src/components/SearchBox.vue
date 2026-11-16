@@ -37,7 +37,7 @@ function key(e: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="w-[392px] max-sm:w-[calc(100vw-24px)] rounded-[24px] bg-white shadow-gm" :class="suggestions.length ? 'rounded-b-xl' : ''">
+  <div class="w-[424px] max-sm:w-[calc(100vw-24px)] rounded-[24px] bg-white shadow-gm" :class="suggestions.length ? 'rounded-b-xl' : ''">
     <form class="flex h-12 items-center gap-1 pr-2 pl-3" @submit.prevent="submit">
       <button type="button" class="grid size-9 place-items-center rounded-full text-muted-foreground hover:bg-black/5" title="Menu" @click="store.panel = store.panel === 'menu' ? 'none' : 'menu'">
         <Menu class="size-5" />

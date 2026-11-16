@@ -6,4 +6,6 @@ export const FEATURES = {
   placeActions: false,
   /** "Nearby" list at the bottom of the place panel. */
   nearby: false,
+  /** "Shown from zoom N (detail level N)" line in the place panel (useful while editing data). */
+  detailLevel: false,
 }

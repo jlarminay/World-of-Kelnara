@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Menu shown in the side panel (below the search bar) when the menu button is pressed.
 import { ref } from 'vue'
-import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth } from 'lucide-vue-next'
+import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth, ScrollText, UsersRound } from 'lucide-vue-next'
 import { canInstall, install, promptInstall } from '@/state/install'
 import { CHIPS } from '@/search'
 import { store } from '@/state/store'
@@ -35,6 +35,15 @@ function compare() {
 
 <template>
   <div>
+    <section class="border-b py-2">
+      <button class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="store.panel = 'sessions'">
+        <ScrollText class="size-5 text-muted-foreground" />Sessions
+      </button>
+      <button class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="store.panel = 'party'">
+        <UsersRound class="size-5 text-muted-foreground" />Party
+      </button>
+    </section>
+
     <section class="border-b py-2">
       <button class="flex w-full items-center justify-between px-6 py-2 text-sm font-medium" @click="toggle('explore')">
         Explore <ChevronDown class="size-4 text-muted-foreground transition-transform" :class="open.explore ? 'rotate-180' : ''" />

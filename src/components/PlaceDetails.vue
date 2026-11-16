@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Share2, LocateFixed, Layers, MapPin, Info, Building2, CalendarDays } from 'lucide-vue-next'
+import { Share2, LocateFixed, Layers, MapPin, Info, Building2, CalendarDays, ScrollText } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { categoryOf } from '@/world/categories'
 import { distanceKm, formatKm, levelToZoom } from '@/world/coords'
-import { ancestorsOf, childrenOf, openDirections, placeById, selectPlace, store } from '@/state/store'
+import { ancestorsOf, childrenOf, openDirections, placeById, selectMember, selectPlace, selectSession, store } from '@/state/store'
+import { sessionsMentioning } from '@/world/sessions'
+import { sessionsVisiting } from '@/world/journey'
+import { membersAt } from '@/world/party'
+import Avatar from './Avatar.vue'
 import { flyToPlace } from '@/map/controller'
 import LucideIcon from './LucideIcon.vue'
 import Hero from './Hero.vue'
@@ -31,6 +35,10 @@ const nearby = computed(() => {
 const details = computed(() => (p.value?.details ?? '').split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean))
 const coords = computed(() => place.value?.geometry.coordinates.map((c) => c.toFixed(5)).join(', '))
 
+/** Sessions that visit the place (the trail) or name it (the notes). */
+const inSessions = computed(() => [...new Set([...sessionsVisiting(props.id), ...sessionsMentioning(props.id)])].sort((a, b) => a - b))
+/** Characters this place matters to (data/party.json), and why. */
+const people = computed(() => membersAt(props.id).map((m) => ({ m, why: m.places.find((p) => p.id === props.id)!.why })))
 const directions = () => openDirections('to', props.id)
 function go(id: string) {
   selectPlace(id)
@@ -80,12 +88,21 @@ const share = () => navigator.clipboard?.writeText(location.href)
         </span>
       </li>
       <li class="flex items-center gap-6 px-6 py-3"><MapPin class="size-5 text-primary" />{{ coords }}</li>
-      <li class="flex items-center gap-6 px-6 py-3">
+      <li v-if="FEATURES.detailLevel" class="flex items-center gap-6 px-6 py-3">
         <Layers class="size-5 text-primary" />Shown from zoom {{ levelToZoom(p.minzoom) }} (detail level {{ p.minzoom }})
       </li>
       <li v-if="p.when" class="flex items-center gap-6 px-6 py-3"><CalendarDays class="size-5 shrink-0 text-primary" />{{ p.when }}</li>
       <li v-if="p.note" class="flex items-center gap-6 px-6 py-3"><Info class="size-5 text-primary" />{{ p.note }}</li>
+      <li v-if="inSessions.length" class="flex items-center gap-6 px-6 py-3">
+        <ScrollText class="size-5 shrink-0 text-primary" />
+        <span>In session{{ inSessions.length > 1 ? 's' : '' }}
+          <template v-for="(n, i) in inSessions" :key="n"
+            ><template v-if="i">, </template
+            ><button class="text-primary hover:underline" @click="selectSession(n)">{{ n }}</button></template>
+        </span>
+      </li>
     </ul>
+
 
     <template v-if="p.history">
       <Separator />
@@ -119,6 +136,23 @@ const share = () => navigator.clipboard?.writeText(location.href)
       <section class="px-6 py-4">
         <h2 class="mb-2 text-base font-medium">Details</h2>
         <p v-for="(para, i) in details" :key="i" class="mb-3 text-sm leading-6 text-muted-foreground last:mb-0">{{ para }}</p>
+      </section>
+    </template>
+
+    <template v-if="people.length">
+      <Separator />
+      <section class="py-4">
+        <h2 class="mb-1 px-6 text-base font-medium">Party</h2>
+        <button
+          v-for="x in people" :key="x.m.id"
+          class="flex w-full items-center gap-4 px-6 py-2.5 text-left hover:bg-black/[.03]" @click="selectMember(x.m.id)"
+        >
+          <Avatar :member="x.m" :size="32" />
+          <span class="min-w-0">
+            <span class="block text-sm">{{ x.m.name }}</span>
+            <span class="block text-xs text-muted-foreground">{{ x.why }}</span>
+          </span>
+        </button>
       </section>
     </template>
 

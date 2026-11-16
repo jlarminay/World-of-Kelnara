@@ -1,0 +1,34 @@
+{
+ "description": "Where the party went, session by session. Each session starts where the previous one ended. A stop is a place id, or an object: { place } or { at: [lng, lat], label }, plus optional flags: approx (a guess: drawn dashed), cross (reached cross-country: a straight line, not by road), pass (only steers the route onto a road: no dot), note (shown on the session page). Legs between stops follow the roads, like Directions. The last stop should match current_location in party.json.",
+ "sessions": [
+  {
+   "session": 1,
+   "stops": ["place-commune-of-freya"]
+  },
+  {
+   "session": 2,
+   "stops": [
+    { "at": [-0.25408, 0.1046], "pass": true, "note": "Out of the forest by the river and the lake shore (the shore trail), not the guides' shortcut." },
+    { "place": "place-grand-citadel", "note": "The temple of Freya." },
+    { "place": "place-commune-of-freya", "note": "Back with Captain Callan and the guards; the commune is burned." },
+    "place-gnoll-cave"
+   ]
+  },
+  {
+   "session": 3,
+   "stops": [
+    { "at": [-0.278, 0.0717], "label": "Owlbear camp", "approx": true, "cross": true, "note": "Following the last gnoll into the night. Where exactly is a guess." },
+    { "at": [-0.2798, 0.0699], "label": "Last gnoll caught", "approx": true, "cross": true, "note": "It was wandering, roughly towards the Scorched Lands. Where exactly is a guess." }
+   ]
+  },
+  {
+   "session": 4,
+   "stops": [
+    { "place": "place-grand-citadel", "note": "Three years pass here." },
+    "farm-roslows-radishes",
+    "farm-jimothys-radishes",
+    "event-black-robed-caravan"
+   ]
+  }
+ ]
+}

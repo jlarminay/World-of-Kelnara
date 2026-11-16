@@ -7,5 +7,466 @@
   ],
   "radius_km": 15,
   "note": "On the main road north, where we met the black-robed caravan (end of session 4)."
- }
+ },
+ "members_description": "The characters (official spellings: reference/players/PARTY.md). Each has a summary, a story (one line per thing they did, with the session it happened in) and places that matter to them (shown on the place's page too). Write only what the session notes say, and only what is particular to that character. portrait: an image in public/party/ (e.g. \"party/golgamutt.webp\"), or null for the coloured initial. Sessions list who was there in their header: 'party: Storvald, Botox, …'.",
+ "members": [
+  {
+   "id": "storvald",
+   "name": "Storvald",
+   "player": "Cam",
+   "race": "Orc",
+   "class": "Barbarian",
+   "color": "#c62828",
+   "portrait": null,
+   "summary": "An orc barbarian with a greataxe, usually first into a fight, and often on the wrong end of the party's own spells and arrows.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Tried to intimidate the captured gnoll and crit-failed: the gnoll pulled Storvald's greataxe to its own throat and slit it."
+    },
+    {
+     "session": 2,
+     "text": "Grabbed a knife and a short sword and started skinning the dead gnolls."
+    },
+    {
+     "session": 2,
+     "text": "Took an Eldritch Blast in the backside from Golgamutt at the cave mouth, then crit and cleaved the last gnoll somewhere very painful."
+    },
+    {
+     "session": 3,
+     "text": "Raging, chased a gnoll blindly into the smoke-filled cave."
+    },
+    {
+     "session": 3,
+     "text": "Took the gnoll lord's bone whip (2d4, 10 ft reach) and a bone javelin."
+    },
+    {
+     "session": 3,
+     "text": "In the owlbear fight, was shot in the backside by Olde, stayed up with Relentless Endurance, was blasted by Golgamutt again, and cleaved the owlbear with the greataxe."
+    },
+    {
+     "session": 3,
+     "text": "Snuck up on the last gnoll with Olde and grappled it."
+    },
+    {
+     "session": 4,
+     "text": "Joined the citadel guard in the barracks."
+    },
+    {
+     "session": 4,
+     "text": "At the tavern, agreed a bit with both Botox and the others, and thought the party should stay sceptical."
+    },
+    {
+     "session": 4,
+     "text": "Read Roslow with an Insight of 3, and was totally convinced."
+    },
+    {
+     "session": 4,
+     "text": "Spotted old battle stains on the caravan leader's robes, challenged the claim that they came from Olympus, and asked to inspect the caravan."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-gnoll-cave",
+     "why": "Where the bone whip came from."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Challenged the leader's story."
+    }
+   ]
+  },
+  {
+   "id": "botox",
+   "name": "Botox",
+   "player": "Paul",
+   "race": "Warforged",
+   "class": "Cleric",
+   "color": "#546e7a",
+   "portrait": null,
+   "summary": "A warforged cleric whose first act in the story was cracking Dion on the head with a shovel, and who has pushed to go after Dion ever since.",
+   "story": [
+    {
+     "session": 1,
+     "text": "Tried to pry Dion away from the masked man with a shovel, rolled a 1, and cracked Dion on the head."
+    },
+    {
+     "session": 2,
+     "text": "Tried to intimidate the captured gnoll."
+    },
+    {
+     "session": 2,
+     "text": "Politely told off the villager who was disappointed the party hadn't gone after Dion."
+    },
+    {
+     "session": 2,
+     "text": "Went, suspiciously, to pray in front of the crystal woman in the temple."
+    },
+    {
+     "session": 3,
+     "text": "Walked into the smoke-filled cave with Garth, feeling along the left wall: constructs can't see in it, but the smoke can't hurt them."
+    },
+    {
+     "session": 3,
+     "text": "Climbed to the boulder trap with Garth and crit the push, crushing one gnoll and badly hurting the gnoll lord. They bumped chests; it sounded like two pans clattering together."
+    },
+    {
+     "session": 4,
+     "text": "Objected when the high priests said to leave the search for Dion to their scouts."
+    },
+    {
+     "session": 4,
+     "text": "At the tavern, said something felt wrong and the party should be out finding Dion."
+    },
+    {
+     "session": 4,
+     "text": "DOUBLE CRIT a Nature check with Fugly: those are definitely radishes."
+    },
+    {
+     "session": 4,
+     "text": "Apologised to Jimothy for pressing about Roslow, and told him the party had met Roslow."
+    },
+    {
+     "session": 4,
+     "text": "Inspected the black-robed caravan with Storvald and Fugly."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-grand-citadel",
+     "why": "Prayed in front of the crystal woman."
+    },
+    {
+     "id": "place-gnoll-cave",
+     "why": "Pushed the boulder trap."
+    },
+    {
+     "id": "farm-jimothys-radishes",
+     "why": "Identified the radishes."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Inspected the caravan."
+    }
+   ]
+  },
+  {
+   "id": "clover",
+   "name": "Clover",
+   "player": "Josh",
+   "race": "Fairy",
+   "class": "Bard",
+   "color": "#d81b60",
+   "portrait": "party/clover.webp",
+   "summary": "A fairy bard who became the toast of the Emerald Citadel, and nearly spent her way through it.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Played \"Angel\" by Sarah McLachlan while the commune was blessed and burned."
+    },
+    {
+     "session": 2,
+     "text": "Tried to convince a gnoll that his shoes were tied together. He wasn't wearing shoes, and died thinking Clover was an idiot."
+    },
+    {
+     "session": 2,
+     "text": "Critically healed Storvald at the cave mouth."
+    },
+    {
+     "session": 4,
+     "text": "Became an entertainer in the citadel."
+    },
+    {
+     "session": 4,
+     "text": "At the tavern, told Botox to relax."
+    },
+    {
+     "session": 4,
+     "text": "Over three years became very popular, developed a bad drug problem, and blew through 86% of her gold."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-commune-of-freya",
+     "why": "Played \"Angel\" as it burned."
+    }
+   ]
+  },
+  {
+   "id": "dude",
+   "name": "Dude",
+   "player": "Kat",
+   "race": "Gnome",
+   "class": "Druid",
+   "color": "#2e7d32",
+   "portrait": null,
+   "summary": "",
+   "story": [],
+   "places": []
+  },
+  {
+   "id": "golgamutt",
+   "name": "Golgamutt",
+   "player": "Jon",
+   "race": "Orc",
+   "class": "Warlock",
+   "color": "#6a1b9a",
+   "portrait": null,
+   "summary": "An orc warlock turned best-selling author, whose Eldritch Blasts keep finding Storvald.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Blessed the commune's buildings before the party burned them."
+    },
+    {
+     "session": 2,
+     "text": "Hit Storvald in the backside with Eldritch Blast at the cave mouth."
+    },
+    {
+     "session": 3,
+     "text": "Tried to blow the smoke out of the cave with Prestidigitation, and two surprised gnolls popped out."
+    },
+    {
+     "session": 3,
+     "text": "Found pouches of gold, silver and copper buried in the gnoll beds, with Garth."
+    },
+    {
+     "session": 3,
+     "text": "Hit Storvald with Eldritch Blast again, in the owlbear fight."
+    },
+    {
+     "session": 4,
+     "text": "Assigned to the grand library, and became a researcher there."
+    },
+    {
+     "session": 4,
+     "text": "Wrote a massive best seller, A Unique Perspective on Things That Already Happened. It paid for a nice house in The Heights, which his trusted assistants watch while he travels."
+    },
+    {
+     "session": 4,
+     "text": "Recognised by Roslow and by Jimothy, who each asked him to sign their copy of the book."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-golgamutts-house",
+     "why": "Bought with the book's earnings."
+    },
+    {
+     "id": "place-grand-citadel",
+     "why": "Researcher at the grand library."
+    },
+    {
+     "id": "farm-roslows-radishes",
+     "why": "Signed Roslow's copy of the book."
+    },
+    {
+     "id": "farm-jimothys-radishes",
+     "why": "Signed Jimothy's copy of the book."
+    }
+   ]
+  },
+  {
+   "id": "olde",
+   "name": "Olde",
+   "player": "Mat",
+   "race": "High Elf",
+   "class": "Ranger",
+   "color": "#00838f",
+   "portrait": null,
+   "summary": "A high elf ranger and tracker, keen to chase Dion from the very start, and dangerous to friend and foe when woken suddenly.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Wanted to leave right away to track the masked man and find Dion."
+    },
+    {
+     "session": 2,
+     "text": "Tried to search Po's body, but there was only the head."
+    },
+    {
+     "session": 2,
+     "text": "Rolled a nat 20 sneaking up on the cave, and didn't tell anyone."
+    },
+    {
+     "session": 2,
+     "text": "Landed consecutive crits on one gnoll."
+    },
+    {
+     "session": 3,
+     "text": "Climbed on top of the cave's mound, found the vent and plugged it. Even more smoke billowed out."
+    },
+    {
+     "session": 3,
+     "text": "Put Hunter's Mark on the surviving gnoll (a retcon) and tracked it into the night."
+    },
+    {
+     "session": 3,
+     "text": "Woke groggily for the owlbear with a pipe in mouth, marked it, then shot Storvald in the backside, and then Captain Callan."
+    },
+    {
+     "session": 3,
+     "text": "Snuck up on the last gnoll with Storvald and grappled it."
+    },
+    {
+     "session": 4,
+     "text": "Became a scout for the citadel."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-gnoll-cave",
+     "why": "Plugged the vent on the mound."
+    }
+   ]
+  },
+  {
+   "id": "fugly",
+   "name": "Fugly",
+   "player": "Ben",
+   "race": "Orc (identifies as a Goblin)",
+   "class": "Ranger",
+   "color": "#ef6c00",
+   "portrait": null,
+   "summary": "An orc ranger who identifies as a goblin, with a sharp eye for danger and for lies.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Stopped the party just ahead of the clearing where three gnolls stood at the cave mouth."
+    },
+    {
+     "session": 4,
+     "text": "DOUBLE CRIT a Nature check with Botox: those are definitely radishes."
+    },
+    {
+     "session": 4,
+     "text": "Spotted old battle stains on the robes of everyone in the caravan."
+    },
+    {
+     "session": 4,
+     "text": "Saw through the caravan leader's lie, and went to inspect the caravan."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-gnoll-cave",
+     "why": "Spotted the gnolls at the entrance."
+    },
+    {
+     "id": "farm-jimothys-radishes",
+     "why": "Identified the radishes."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Saw through the leader's lie."
+    }
+   ]
+  },
+  {
+   "id": "garth",
+   "name": "Garth",
+   "player": "Nathan",
+   "race": "Autognome",
+   "class": "Wizard",
+   "color": "#5d4037",
+   "portrait": null,
+   "summary": "An autognome wizard with an eye for what others miss: the letter on Allister's body, and the note in Jimothy's room.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Searched Allister's body: very nice vestments, a holy symbol of Freya, a small ornate dagger, and the letter sending the party to the temple of Freya."
+    },
+    {
+     "session": 3,
+     "text": "Walked into the smoke-filled cave with Botox."
+    },
+    {
+     "session": 3,
+     "text": "Climbed to the boulder trap with Botox, and bumped chests after it crushed a gnoll."
+    },
+    {
+     "session": 3,
+     "text": "Found pouches of coin buried in the gnoll beds, with Golgamutt."
+    },
+    {
+     "session": 4,
+     "text": "Assigned to the grand library."
+    },
+    {
+     "session": 4,
+     "text": "Poked around Jimothy's house and found a crumpled love note to Roslow."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-commune-of-freya",
+     "why": "Found Allister's letter."
+    },
+    {
+     "id": "place-gnoll-cave",
+     "why": "Pushed the boulder trap."
+    },
+    {
+     "id": "farm-jimothys-radishes",
+     "why": "Found the note to Roslow."
+    }
+   ]
+  },
+  {
+   "id": "lunalia",
+   "name": "Lunalia",
+   "player": "Amanda",
+   "race": "Eldarin",
+   "class": "Druid",
+   "color": "#1565c0",
+   "portrait": null,
+   "summary": "An eldarin druid who came closest to saving Dion on the night he was taken.",
+   "story": [
+    {
+     "session": 1,
+     "text": "Followed the masked man and freed Dion with Thorn Whip, but maimed his leg."
+    },
+    {
+     "session": 1,
+     "text": "Was taunted by the masked man as he and five gnolls fled with Dion."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-commune-of-freya",
+     "why": "Nearly saved Dion."
+    }
+   ]
+  },
+  {
+   "id": "dorlan",
+   "name": "Dorlan",
+   "player": "Aaron",
+   "race": "Gnome",
+   "class": "Warlock",
+   "color": "#827717",
+   "portrait": null,
+   "summary": "A gnome warlock with an eye for a good deal.",
+   "story": [
+    {
+     "session": 2,
+     "text": "Tried to get the temple to send the party after Dion instead of the guards, in exchange for food and drink."
+    },
+    {
+     "session": 4,
+     "text": "Assigned to the grand library."
+    },
+    {
+     "session": 4,
+     "text": "At the tavern, told Botox to relax."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-grand-citadel",
+     "why": "Bargained with the temple."
+    }
+   ]
+  }
+ ]
 }

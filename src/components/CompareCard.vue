@@ -18,7 +18,7 @@ const fraction = (km2: number) => {
     v-if="store.compare.open"
     class="absolute left-1/2 z-30 w-[360px] max-sm:w-[calc(100vw-24px)] -translate-x-1/2 rounded-xl bg-white p-4 shadow-gm transition-[margin,bottom]"
     :class="[
-      store.panel !== 'none' && !store.mobile ? 'ml-[204px]' : '',
+      store.panel !== 'none' && !store.mobile ? 'ml-[220px]' : '',
       store.measure.active ? 'bottom-[200px]' : 'bottom-8 max-sm:bottom-6',
     ]"
   >

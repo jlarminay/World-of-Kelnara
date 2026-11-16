@@ -2,7 +2,7 @@
 import type { IconNode } from 'lucide'
 import {
   Anchor, Apple, Beer, Castle, Church, Crown, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
-  Building2, CircleAlert, DoorOpen, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
+  Building2, CircleAlert, DoorOpen, ScrollText, UsersRound, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
 
@@ -54,6 +54,12 @@ export const RANK_INFO: Record<Rank, Category> = {
   poi: KINDS.default,
   event: KINDS.event,
 }
+
+/** Session pages (reference/sessions), in search results and their header. Same purple as the party's trail. */
+export const SESSION_INFO: Category = { label: 'Session', color: '#5e35b1', icon: ScrollText }
+
+/** Characters in search results. */
+export const MEMBER_INFO: Category = { label: 'Party member', color: '#1a73e8', icon: UsersRound }
 
 export const FEATURE_INFO: Record<string, Category> = {
   lake: { label: 'Lake', color: '#1a73e8', icon: Waves },

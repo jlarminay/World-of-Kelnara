@@ -25,7 +25,7 @@ const toggle = () => (store.baseLayer = store.baseLayer === 'map' ? 'original' :
   <button
     v-show="!(store.mobile && store.panel !== 'none')"
     class="absolute bottom-6 z-10 flex size-[74px] max-sm:size-14 max-sm:bottom-8 max-sm:text-[10px] flex-col items-center justify-end overflow-hidden rounded-lg border-2 border-white bg-cover pb-1 text-xs font-medium text-white shadow-gm transition-[left]"
-    :class="store.panel === 'none' || store.mobile ? 'left-6 max-sm:left-3' : 'left-[432px]'"
+    :class="store.panel === 'none' || store.mobile ? 'left-6 max-sm:left-3' : 'left-[464px]'"
     :style="{ background: store.baseLayer === 'map' ? 'linear-gradient(160deg,#f3f2ee 30%,#cbe6c3 55%,#aadaff 75%)' : 'linear-gradient(160deg,#fff 40%,#2b4a9b 60%,#fff 70%)' }"
     @click="toggle"
   >
