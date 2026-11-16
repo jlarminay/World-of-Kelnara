@@ -22,7 +22,8 @@ import { bboxOf } from '@/world/geo'
 import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
 import { hereAt } from '@/world/party'
-import { clearSelection, mapRef, placeById, selectMember, selectPlace, selectSession, sheetPeekPx, store } from '@/state/store'
+import { clearSelection, mapRef, placeById, selectLore, selectMember, selectPlace, selectSession, sheetPeekPx, store } from '@/state/store'
+import { loreById } from '@/world/lore'
 
 // The site must be served over http(s): browsers block workers on file:// pages.
 maplibregl.setWorkerUrl(workerUrl)
@@ -229,7 +230,7 @@ export async function createMap(container: HTMLElement) {
   const writeHash = () => {
     const c = map.getCenter()
     const s = store.selection
-    const sel = s?.type === 'place' ? '/' + s.id : s?.type === 'session' ? `/session/${s.n}` : s?.type === 'member' ? `/party/${s.id}` : ''
+    const sel = s?.type === 'place' ? '/' + s.id : s?.type === 'session' ? `/session/${s.n}` : s?.type === 'member' ? `/party/${s.id}` : s?.type === 'lore' ? `/${loreById(s.id)?.kind ?? 'glossary'}/${s.id}` : ''
     history.replaceState(null, '', `#${c.lng.toFixed(5)},${c.lat.toFixed(5)},${map.getZoom().toFixed(2)}z${sel}`)
   }
   map.on('moveend', writeHash)
@@ -240,6 +241,7 @@ export async function createMap(container: HTMLElement) {
   const linkedMember = initial?.place?.match(/^party\/(.+)$/)
   if (linkedSession) selectSession(Number(linkedSession[1]))
   else if (linkedMember) selectMember(linkedMember[1])
+  else if (/^(glossary|people)\//.test(initial?.place ?? '') && loreById(initial!.place!.split('/')[1])) selectLore(initial!.place!.split('/')[1])
   else if (initial?.place && placeById.value.has(initial.place)) selectPlace(initial.place)
 
   return map

@@ -2,7 +2,7 @@
 import type { IconNode } from 'lucide'
 import {
   Anchor, Apple, Beer, Castle, Church, Crown, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
-  Building2, CircleAlert, DoorOpen, ScrollText, UsersRound, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
+  Building2, CircleAlert, DoorOpen, ScrollText, UsersRound, BookA, UserRound, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
 
@@ -60,6 +60,10 @@ export const SESSION_INFO: Category = { label: 'Session', color: '#5e35b1', icon
 
 /** Characters in search results. */
 export const MEMBER_INFO: Category = { label: 'Party member', color: '#1a73e8', icon: UsersRound }
+
+/** Glossary words and people (data/glossary.json, data/people.json). */
+export const GLOSSARY_INFO: Category = { label: 'Glossary', color: '#00897b', icon: BookA }
+export const PEOPLE_INFO: Category = { label: 'Person', color: '#e37400', icon: UserRound }
 
 export const FEATURE_INFO: Record<string, Category> = {
   lake: { label: 'Lake', color: '#1a73e8', icon: Waves },

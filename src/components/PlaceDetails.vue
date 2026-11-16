@@ -5,10 +5,11 @@ import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { categoryOf } from '@/world/categories'
 import { distanceKm, formatKm, levelToZoom } from '@/world/coords'
-import { ancestorsOf, childrenOf, openDirections, placeById, selectMember, selectPlace, selectSession, store } from '@/state/store'
+import { ancestorsOf, childrenOf, openDirections, placeById, selectLore, selectMember, selectPlace, selectSession, store } from '@/state/store'
 import { sessionsMentioning } from '@/world/sessions'
 import { sessionsVisiting } from '@/world/journey'
 import { membersAt } from '@/world/party'
+import { LORE_INFO, peopleAt } from '@/world/lore'
 import Avatar from './Avatar.vue'
 import { flyToPlace } from '@/map/controller'
 import LucideIcon from './LucideIcon.vue'
@@ -43,6 +44,8 @@ const whenParts = computed(() => (p.value?.when ?? '').split(/(Session \d+)/).fi
 const whenNamesSession = computed(() => whenParts.value.some((x) => x.n))
 /** Characters this place matters to (data/party.json), and why. */
 const people = computed(() => membersAt(props.id).map((m) => ({ m, why: m.places.find((p) => p.id === props.id)!.why })))
+/** People (data/people.json) linked to this place. */
+const npcs = computed(() => peopleAt(props.id))
 const directions = () => openDirections('to', props.id)
 function go(id: string) {
   selectPlace(id)
@@ -145,6 +148,25 @@ const share = () => navigator.clipboard?.writeText(location.href)
       <section class="px-6 py-4">
         <h2 class="mb-2 text-base font-medium">Details</h2>
         <p v-for="(para, i) in details" :key="i" class="mb-3 text-sm leading-6 text-muted-foreground last:mb-0">{{ para }}</p>
+      </section>
+    </template>
+
+    <template v-if="npcs.length">
+      <Separator />
+      <section class="py-4">
+        <h2 class="mb-1 px-6 text-base font-medium">People</h2>
+        <button
+          v-for="n in npcs" :key="n.id"
+          class="flex w-full items-center gap-4 px-6 py-2.5 text-left hover:bg-black/[.03]" @click="selectLore(n.id)"
+        >
+          <span class="grid size-8 shrink-0 place-items-center rounded-full bg-muted" :style="{ color: LORE_INFO.people.color }">
+            <LucideIcon :icon="LORE_INFO.people.icon" :size="16" />
+          </span>
+          <span class="min-w-0">
+            <span class="block text-sm">{{ n.name }}</span>
+            <span class="block text-xs text-muted-foreground">{{ n.category }}</span>
+          </span>
+        </button>
       </section>
     </template>
 

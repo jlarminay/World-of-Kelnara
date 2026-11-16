@@ -133,6 +133,7 @@ Removed in Nov 2026; all edits are made directly in `data/`. A future "dev overl
 - [ ] Fog of war: a `discovered` flag on places and areas.
 - [x] **Party travel log**: Menu → Sessions shows each session's notes (`reference/sessions/*.md`, rendered as Markdown, with place names linked), and, while sessions are open, the map draws the party's trail from `data/journey.json` (all of it on the list, one session on its page) (legs follow the roads; dashed where cross-country and guessed). Place pages say which sessions they appear in. URL `#…/session/3`.
 - [x] **Party profiles**: Menu → Party, one page per character (summary, player, sessions attended, story by session, places), from `data/party.json` `members`. Coloured initials with a class badge until there are portraits (`portrait`: an image in `public/party/`). Linked from session pages ("Who was there"), place pages ("Party") and search. URL `#…/party/golgamutt`.
+- [x] **Glossary and People**: Menu → Glossary (gods, titles, lore) and Menu → People (NPCs), from `data/glossary.json` and `data/people.json`. Each entry has its own page (text, sessions it comes up in, related entries and places); people show on their places' pages; names and aliases in the session notes link to them. URL `#…/glossary/xezus`, `#…/people/allister`.
 - [x] **Current location**: the blue dot and "Current location" in Directions (`data/party.json`).
 - [ ] Per-session "what's new" highlights.
 - [ ] Heimdall and other new lands as the world expands (widen `maxBounds` in `controller.ts`).
@@ -195,7 +196,8 @@ Removed in Nov 2026; all edits are made directly in `data/`. A future "dev overl
 2. **Trail:** add `{ "session": <n>, "stops": [...] }` to `data/journey.json`. The session starts where the last one ended; list where the party went in order, as place ids, or `{ "at": [lng, lat], "label": "…", "approx": true }` for spots with no pin (add `"cross": true` if they went cross-country, not by road). New places go in `places.geojson` first.
 3. **Dot:** move `current_location` in `data/party.json` (`at`, `radius_km`, `note`) to the trail's last stop. In dev, the console warns if they disagree.
 4. **Profiles:** add a line to each character's `story` in `data/party.json` for what they did (`{ "session": <n>, "text": "…" }`), and any new `places`. Only what the notes say, and only what is particular to that character.
-5. `npm run build` and check the session page, the trail and the profiles.
+5. **Glossary and People:** add new words to `data/glossary.json` and new characters to `data/people.json` (or extend existing entries). Add `aliases` for other spellings used in the notes (case-sensitive), so they link.
+6. `npm run build` and check the session page, the trail, the profiles and any new entries.
 
 ## 9. Commands
 

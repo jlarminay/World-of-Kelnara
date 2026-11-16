@@ -5,6 +5,7 @@ import type { Feature } from 'geojson'
 import { layers, type LayerName } from '@/world/data'
 import { categoryOf, FEATURE_INFO, MEMBER_INFO, SESSION_INFO, type Category } from '@/world/categories'
 import { members } from '@/world/party'
+import { lore, LORE_INFO } from '@/world/lore'
 import { sessions } from '@/world/sessions'
 import { store, type Selection } from '@/state/store'
 
@@ -56,7 +57,13 @@ const memberEntries: SearchEntry[] = members.map((m) => ({
   selection: { type: 'member', id: m.id },
 }))
 
-const staticEntries = [...memberEntries, ...featureEntries(), ...sessionEntries]
+/** Glossary words and people the party has met. */
+const loreEntries: SearchEntry[] = [...lore.glossary, ...lore.people].map((e) => ({
+  key: `lore:${e.id}`, name: e.name, aliases: e.aliases ?? [], kind: e.kind, subtitle: `${LORE_INFO[e.kind].label} · ${e.category}`,
+  summary: e.text, text: e.text, category: LORE_INFO[e.kind], selection: { type: 'lore', id: e.id },
+}))
+
+const staticEntries = [...memberEntries, ...loreEntries, ...featureEntries(), ...sessionEntries]
 
 export const entries = computed<SearchEntry[]>(() => [
   ...store.places.features.map((f) => {

@@ -13,6 +13,8 @@ import SessionList from './SessionList.vue'
 import SessionDetails from './SessionDetails.vue'
 import PartyList from './PartyList.vue'
 import CharacterDetails from './CharacterDetails.vue'
+import LoreList from './LoreList.vue'
+import LoreDetails from './LoreDetails.vue'
 
 const vh = ref(appHeightPx())
 const onResize = () => (vh.value = appHeightPx())
@@ -83,10 +85,12 @@ function close() {
         <SideMenu v-else-if="store.panel === 'menu'" />
         <SessionList v-else-if="store.panel === 'sessions'" />
         <PartyList v-else-if="store.panel === 'party'" />
+        <LoreList v-else-if="store.panel === 'glossary' || store.panel === 'people'" :kind="store.panel" />
         <template v-else-if="store.panel === 'details' && store.selection">
           <PlaceDetails v-if="store.selection.type === 'place'" :id="store.selection.id" />
           <SessionDetails v-else-if="store.selection.type === 'session'" :n="store.selection.n" />
           <CharacterDetails v-else-if="store.selection.type === 'member'" :id="store.selection.id" />
+          <LoreDetails v-else-if="store.selection.type === 'lore'" :id="store.selection.id" />
           <FeatureDetails v-else :layer="store.selection.layer" :id="store.selection.id" />
         </template>
         <ResultsList v-else />
@@ -106,10 +110,12 @@ function close() {
           <SideMenu v-else-if="store.panel === 'menu'" />
           <SessionList v-else-if="store.panel === 'sessions'" />
         <PartyList v-else-if="store.panel === 'party'" />
+        <LoreList v-else-if="store.panel === 'glossary' || store.panel === 'people'" :kind="store.panel" />
           <template v-else-if="store.panel === 'details' && store.selection">
             <PlaceDetails v-if="store.selection.type === 'place'" :id="store.selection.id" />
             <SessionDetails v-else-if="store.selection.type === 'session'" :n="store.selection.n" />
           <CharacterDetails v-else-if="store.selection.type === 'member'" :id="store.selection.id" />
+          <LoreDetails v-else-if="store.selection.type === 'lore'" :id="store.selection.id" />
             <FeatureDetails v-else :layer="store.selection.layer" :id="store.selection.id" />
           </template>
           <ResultsList v-else />

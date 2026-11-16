@@ -7,7 +7,7 @@ import { sessionByN, sessionHtml } from '@/world/sessions'
 import { legsOf, stopsOf } from '@/world/journey'
 import { SESSION_INFO } from '@/world/categories'
 import { formatKm, formatTravel } from '@/world/coords'
-import { selectMember, selectPlace, selectSession, store } from '@/state/store'
+import { selectLore, selectMember, selectPlace, selectSession, store } from '@/state/store'
 import { flyToPlace } from '@/map/controller'
 import { fitSession } from '@/map/journey'
 import Hero from './Hero.vue'
@@ -53,12 +53,14 @@ function openPlace(id: string) {
   selectPlace(id)
   flyToPlace(id)
 }
-/** Place names in the notes are links (sessions.ts). */
+/** Place names, glossary words and people in the notes are links (sessions.ts). */
 function click(e: MouseEvent) {
-  const a = (e.target as HTMLElement).closest('a[data-place]')
+  const a = (e.target as HTMLElement).closest('a[data-place], a[data-lore]')
   if (!a) return
   e.preventDefault()
-  openPlace(a.getAttribute('data-place')!)
+  const place = a.getAttribute('data-place')
+  if (place) openPlace(place)
+  else selectLore(a.getAttribute('data-lore')!)
 }
 </script>
 

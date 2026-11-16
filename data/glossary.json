@@ -1,0 +1,240 @@
+{
+ "description": "Words that matter in the campaign but aren't places on the map. category groups them on the Glossary page (in the order they first appear here). aliases: other spellings to find and link in the session notes (matched case-sensitively, so add lowercase forms too). see: related glossary ids, people ids or place ids. text: blank lines split paragraphs. Write only what the session notes say.",
+ "entries": [
+  {
+   "id": "freya",
+   "name": "Freya",
+   "category": "Gods and faith",
+   "text": "Goddess of nature, and one of the trinity. Her work is what people see most, so she is the one prayed to most. The commune and the Emerald Citadel are devoted to her: her holy symbol is on people and buildings all over the city, and a tree of life is set into the floor of the grand temple's sanctum in her honour.",
+   "see": [
+    "trinity",
+    "meruion",
+    "place-grand-citadel"
+   ],
+   "first": 1
+  },
+  {
+   "id": "lunareti",
+   "name": "Lunareti",
+   "category": "Gods and faith",
+   "text": "God of night and the sea, and one of the trinity.",
+   "see": [
+    "trinity"
+   ],
+   "first": 1
+  },
+  {
+   "id": "celestia",
+   "name": "Celestia",
+   "category": "Gods and faith",
+   "text": "The sun goddess, and one of the trinity.\n\nCelestia is also the name of a province in the eastern part of the northern mountains, where gold is mined.",
+   "see": [
+    "trinity"
+   ],
+   "first": 1
+  },
+  {
+   "id": "trinity",
+   "name": "The trinity",
+   "category": "Gods and faith",
+   "aliases": [
+    "trinity"
+   ],
+   "text": "The three deities the commune follows: Lunareti, Celestia and Freya. On this continent there are no divisions based on religion; conflict follows geography instead.",
+   "see": [
+    "freya",
+    "lunareti",
+    "celestia",
+    "xezus"
+   ],
+   "first": 1
+  },
+  {
+   "id": "xezus",
+   "name": "Xezus",
+   "category": "Gods and faith",
+   "text": "A deity outside the trinity. The masked man found the gnolls in their cave and taught them about Xezus and their own power, and they bore its sign, the horned skull. The high priests of the Emerald Citadel were taken aback to hear of another deity.",
+   "see": [
+    "horned-skull",
+    "masked-man",
+    "place-gnoll-cave"
+   ],
+   "first": 3
+  },
+  {
+   "id": "horned-skull",
+   "name": "The horned skull",
+   "category": "Gods and faith",
+   "aliases": [
+    "horned skull"
+   ],
+   "text": "The sign of Xezus, borne by the gnolls of the cave. \"It's our symbol,\" the last gnoll said, and it seems to include the masked man, whose mask has a white skull on it and whose gnolls bore the same brand.",
+   "see": [
+    "xezus",
+    "masked-man"
+   ],
+   "first": 3
+  },
+  {
+   "id": "meruion",
+   "name": "The Meruion",
+   "category": "Titles and roles",
+   "aliases": [
+    "Meruion",
+    "Meruions"
+   ],
+   "text": "A god's champion. Dion is Freya's next Meruion: he will ascend when he is 19. The current Meruion, a very old half-elf, sits on a throne in the grand temple giving blessings, and is meant to pass his power on to Dion.\n\nThe Meruions must go to the Scorched Lands to renew the seal on the chromatic dragons. Dion is being raised and taught to go with the other two Meruions, and because the current one is so old, he is badly needed back.\n\nThe commune is life-bound to the Meruion until he reaches ascendancy.",
+   "see": [
+    "dion",
+    "current-meruion",
+    "original-meruions",
+    "abyss"
+   ],
+   "first": 1
+  },
+  {
+   "id": "original-meruions",
+   "name": "The original Meruions",
+   "category": "Titles and roles",
+   "aliases": [
+    "original Meruions"
+   ],
+   "text": "The first champions. When the metallic dragons were losing to the chromatic dragons, the gods raised a champion in each realm. The champions took the chromatic dragons to the Scorched Lands and sealed them in the abyss, using so much magic that they crystallised.",
+   "see": [
+    "meruion",
+    "chromatic-dragons",
+    "abyss"
+   ],
+   "first": 4
+  },
+  {
+   "id": "crystal-woman",
+   "name": "The crystal woman",
+   "category": "Titles and roles",
+   "aliases": [
+    "crystal woman",
+    "CRYSTAL WOMAN",
+    "crystalline female figure"
+   ],
+   "text": "A glowing green crystalline female figure, suspended in the air beyond the Meruion's throne in the grand temple's sanctum.",
+   "see": [
+    "place-grand-citadel"
+   ],
+   "first": 2
+  },
+  {
+   "id": "archdruid",
+   "name": "Archdruid",
+   "category": "Titles and roles",
+   "aliases": [
+    "archdruid"
+   ],
+   "text": "The commune's leader, who kept it safe: totems around the clearing made anyone approaching see an illusion of a rock face and go around. The archdruid was Allister, Dion's teacher.",
+   "see": [
+    "allister",
+    "place-commune-of-freya"
+   ],
+   "first": 1
+  },
+  {
+   "id": "high-priests",
+   "name": "The high priests",
+   "category": "Titles and roles",
+   "aliases": [
+    "high priests",
+    "high priest"
+   ],
+   "text": "The leaders of the grand temple of Freya in the Emerald Citadel. They are all elven, as are most of the priests and leaders. They sent seasoned scouts to search the northern mountains, and gave the party work in the city in the meantime.",
+   "see": [
+    "place-grand-citadel"
+   ],
+   "first": 2
+  },
+  {
+   "id": "sentients",
+   "name": "Sentients",
+   "category": "History and lore",
+   "text": "What the books call every creature. The elves were the first; the dragonborn are the youngest. What prejudice exists is mostly aimed at dragonborn, because they are linked to the destructive dragons.",
+   "first": 4
+  },
+  {
+   "id": "chromatic-dragons",
+   "name": "Chromatic dragons",
+   "category": "History and lore",
+   "aliases": [
+    "chromatic dragons"
+   ],
+   "text": "The first creatures to spring from the Tree of Life. They were destructive, and were going to annihilate the world. They scorched the tree to stop it making more life, which made the Scorched Lands; no new life has come from the tree in thousands of years. The original Meruions sealed them in the abyss.",
+   "see": [
+    "metallic-dragons",
+    "giants",
+    "abyss",
+    "place-tree-of-life"
+   ],
+   "first": 4
+  },
+  {
+   "id": "metallic-dragons",
+   "name": "Metallic dragons",
+   "category": "History and lore",
+   "aliases": [
+    "metallic dragons"
+   ],
+   "text": "The last thing the Tree of Life made, to fight the chromatic dragons. They were still losing when the gods raised the original Meruions.",
+   "see": [
+    "chromatic-dragons",
+    "original-meruions"
+   ],
+   "first": 4
+  },
+  {
+   "id": "giants",
+   "name": "Giants",
+   "category": "History and lore",
+   "aliases": [
+    "giants"
+   ],
+   "text": "One of the species the Tree of Life made to slow the chromatic dragons. They are believed gone, after losing a war against the dragons.",
+   "see": [
+    "chromatic-dragons"
+   ],
+   "first": 4
+  },
+  {
+   "id": "abyss",
+   "name": "The abyss",
+   "category": "History and lore",
+   "aliases": [
+    "abyss"
+   ],
+   "text": "Where the chromatic dragons are sealed, in the Scorched Lands. The seal has to be renewed by the Meruions.",
+   "see": [
+    "chromatic-dragons",
+    "meruion"
+   ],
+   "first": 4
+  },
+  {
+   "id": "renown",
+   "name": "Renown",
+   "category": "Other",
+   "aliases": [
+    "renown"
+   ],
+   "text": "The party's standing with its faction, which grew over three years in the Emerald Citadel.\n\n1: Poor. 2: Rent an apartment. 3: Buy an apartment. 4: Buy a home.",
+   "first": 4
+  },
+  {
+   "id": "the-book",
+   "name": "A Unique Perspective on Things That Already Happened",
+   "category": "Other",
+   "text": "Golgamutt's massive best seller, written while he was a researcher at the grand library. It paid for his house in The Heights. Roslow and Jimothy both own copies, and asked him to sign them.",
+   "see": [
+    "place-golgamutts-house",
+    "roslow",
+    "jimothy"
+   ],
+   "first": 4
+  }
+ ]
+}

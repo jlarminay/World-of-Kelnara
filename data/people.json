@@ -1,0 +1,213 @@
+{
+ "description": "People the party has met (not the party themselves: see party.json). Same fields as glossary.json, plus places: place ids that matter to them (they are listed on those places' pages).",
+ "entries": [
+  {
+   "id": "dion",
+   "name": "Dion",
+   "category": "The commune",
+   "text": "A ten-year-old half-elf mixed with halfling, with unique features. A child of Freya and the next Meruion, due to ascend at 19. Not the messiah: a very naughty boy. Raised by the whole commune and taught by Allister.\n\nTaken by the masked man in the attack on the commune. His twine pendant with the symbol of Freya was found hanging from the bone throne in the gnoll cave, where his trail ended.",
+   "see": [
+    "meruion",
+    "masked-man",
+    "allister"
+   ],
+   "places": [
+    "place-commune-of-freya",
+    "place-gnoll-cave"
+   ],
+   "first": 1
+  },
+  {
+   "id": "allister",
+   "name": "Allister",
+   "category": "The commune",
+   "text": "The archdruid, and Dion's teacher. Left the commune with Po on the day of the attack, came back early with the masked man, and was killed.\n\nOn the body: very nice vestments, a holy symbol of Freya, a small, beautifully ornate dagger, and a letter: travel north to the Emerald River, follow it to the Cerulean Lake, and inform the high priest of Freya at the temple near the Emerald Citadel.",
+   "see": [
+    "archdruid",
+    "dion",
+    "po"
+   ],
+   "places": [
+    "place-commune-of-freya"
+   ],
+   "first": 1
+  },
+  {
+   "id": "po",
+   "name": "Po",
+   "category": "The commune",
+   "text": "Left the commune with Allister on the day of the attack. The masked man threw his severed head into the village.",
+   "see": [
+    "allister",
+    "masked-man"
+   ],
+   "places": [
+    "place-commune-of-freya"
+   ],
+   "first": 1
+  },
+  {
+   "id": "current-meruion",
+   "name": "The current Meruion",
+   "category": "The Emerald Citadel",
+   "aliases": [
+    "current Meruion"
+   ],
+   "text": "A very old half-elf who sits on a throne in the grand temple's sanctum, giving blessings to people lined up to receive them. Dion is to replace him when he comes of age, and he is supposed to pass on his power.",
+   "see": [
+    "meruion",
+    "dion"
+   ],
+   "places": [
+    "place-grand-citadel"
+   ],
+   "first": 2
+  },
+  {
+   "id": "callan",
+   "name": "Captain Callan",
+   "category": "The Emerald Citadel",
+   "aliases": [
+    "Callan"
+   ],
+   "text": "The captain sent with the party, with three guards, to find Dion. A badass in a fight. In the owlbear fight did big damage, was shot by Olde, and finished the owlbear off. Doubts anything will be found in the northern mountains, but led the party back to the high priests.",
+   "see": [
+    "quid",
+    "gray",
+    "sky"
+   ],
+   "first": 2
+  },
+  {
+   "id": "quid",
+   "name": "Quid",
+   "category": "The Emerald Citadel",
+   "text": "One of the three guards sent with Captain Callan.",
+   "see": [
+    "callan",
+    "gray",
+    "sky"
+   ],
+   "first": 2
+  },
+  {
+   "id": "gray",
+   "name": "Gray",
+   "category": "The Emerald Citadel",
+   "text": "One of the three guards sent with Captain Callan. Split in two by the gnoll lord's bone whip in the cave.",
+   "see": [
+    "callan",
+    "gnoll-lord"
+   ],
+   "places": [
+    "place-gnoll-cave"
+   ],
+   "first": 2
+  },
+  {
+   "id": "sky",
+   "name": "Sky",
+   "category": "The Emerald Citadel",
+   "text": "One of the three guards sent with Captain Callan.",
+   "see": [
+    "callan",
+    "quid",
+    "gray"
+   ],
+   "first": 2
+  },
+  {
+   "id": "roslow",
+   "name": "Roslow",
+   "category": "On the road",
+   "text": "A rough, bearded man in a white tunic, baggy trousers and muddy boots, working a brand-new radish farm alone and hoping to sell to the citadel. He says he farmed elsewhere before, totally convincingly. A fan of Golgamutt's book.\n\nJimothy's old friend, who farmed Green Rock with him; Jimothy won't say what happened between them.",
+   "see": [
+    "jimothy",
+    "the-book"
+   ],
+   "places": [
+    "farm-roslows-radishes",
+    "farm-jimothys-radishes"
+   ],
+   "first": 4
+  },
+  {
+   "id": "jimothy",
+   "name": "Jimothy",
+   "category": "On the road",
+   "text": "A tall, slender man with blond hair who runs Green Rock Farm. He was raised in Green Rock, taken away with some survivors after the village was attacked, and came back later to start the farm with his friend Roslow. He sells radishes to local towns and passing travellers.\n\nHis food is almost exactly like Roslow's. A crumpled note in his room says he loves Roslow.",
+   "see": [
+    "roslow",
+    "the-book"
+   ],
+   "places": [
+    "farm-jimothys-radishes"
+   ],
+   "first": 4
+  },
+  {
+   "id": "caravan-leader",
+   "name": "The caravan leader",
+   "category": "On the road",
+   "aliases": [
+    "caravan leader"
+   ],
+   "text": "The rider who stopped the black-robed caravan and greeted the party in a very friendly manner, saying they had travelled from Olympus in the north and passed through the outpost without issue. Storvald challenged this, and Fugly saw through the lie. The leader's robes bore very old battle stains.",
+   "places": [
+    "event-black-robed-caravan"
+   ],
+   "first": 4
+  },
+  {
+   "id": "masked-man",
+   "name": "The masked man",
+   "category": "Enemies",
+   "aliases": [
+    "masked man"
+   ],
+   "text": "Wears a mask with a white skull on it; his gnolls bore the same brand. Took Dion from the commune by dimension door, and got away with him.\n\nHe found the gnolls in their cave and taught them about Xezus and their own power, and taught their lord \"fire breathing\" (probably just a fire-breathing potion). Tracks by the bone throne end at a wall, as if he left with Dion by dimension door. He seems to hail from the northern mountains.",
+   "see": [
+    "xezus",
+    "horned-skull",
+    "dion",
+    "gnoll-lord"
+   ],
+   "places": [
+    "place-commune-of-freya",
+    "place-gnoll-cave"
+   ],
+   "first": 1
+  },
+  {
+   "id": "gnoll-lord",
+   "name": "The gnoll lord",
+   "category": "Enemies",
+   "aliases": [
+    "gnoll lord"
+   ],
+   "text": "Leader of the gnolls in the cave. Wielded a bone whip that split Gray in two, then another guard. Badly hurt by the boulder trap and finished off by the party. Storvald took the whip.",
+   "see": [
+    "masked-man",
+    "gray"
+   ],
+   "places": [
+    "place-gnoll-cave"
+   ],
+   "first": 3
+  },
+  {
+   "id": "last-gnoll",
+   "name": "The last gnoll",
+   "category": "Enemies",
+   "text": "Surrendered in the cave. Olde tracked it, and the party caught and questioned it: it bore the sign of Xezus, came from the northern mountains, and was heading for the Scorched Lands, where it might have kin. Killed by the party, so it couldn't spread heresy about another deity.",
+   "see": [
+    "xezus",
+    "masked-man"
+   ],
+   "places": [
+    "place-gnoll-cave"
+   ],
+   "first": 3
+  }
+ ]
+}
