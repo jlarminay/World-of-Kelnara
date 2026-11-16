@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Menu shown in the side panel (below the search bar) when the menu button is pressed.
 import { ref } from 'vue'
-import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth, ScrollText, UsersRound } from 'lucide-vue-next'
+import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth, ScrollText, UsersRound, Scale, Github } from 'lucide-vue-next'
 import { canInstall, install, promptInstall } from '@/state/install'
 import { CHIPS } from '@/search'
 import { store } from '@/state/store'
@@ -16,6 +16,7 @@ const toggle = (k: string) => (open.value[k] = !open.value[k])
 
 const showIosSteps = ref(false)
 const legal = ref(false)
+const GITHUB = 'https://github.com/jlarminay/World-of-Kelnara'
 async function installApp() {
   if (!(await promptInstall())) showIosSteps.value = !showIosSteps.value
 }
@@ -36,7 +37,8 @@ function compare() {
 </script>
 
 <template>
-  <div>
+  <!-- tall enough to fill the panel: the footer sits at its bottom when the menu is short, and after the menu (scrolling with it) when it is long -->
+  <div class="flex min-h-full flex-col sm:min-h-[calc(100dvh-72px)]">
     <section class="border-b py-2">
       <button class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="store.panel = 'sessions'">
         <ScrollText class="size-5 text-muted-foreground" />Sessions
@@ -103,8 +105,13 @@ function compare() {
       </div>
     </section>
 
-    <footer class="border-t px-6 py-3">
-      <button class="text-xs text-muted-foreground hover:text-foreground hover:underline" @click="legal = true">Legal</button>
+    <footer class="mt-auto grid grid-cols-2 gap-2 border-t bg-white px-4 py-3">
+      <button class="flex items-center justify-center gap-2 rounded-full border py-1.5 text-xs text-muted-foreground hover:bg-black/5 hover:text-foreground" @click="legal = true">
+        <Scale class="size-3.5" />Legal
+      </button>
+      <a :href="GITHUB" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 rounded-full border py-1.5 text-xs text-muted-foreground hover:bg-black/5 hover:text-foreground">
+        <Github class="size-3.5" />GitHub
+      </a>
     </footer>
     <LegalDialog v-model:open="legal" />
   </div>
