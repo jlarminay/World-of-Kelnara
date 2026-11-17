@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Desktop: a panel on the left, under the search box. Phones: a bottom sheet (like Google Maps on mobile)
 // that peeks at about half the screen; drag its handle up to expand, down to shrink or close.
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { appHeightPx, clearSelection, sheetPeekPx, store } from '@/state/store'
 import ResultsList from './ResultsList.vue'
@@ -25,8 +25,16 @@ const fullPx = computed(() => vh.value - 72) // leaves the search box visible ab
 const dragPx = ref<number | null>(null)
 const heightPx = computed(() => dragPx.value ?? (store.sheet === 'full' ? fullPx.value : sheetPeekPx()))
 
-// every newly opened panel starts at the peek height
-watch(() => [store.panel, store.selection], () => (store.sheet = 'peek'))
+// every newly opened page starts at the peek height, scrolled to the top
+const sheetBody = ref<HTMLElement | null>(null)
+const desktopAside = ref<HTMLElement | null>(null)
+watch(() => [store.panel, store.selection], async () => {
+  store.sheet = 'peek'
+  await nextTick()
+  if (sheetBody.value) sheetBody.value.scrollTop = 0
+  const viewport = desktopAside.value?.querySelector<HTMLElement>('[data-reka-scroll-area-viewport]')
+  if (viewport) viewport.scrollTop = 0
+})
 
 let startY = 0
 let startH = 0
@@ -80,7 +88,7 @@ function close() {
       >
         <span class="h-1 w-9 rounded-full bg-black/20" />
       </div>
-      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+      <div ref="sheetBody" class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <DirectionsPanel v-if="store.panel === 'directions'" />
         <SideMenu v-else-if="store.panel === 'menu'" />
         <SessionList v-else-if="store.panel === 'sessions'" />
@@ -103,7 +111,7 @@ function close() {
     enter-from-class="-translate-x-full" leave-to-class="-translate-x-full"
     enter-active-class="transition-transform duration-200" leave-active-class="transition-transform duration-200"
   >
-    <aside v-if="!store.mobile && store.panel !== 'none'" class="absolute inset-y-0 left-0 z-10 w-[440px] bg-white shadow-[0_0_20px_rgba(0,0,0,.2)]">
+    <aside v-if="!store.mobile && store.panel !== 'none'" ref="desktopAside" class="absolute inset-y-0 left-0 z-10 w-[440px] bg-white shadow-[0_0_20px_rgba(0,0,0,.2)]">
       <ScrollArea class="h-full">
         <div :class="store.panel === 'directions' ? '' : 'pt-[72px]'">
           <DirectionsPanel v-if="store.panel === 'directions'" />

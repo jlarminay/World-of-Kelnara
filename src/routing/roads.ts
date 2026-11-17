@@ -65,7 +65,8 @@ function insert(lines: Line[], pts: OnRoad[]): Line[] {
 let joined: Line[] | null = null
 function junctionLines(): Line[] {
   if (joined) return joined
-  const lines: Line[] = (layers.roads.features as Feature<LineString>[]).map((f) => ({ props: f.properties as RoadProps, coords: [...f.geometry.coordinates] }))
+  // rumored paths (rank 'rumored') are only drawn, never routed along
+  const lines: Line[] = (layers.roads.features as Feature<LineString>[]).filter((f) => f.properties?.rank in GROUND).map((f) => ({ props: f.properties as RoadProps, coords: [...f.geometry.coordinates] }))
   const splits: OnRoad[] = []
   lines.forEach((l, li) => {
     for (const end of [0, l.coords.length - 1]) {

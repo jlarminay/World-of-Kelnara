@@ -2,11 +2,11 @@
  "current_location": {
   "description": "Where the party is right now. Update this after each session. Shown as the blue dot, and offered as 'Current location' in directions.",
   "at": [
-   -0.179535,
-   0.170121
+   -0.195845,
+   0.157057
   ],
   "radius_km": 15,
-  "note": "On the main road north, where we met the black-robed caravan (end of session 4)."
+  "note": "Camped on the main road with Valron's caravan and Dion, after two days travelling south together: one more night before Green Rock Farm (end of session 5)."
  },
  "members_description": "The characters (official spellings: reference/players/PARTY.md). Each has a summary, a story (one line per thing they did, with the session it happened in) and places that matter to them (shown on the place's page too). Write only what the session notes say, and only what is particular to that character. portrait: an image in public/party/ (e.g. \"party/golgamutt.webp\"), or null for the coloured initial. Sessions list who was there in their header: 'party: Storvald, Botox, …'.",
  "members": [
@@ -50,7 +50,7 @@
     },
     {
      "session": 4,
-     "text": "Joined the citadel guard in the barracks."
+     "text": "Joined the citadel guard and lived in the barracks, where he became close friends with Curtis. Made three more friends there: Worf the dwarf, Grifter the shifter and Zelf the elf."
     },
     {
      "session": 4,
@@ -63,9 +63,21 @@
     {
      "session": 4,
      "text": "Spotted old battle stains on the caravan leader's robes, challenged the claim that they came from Olympus, and asked to inspect the caravan."
+    },
+    {
+     "session": 5,
+     "text": "Cleaved the leg off the caravan leader's horse, spilling him and two others to the ground, and told them to yield: he didn't want to kill them."
+    },
+    {
+     "session": 5,
+     "text": "Finally joined the REAL fighting, almost cut one man in two, and actually cut another in two."
     }
    ],
    "places": [
+    {
+     "id": "place-emerald-barracks",
+     "why": "Lived here with the citadel guard."
+    },
     {
      "id": "place-gnoll-cave",
      "why": "Where the bone whip came from."
@@ -129,6 +141,10 @@
     {
      "session": 4,
      "text": "Inspected the black-robed caravan with Storvald and Fugly."
+    },
+    {
+     "session": 5,
+     "text": "Heard muttering in the caravan, sensed a spell being cast, and warned everyone."
     }
    ],
    "places": [
@@ -182,13 +198,29 @@
     },
     {
      "session": 4,
-     "text": "Over three years became very popular, developed a bad drug problem, and blew through 86% of her gold."
+     "text": "Over three years became very popular, developed an addiction to moonsugar, and blew through 86% of her gold."
+    },
+    {
+     "session": 5,
+     "text": "Landed on the bolting cart, and from its roof conjured an illusory rock in front of the horses."
+    },
+    {
+     "session": 5,
+     "text": "Went into the cart, then came out and yelled at everyone to stop fighting."
+    },
+    {
+     "session": 5,
+     "text": "Told Dion she was with him while signing to the party that something was off. Her hand gestures were TERRIBLE, and Dion called her out."
     }
    ],
    "places": [
     {
      "id": "place-commune-of-freya",
      "why": "Played \"Angel\" as it burned."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Rode the cart and found Dion."
     }
    ]
   },
@@ -212,7 +244,7 @@
    "class": "Warlock",
    "color": "#6a1b9a",
    "portrait": null,
-   "summary": "An orc warlock turned best-selling author, whose Eldritch Blasts keep finding Storvald.",
+   "summary": "An orc warlock turned best-selling author, once a shipwrecked deckhand, whose Eldritch Blasts keep finding Storvald.",
    "story": [
     {
      "session": 2,
@@ -245,6 +277,10 @@
     {
      "session": 4,
      "text": "Recognised by Roslow and by Jimothy, who each asked him to sign their copy of the book."
+    },
+    {
+     "session": 5,
+     "text": "Was once a deckhand on a ship that sank in the southern sea, below Discoverer's Bay, and saw a sunken city there built in an architecture never seen before. He has researched it ever since, but no books or papers exist, and nobody seems to know anything."
     }
    ],
    "places": [
@@ -263,6 +299,10 @@
     {
      "id": "farm-jimothys-radishes",
      "why": "Signed Jimothy's copy of the book."
+    },
+    {
+     "id": "place-sunken-city",
+     "why": "Saw it when his ship sank."
     }
    ]
   },
@@ -311,18 +351,39 @@
     {
      "session": 4,
      "text": "Became a scout for the citadel."
+    },
+    {
+     "session": 5,
+     "text": "Searched the cart and saw nothing, then hit an invisible wall trying to jump on."
+    },
+    {
+     "session": 5,
+     "text": "Cast Entangle under the fleeing cart, and bonked his head like a coconut trying to hide under it."
+    },
+    {
+     "session": 5,
+     "text": "Told Valron he wouldn't leave Dion, and got it out of Dion that the cultists were told to keep an eye on the party."
+    },
+    {
+     "session": 5,
+     "text": "Used Disguise Self to look like a cultist who threatened him, and threatened him back in a mocking imitation. The cultist was shattered."
     }
    ],
    "places": [
     {
      "id": "place-gnoll-cave",
      "why": "Plugged the vent on the mound."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Debated Valron."
     }
    ]
   },
   {
    "id": "fugly",
    "name": "Fugly",
+   "surname": "Screecher",
    "player": "Ben",
    "race": "Orc (identifies as a Goblin)",
    "class": "Ranger",
@@ -345,6 +406,10 @@
     {
      "session": 4,
      "text": "Saw through the caravan leader's lie, and went to inspect the caravan."
+    },
+    {
+     "session": 5,
+     "text": "Motioned for a distraction at the caravan, then summoned his goat and attacked through it, caving in a man's face: he now has a reverse goat face."
     }
    ],
    "places": [
@@ -459,12 +524,50 @@
     {
      "session": 4,
      "text": "At the tavern, told Botox to relax."
+    },
+    {
+     "session": 5,
+     "text": "Snapped the caravan's reins with Mage Hand, and the cart took off."
     }
    ],
    "places": [
     {
      "id": "place-grand-citadel",
      "why": "Bargained with the temple."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Set the cart bolting."
+    }
+   ]
+  },
+  {
+   "id": "curtis",
+   "name": "Curtis",
+   "player": "Finn",
+   "race": "Half-elf",
+   "class": "Paladin",
+   "color": "#b8860b",
+   "portrait": null,
+   "summary": "A half-elf paladin the party met in the Emerald Citadel, and Storvald's close friend from the barracks.",
+   "story": [
+    {
+     "session": 4,
+     "text": "Met the party in the Emerald Citadel during the three years. Lived in the barracks with Storvald, and the two became close friends. Made three more friends there: Nicky the grung, Ricky the tortle and Dicky the goblin."
+    },
+    {
+     "session": 5,
+     "text": "Was run over, badly, by the bolting caravan cart."
+    }
+   ],
+   "places": [
+    {
+     "id": "place-emerald-barracks",
+     "why": "Lived here, with Storvald."
+    },
+    {
+     "id": "event-black-robed-caravan",
+     "why": "Run over by the cart."
     }
    ]
   }

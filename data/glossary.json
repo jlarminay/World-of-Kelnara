@@ -27,7 +27,7 @@
    "id": "celestia",
    "name": "Celestia",
    "category": "Gods and faith",
-   "text": "The sun goddess, and one of the trinity.\n\nCelestia is also the name of a province in the eastern part of the northern mountains, where gold is mined.",
+   "text": "The sun goddess, and one of the trinity.",
    "see": [
     "trinity"
    ],
@@ -40,12 +40,13 @@
    "aliases": [
     "trinity"
    ],
-   "text": "The three deities the commune follows: Lunareti, Celestia and Freya. On this continent there are no divisions based on religion; conflict follows geography instead.",
+   "text": "The three deities the commune follows: Lunareti, Celestia and Freya. On this continent there are no divisions based on religion; conflict follows geography instead.\n\nThe cult of Xezus says the whole trinity is false, and that there are no gods.",
    "see": [
     "freya",
     "lunareti",
     "celestia",
-    "xezus"
+    "xezus",
+    "cult-of-xezus"
    ],
    "first": 1
   },
@@ -53,13 +54,35 @@
    "id": "xezus",
    "name": "Xezus",
    "category": "Gods and faith",
-   "text": "A deity outside the trinity. The masked man found the gnolls in their cave and taught them about Xezus and their own power, and they bore its sign, the horned skull. The high priests of the Emerald Citadel were taken aback to hear of another deity.",
+   "text": "Worshipped by the gnolls of the cave and by Valron's cult. The masked man found the gnolls in their cave and taught them about Xezus and their own power, and they bore its sign, the horned skull. The high priests of the Emerald Citadel were taken aback to hear of another deity.\n\nAccording to Dion, Xezus is not a god at all: he is a massive, unknown creature as old as the dragons, not in any traditional teaching. A foundation-shaking entity of fire and earth from the era of dragons, who can share endless wisdom from his time here. Every member of the cult has met him.\n\nPast the Northern Outpost, a secret path leads north through the forest and into the mountains to reach him.",
    "see": [
+    "cult-of-xezus",
     "horned-skull",
     "masked-man",
-    "place-gnoll-cave"
+    "place-gnoll-cave",
+    "place-northern-outpost",
+    "rumored-xezus"
    ],
    "first": 3
+  },
+  {
+   "id": "cult-of-xezus",
+   "name": "The cult of Xezus",
+   "category": "Gods and faith",
+   "aliases": [
+    "cult of Xezus",
+    "cultists",
+    "cultist"
+   ],
+   "text": "Valron's followers, who travelled south with Dion in the black-robed caravan: pale, in black robes, hardened from living in the mountains. They don't seem crazy; they have all met Xezus, and are clear-headed in their beliefs.\n\nThey say the whole trinity is false and there are no gods: people were lied to, and the trinity keeps them weak and trapped. The three churches are wrong, and exiling people is a terrible crime. The dragons and the seals are real, but anybody can use magic, and with training people other than the Meruions could perform the seal. The Meruions could make a new seal with power from within, without relying on magic from the deities.\n\nThey want to spread the word by gathering the Meruions and opening their eyes to the truth of the world.",
+   "see": [
+    "xezus",
+    "masked-man",
+    "meruion",
+    "trinity",
+    "event-black-robed-caravan"
+   ],
+   "first": 5
   },
   {
    "id": "horned-skull",
@@ -83,12 +106,13 @@
     "Meruion",
     "Meruions"
    ],
-   "text": "A god's champion. Dion is Freya's next Meruion: he will ascend when he is 19. The current Meruion, a very old half-elf, sits on a throne in the grand temple giving blessings, and is meant to pass his power on to Dion.\n\nThe Meruions must go to the Scorched Lands to renew the seal on the chromatic dragons. Dion is being raised and taught to go with the other two Meruions, and because the current one is so old, he is badly needed back.\n\nThe commune is life-bound to the Meruion until he reaches ascendancy.",
+   "text": "A god's champion. Dion is Freya's next Meruion: he will ascend when he is 19. The current Meruion, a very old half-elf, sits on a throne in the grand temple giving blessings, and is meant to pass his power on to Dion.\n\nThe Meruions must go to the Scorched Lands to renew the seal on the chromatic dragons. Dion is being raised and taught to go with the other two Meruions, and because the current one is so old, he is badly needed back.\n\nThe cult of Xezus wants to gather the Meruions and open their eyes; Dion now says the Meruions should be collected and the ritual stopped. The cult believes the Meruions could make a new seal with their own power, without the deities' magic.\n\nThe commune is life-bound to the Meruion until he reaches ascendancy.",
    "see": [
     "dion",
     "current-meruion",
     "original-meruions",
-    "abyss"
+    "place-the-abyss",
+    "cult-of-xezus"
    ],
    "first": 1
   },
@@ -99,11 +123,11 @@
    "aliases": [
     "original Meruions"
    ],
-   "text": "The first champions. When the metallic dragons were losing to the chromatic dragons, the gods raised a champion in each realm. The champions took the chromatic dragons to the Scorched Lands and sealed them in the abyss, using so much magic that they crystallised.",
+   "text": "The first champions. When the metallic dragons were losing to the chromatic dragons, the gods raised a champion in each realm. The champions took the chromatic dragons to the Scorched Lands and sealed them in the abyss, the bottomless chasm in front of the Tree of Life, using so much magic that they crystallised.",
    "see": [
     "meruion",
     "chromatic-dragons",
-    "abyss"
+    "place-the-abyss"
    ],
    "first": 4
   },
@@ -151,10 +175,44 @@
    "first": 2
   },
   {
+   "id": "magic-colours",
+   "name": "Magic colours",
+   "category": "History and lore",
+   "aliases": [
+    "green and silver"
+   ],
+   "text": "Until now, the party has only seen magic cast in the colour of its goddess: Freya's magic is green and silver. Among the cult, Dion has seen magic of many colours, and now casts through himself: his Goodberry glows a beautiful red, his favourite colour.",
+   "see": [
+    "freya",
+    "dion",
+    "cult-of-xezus"
+   ],
+   "first": 5
+  },
+  {
    "id": "sentients",
    "name": "Sentients",
    "category": "History and lore",
-   "text": "What the books call every creature. The elves were the first; the dragonborn are the youngest. What prejudice exists is mostly aimed at dragonborn, because they are linked to the destructive dragons.",
+   "text": "What the books call every creature. The elves were the first; the dragonborn are the youngest.",
+   "first": 4,
+   "see": [
+    "dragonborn"
+   ]
+  },
+  {
+   "id": "dragonborn",
+   "name": "Dragonborn",
+   "category": "History and lore",
+   "aliases": [
+    "dragonborn",
+    "Draconic",
+    "draconic"
+   ],
+   "text": "The youngest of the Sentients. What racism exists in this world is mostly aimed at dragonborn, because of the history of the evil chromatic dragons.\n\nThe Draconic language is hardly spoken, and is taboo.",
+   "see": [
+    "sentients",
+    "chromatic-dragons"
+   ],
    "first": 4
   },
   {
@@ -164,12 +222,13 @@
    "aliases": [
     "chromatic dragons"
    ],
-   "text": "The first creatures to spring from the Tree of Life. They were destructive, and were going to annihilate the world. They scorched the tree to stop it making more life, which made the Scorched Lands; no new life has come from the tree in thousands of years. The original Meruions sealed them in the abyss.",
+   "text": "The first creatures to spring from the Tree of Life. They were destructive, and were going to annihilate the world. They burned the tree to a crisp and destroyed it to stop it making more life, which made the Scorched Lands; no new life has come from the tree in thousands of years. The original Meruions sealed them in the abyss, a massive bottomless chasm in front of the tree.\n\nBecause of them, what racism exists is mostly aimed at dragonborn, and Draconic is hardly spoken and taboo.",
    "see": [
     "metallic-dragons",
     "giants",
-    "abyss",
-    "place-tree-of-life"
+    "place-the-abyss",
+    "place-tree-of-life",
+    "dragonborn"
    ],
    "first": 4
   },
@@ -201,20 +260,6 @@
    "first": 4
   },
   {
-   "id": "abyss",
-   "name": "The abyss",
-   "category": "History and lore",
-   "aliases": [
-    "abyss"
-   ],
-   "text": "Where the chromatic dragons are sealed, in the Scorched Lands. The seal has to be renewed by the Meruions.",
-   "see": [
-    "chromatic-dragons",
-    "meruion"
-   ],
-   "first": 4
-  },
-  {
    "id": "renown",
    "name": "Renown",
    "category": "Other",
@@ -222,6 +267,16 @@
     "renown"
    ],
    "text": "The party's standing with its faction, which grew over three years in the Emerald Citadel.\n\n1: Poor. 2: Rent an apartment. 3: Buy an apartment. 4: Buy a home.",
+   "first": 4
+  },
+  {
+   "id": "moonsugar",
+   "name": "Moonsugar",
+   "category": "Other",
+   "aliases": [
+    "moonsugar"
+   ],
+   "text": "A drug. Clover became addicted to it during the three years in the Emerald Citadel.",
    "first": 4
   },
   {

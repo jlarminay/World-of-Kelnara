@@ -14,6 +14,8 @@ export const hereNote = loc.note
 export interface Member {
   id: string
   name: string
+  /** Family name, if known; shown after the name on the character page. */
+  surname?: string
   player: string
   race: string
   class: string

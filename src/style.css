@@ -74,7 +74,7 @@
   }
   /* Some Android versions draw an installed app under the navigation bar but report a 0 inset, which put the
      bottom buttons under the back/home buttons. There, keep at least the 3-button bar's height (48px) clear.
-     The class is set in main.ts. */
+     The class is set in main.ts, only when the page reaches the bottom of the screen (drawn under the bars). */
   .android-app #app {
     padding-bottom: max(env(safe-area-inset-bottom, 0px), 48px);
   }

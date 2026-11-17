@@ -40,7 +40,7 @@ Speeds: walking 46 km/day on roads, 33 on trails, 39 off road (the legend's "1 d
 
 | Trip | Map | Sessions |
 |---|---|---|
-| Main Gate → Northern Outpost | 649 km, 14.1 days | "2 weeks to get there" |
+| Main Gate → Northern Outpost | 651 km, 14.2 days | "2 weeks to get there" |
 | Green Rock Farm → black-robed caravan | 138 km, 3.0 days | "three days later" |
 | Main Gate → Roslow's Radish Farm | 111 km, 2.5 days | "a few days" |
 | Commune → edge of Emerald Woods (shore trail) | 231 km, 7.0 days | 7 days out of the forest, then about a day to the city |
@@ -94,7 +94,7 @@ Map zoom = 8 + detail level. The world is large (~3,977 km per degree; the conti
 - [x] Hand-placed roads; Directions turned back on (road-only).
 - [ ] **Schema + validation.** Zod schemas for every file plus `npm run validate`: ids unique, `parent` and `area` exist, gate `road`s exist, `minzoom` in range, points on land, kinds known. Run it in CI.
 - [ ] **Tests** (vitest): routing (the calibrated trips in §2 stay within ±0.2 days), and bake determinism (bake each settlement in memory and compare with `data/generated/*.json`).
-- [ ] Fix the nine "Unnamed city N" entries (names, ranks).
+- [ ] Fix the seven remaining "Unnamed city N" entries (names, ranks). Cities 1 and 2 are now Dollingr Port and Unity Port.
 - [ ] Regenerate `data/terrain.png` from the re-traced land/lakes/forests/mountains, if a cross-country mode is wanted again (`routeTerrain` is kept but unused).
 - [ ] Optional: `schemaVersion` per file with a small migration runner; rename `minzoom` to `level`.
 
@@ -137,7 +137,7 @@ Removed in Nov 2026; all edits are made directly in `data/`. A future "dev overl
 - [x] **Current location**: the blue dot and "Current location" in Directions (`data/party.json`).
 - [ ] Per-session "what's new" highlights.
 - [ ] Heimdall and other new lands as the world expands (widen `maxBounds` in `controller.ts`).
-- [ ] Places still to add from the notes: the Green Rock ruins next to Jimothy's farm (a `ruin` pin), and optionally the temple of Freya, the grand library and the barracks as named spots in the Emerald Citadel.
+- [ ] Places still to add from the notes: the Green Rock ruins next to Jimothy's farm (a `ruin` pin), and optionally the temple of Freya and the grand library as named spots in the Emerald Citadel.
 
 ### Phase 6: Deploy
 

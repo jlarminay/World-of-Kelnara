@@ -1,13 +1,15 @@
 <script setup lang="ts">
 // One session: where the party went (the trail's stops and legs) and the full notes.
 import { computed, nextTick, ref, watch } from 'vue'
+import LinkedText from './LinkedText.vue'
+import { onLinkClick } from './open'
 import { ArrowLeft, ChevronLeft, ChevronRight, CalendarDays, Hourglass } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { sessionByN, sessionHtml } from '@/world/sessions'
 import { legsOf, stopsOf } from '@/world/journey'
 import { SESSION_INFO } from '@/world/categories'
 import { formatKm, formatTravel } from '@/world/coords'
-import { selectLore, selectMember, selectPlace, selectSession, store } from '@/state/store'
+import { selectMember, selectPlace, selectSession, store } from '@/state/store'
 import { flyToPlace } from '@/map/controller'
 import { fitSession } from '@/map/journey'
 import Hero from './Hero.vue'
@@ -53,15 +55,6 @@ function openPlace(id: string) {
   selectPlace(id)
   flyToPlace(id)
 }
-/** Place names, glossary words and people in the notes are links (sessions.ts). */
-function click(e: MouseEvent) {
-  const a = (e.target as HTMLElement).closest('a[data-place], a[data-lore]')
-  if (!a) return
-  e.preventDefault()
-  const place = a.getAttribute('data-place')
-  if (place) openPlace(place)
-  else selectLore(a.getAttribute('data-lore')!)
-}
 </script>
 
 <template>
@@ -73,7 +66,7 @@ function click(e: MouseEvent) {
       </button>
       <p class="text-sm text-muted-foreground">Session {{ s.n }}</p>
       <h1 class="text-[22px] leading-7">{{ s.title }}</h1>
-      <p v-if="s.summary" class="mt-1 text-sm text-muted-foreground">{{ s.summary }}</p>
+      <p v-if="s.summary" class="mt-1 text-sm text-muted-foreground"><LinkedText :text="s.summary" /></p>
       <p v-if="s.date" class="mt-2 flex items-center gap-2 text-sm"><CalendarDays class="size-4 text-primary" />{{ s.date }}</p>
       <p v-if="s.when" class="mt-1 flex items-center gap-2 text-sm"><Hourglass class="size-4 text-primary" />{{ s.when }}</p>
       <nav v-if="prev || next" class="-mx-2 mt-2 flex justify-between gap-2 text-sm">
@@ -117,7 +110,7 @@ function click(e: MouseEvent) {
               </p>
               <button v-if="r.place" class="text-left text-sm font-medium hover:underline" @click="openPlace(r.place)">{{ r.name }}</button>
               <p v-else class="text-sm font-medium">{{ r.name }}<span v-if="r.approx" class="font-normal text-muted-foreground"> (rough location)</span></p>
-              <p v-if="r.note" class="text-sm text-muted-foreground">{{ r.note }}</p>
+              <p v-if="r.note" class="text-sm text-muted-foreground"><LinkedText :text="r.note" /></p>
             </div>
           </li>
         </ol>
@@ -126,7 +119,7 @@ function click(e: MouseEvent) {
 
     <Separator />
     <!-- eslint-disable-next-line vue/no-v-html: our own notes, rendered with raw HTML switched off -->
-    <article class="session-notes px-6 py-4 text-sm leading-6" @click="click" v-html="html" />
+    <article class="session-notes px-6 py-4 text-sm leading-6" @click="onLinkClick" v-html="html" />
 
     <Separator />
     <nav class="flex justify-between gap-2 px-4 py-3 text-sm">

@@ -29,7 +29,7 @@ const info = computed(() => LORE_INFO[props.kind])
         </span>
         <span class="min-w-0 flex-1">
           <span class="block text-sm font-medium">{{ e.name }}</span>
-          <span class="line-clamp-2 block text-xs leading-5 text-muted-foreground">{{ e.text }}</span>
+          <span class="line-clamp-3 text-xs leading-5 text-muted-foreground">{{ e.text }}</span>
         </span>
       </button>
     </section>

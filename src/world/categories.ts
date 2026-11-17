@@ -2,7 +2,7 @@
 import type { IconNode } from 'lucide'
 import {
   Anchor, Apple, Beer, Castle, Church, Crown, House, Landmark, MapPin, Mountain, Pickaxe, Skull,
-  Building2, CircleAlert, DoorOpen, ScrollText, UsersRound, BookA, UserRound, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield,
+  Building2, CircleAlert, DoorOpen, ScrollText, UsersRound, BookA, UserRound, TowerControl, TreeDeciduous, Warehouse, Wheat, Tent, Waves, Trees, Flag, Shield, Swords, CircleQuestionMark,
 } from 'lucide'
 import type { PlaceProps, Rank } from './types'
 
@@ -10,6 +10,12 @@ import type { PlaceProps, Rank } from './types'
 const Cave: IconNode = [
   ['path', { d: 'M2 20 7.5 9.5l2.5 2L13.5 5 18 12l4 8' }],
   ['path', { d: 'M2 20h6v-2a4 4 0 0 1 8 0v2h6' }],
+]
+
+/** Lucide has no chasm: two cliff edges with a deep gap between them. */
+const Chasm: IconNode = [
+  ['path', { d: 'M2 8h7l1 4-1 3 1 5' }],
+  ['path', { d: 'M22 8h-7l-1 4 1 3-1 5' }],
 ]
 
 export interface Category {
@@ -25,6 +31,7 @@ export const KINDS: Record<string, Category> = {
   watchtower: { label: 'Watchtower', color: '#129eaf', icon: TowerControl },
   gate: { label: 'Gate', color: '#129eaf', icon: DoorOpen },
   outpost: { label: 'Outpost', color: '#129eaf', icon: Shield },
+  barracks: { label: 'Barracks', color: '#129eaf', icon: Swords },
   shrine: { label: 'Shrine', color: '#8e63ce', icon: Church },
   temple: { label: 'Temple', color: '#8e63ce', icon: Church },
   mine: { label: 'Mine', color: '#8d6e63', icon: Pickaxe },
@@ -40,7 +47,9 @@ export const KINDS: Record<string, Category> = {
   camp: { label: 'Camp', color: '#e8710a', icon: Tent },
   ruin: { label: 'Ruin', color: '#5f6368', icon: Skull },
   cave: { label: 'Cave', color: '#5f6368', icon: Cave },
+  chasm: { label: 'Chasm', color: '#5f6368', icon: Chasm },
   event: { label: 'Event', color: '#d93025', icon: CircleAlert },
+  rumored: { label: 'Rumored location', color: '#e8710a', icon: CircleQuestionMark },
   default: { label: 'Point of interest', color: '#5f6368', icon: MapPin },
 }
 

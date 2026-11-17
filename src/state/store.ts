@@ -110,6 +110,12 @@ export function selectLore(id: string) {
   store.panel = 'details'
 }
 
+/** Opens a named map feature (a lake, forest, province, …). */
+export function selectFeature(layer: LayerName, id: string) {
+  store.selection = { type: 'feature', layer, id }
+  store.panel = 'details'
+}
+
 export function clearSelection() {
   store.selection = null
   if (store.panel === 'details') store.panel = store.query ? 'results' : 'none'

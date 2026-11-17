@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // One Glossary or People entry: its text, related entries and places, and the sessions that mention it.
 import { computed } from 'vue'
+import LinkedText from './LinkedText.vue'
 import { ArrowLeft, ScrollText } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { LORE_INFO, LORE_TITLE, loreById } from '@/world/lore'
@@ -46,7 +47,7 @@ const see = computed(() => (e.value?.see ?? []).filter((id) => !e.value?.places?
     <Separator />
 
     <section class="px-6 py-4">
-      <p v-for="(para, i) in paragraphs" :key="i" class="mb-3 text-sm leading-6 last:mb-0">{{ para }}</p>
+      <p v-for="(para, i) in paragraphs" :key="i" class="mb-3 text-sm leading-6 last:mb-0"><LinkedText :text="para" :skip="id" /></p>
     </section>
 
     <template v-if="inSessions.length">

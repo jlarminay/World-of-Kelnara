@@ -1774,9 +1774,10 @@
    "type": "Feature",
    "properties": {
     "id": "pond-2",
-    "name": null,
+    "name": "Death's Lake",
     "kind": "lake",
-    "size": "small"
+    "size": "small",
+    "description": "A small lake in the north-west of Eldravane, west of the Emerald Citadel. A river runs from it down to the Cerulean Lake."
    },
    "geometry": {
     "type": "Polygon",
@@ -1966,9 +1967,10 @@
    "type": "Feature",
    "properties": {
     "id": "pond-3",
-    "name": null,
+    "name": "Glacier Falls",
     "kind": "lake",
-    "size": "small"
+    "size": "small",
+    "description": "A small lake west of the Emerald Citadel and south of Death's Lake. A river runs from it east to the Cerulean Lake."
    },
    "geometry": {
     "type": "Polygon",

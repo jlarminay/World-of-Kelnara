@@ -2,10 +2,8 @@
 // Each file starts with a small header block (--- title / summary / party ---). Optional header fields: date, when.
 // party: the characters who were there, comma-separated, as spelled in reference/players/PARTY.md.
 import MarkdownIt from 'markdown-it'
-import { computed } from 'vue'
-import { store } from '@/state/store'
 import { memberByName, type Member } from './party'
-import { lore } from './lore'
+import { linkEscaped, targetsIn, type Target } from './links'
 
 const files = import.meta.glob('../../reference/sessions/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
 
@@ -50,45 +48,17 @@ export const sessionByN = new Map(sessions.map((s) => [s.n, s]))
 
 const md = new MarkdownIt({ html: false, linkify: false, typographer: false })
 
-const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-
-/** What a name in the notes links to: a place, or a Glossary/People entry. */
-type Target = { attr: 'data-place' | 'data-lore'; id: string }
-
-/** Place names, glossary words and people (with aliases) as one regex, longest first, and what each points to.
- * Places win when a name is both. */
-const namePattern = computed(() => {
-  const byName = new Map<string, Target>()
-  for (const f of store.places.features) {
-    const p = f.properties
-    for (const name of [p.name, ...(p.aliases ?? [])]) if (name.length >= 4 && !byName.has(name)) byName.set(name, { attr: 'data-place', id: p.id })
-  }
-  for (const e of [...lore.glossary, ...lore.people])
-    for (const name of [e.name, ...(e.aliases ?? [])]) if (!byName.has(name)) byName.set(name, { attr: 'data-lore', id: e.id })
-  const names = [...byName.keys()].sort((a, b) => b.length - a.length)
-  return { re: new RegExp(`(?<![\\w'])(${names.map(escapeRe).join('|')})(?![\\w])`, 'g'), byName }
-})
-
-/** Ids of the places, glossary words and people named in a session's notes, in order of first mention. */
+/** Ids of the places, glossary words, people, characters and map features named in a session's notes, in order of first mention. */
 function mentioned(n: number): Target[] {
   const s = sessionByN.get(n)
-  if (!s) return []
-  const { re, byName } = namePattern.value
-  const seen = new Map<string, Target>()
-  for (const m of s.markdown.matchAll(re)) {
-    const t = byName.get(m[1])!
-    if (!seen.has(t.id)) seen.set(t.id, t)
-  }
-  return [...seen.values()]
+  return s ? targetsIn(s.markdown) : []
 }
 export const placesMentioned = (n: number) => mentioned(n).filter((t) => t.attr === 'data-place').map((t) => t.id)
 
-/** The notes as HTML. The first mention of each place, glossary word or person becomes a link
- * (`data-place` / `data-lore`), outside headings. */
+/** The notes as HTML. The first mention of each name becomes a link (src/world/links.ts), outside headings. */
 export function sessionHtml(n: number): string {
   const s = sessionByN.get(n)
   if (!s) return ''
-  const { re, byName } = namePattern.value
   const linked = new Set<string>()
   let inHeading = false
   // only touch text between tags, never the tags themselves
@@ -98,15 +68,9 @@ export function sessionHtml(n: number): string {
       else if (/^<\/h\d/.test(part)) inHeading = false
       return part
     }
-    if (inHeading) return part
-    return part.replace(re, (name) => {
-      const t = byName.get(name)!
-      if (linked.has(t.id)) return name
-      linked.add(t.id)
-      return `<a href="#" ${t.attr}="${t.id}">${name}</a>`
-    })
+    return inHeading ? part : linkEscaped(part, linked)
   }).join('')
 }
 
-/** Sessions whose notes name the place, glossary word or person. */
+/** Sessions whose notes name the place, glossary word, person, character or feature ("layer:id"). */
 export const sessionsMentioning = (id: string) => sessions.filter((s) => mentioned(s.n).some((t) => t.id === id)).map((s) => s.n)

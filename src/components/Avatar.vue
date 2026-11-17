@@ -2,13 +2,13 @@
 // A character's picture: their portrait if they have one, otherwise their initial on their colour.
 // A small class badge sits in the corner (it tells the four orcs and the two rangers apart).
 import { computed, type Component } from 'vue'
-import { Axe, Sun, Guitar, Leaf, Eye, BowArrow, WandSparkles } from 'lucide-vue-next'
+import { Axe, Sun, Guitar, Leaf, Eye, BowArrow, WandSparkles, ShieldHalf } from 'lucide-vue-next'
 import type { Member } from '@/world/party'
 
 const props = withDefaults(defineProps<{ member: Member; size?: number; badge?: boolean }>(), { size: 32, badge: true })
 
 const CLASS_ICON: Record<string, Component> = {
-  Barbarian: Axe, Cleric: Sun, Bard: Guitar, Druid: Leaf, Warlock: Eye, Ranger: BowArrow, Wizard: WandSparkles,
+  Barbarian: Axe, Cleric: Sun, Bard: Guitar, Druid: Leaf, Warlock: Eye, Ranger: BowArrow, Wizard: WandSparkles, Paladin: ShieldHalf,
 }
 const icon = computed(() => CLASS_ICON[props.member.class])
 const src = computed(() => props.member.portrait && `${import.meta.env.BASE_URL}${props.member.portrait}`)

@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import { computed, type Component } from 'vue'
-import { Building2, Flag, Wheat, Landmark, Pickaxe, Trees, CircleAlert } from 'lucide-vue-next'
+import { Building2, Flag, Wheat, Landmark, Pickaxe, Trees, CircleAlert, CircleQuestionMark } from 'lucide-vue-next'
 import type { Feature } from 'geojson'
 import { layers, type LayerName } from '@/world/data'
 import { categoryOf, FEATURE_INFO, MEMBER_INFO, SESSION_INFO, type Category } from '@/world/categories'
@@ -52,7 +52,7 @@ const sessionEntries: SearchEntry[] = sessions.map((s) => ({
 
 /** Characters: by name, race and class, and their story. */
 const memberEntries: SearchEntry[] = members.map((m) => ({
-  key: `member:${m.id}`, name: m.name, aliases: [], kind: 'member', subtitle: `${m.race} ${m.class} · Party member`,
+  key: `member:${m.id}`, name: m.name, aliases: m.surname ? [`${m.name} ${m.surname}`, m.surname] : [], kind: 'member', subtitle: `${m.race} ${m.class} · Party member`,
   summary: m.summary, text: [m.summary, ...m.story.map((e) => e.text)].join(' '), category: { ...MEMBER_INFO, color: m.color },
   selection: { type: 'member', id: m.id },
 }))
@@ -98,8 +98,9 @@ export const CHIPS: { label: string; icon: Component; match: (e: SearchEntry) =>
   { label: 'Cities', icon: Building2, match: (e) => ['capital', 'city', 'town', 'village'].includes(e.kind) },
   { label: 'Districts', icon: Flag, match: (e) => e.kind === 'district' },
   { label: 'Farms', icon: Wheat, match: (e) => ['farm', 'orchard', 'mill'].includes(e.kind) },
-  { label: 'Landmarks', icon: Landmark, match: (e) => ['landmark', 'castle', 'watchtower', 'outpost', 'shrine', 'temple'].includes(e.kind) },
+  { label: 'Landmarks', icon: Landmark, match: (e) => ['landmark', 'castle', 'watchtower', 'outpost', 'barracks', 'shrine', 'temple', 'chasm'].includes(e.kind) },
   { label: 'Mines', icon: Pickaxe, match: (e) => ['mine', 'quarry'].includes(e.kind) },
   { label: 'Events', icon: CircleAlert, match: (e) => e.kind === 'event' },
+  { label: 'Rumored', icon: CircleQuestionMark, match: (e) => e.kind === 'rumored' },
   { label: 'Nature', icon: Trees, match: (e) => e.selection.type === 'feature' },
 ]

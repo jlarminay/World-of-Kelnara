@@ -5,15 +5,18 @@
    "id": "dion",
    "name": "Dion",
    "category": "The commune",
-   "text": "A ten-year-old half-elf mixed with halfling, with unique features. A child of Freya and the next Meruion, due to ascend at 19. Not the messiah: a very naughty boy. Raised by the whole commune and taught by Allister.\n\nTaken by the masked man in the attack on the commune. His twine pendant with the symbol of Freya was found hanging from the bone throne in the gnoll cave, where his trail ended.",
+   "text": "A ten-year-old half-elf mixed with halfling, with unique features. A child of Freya and the next Meruion, due to ascend at 19. Not the messiah: a very naughty boy. Raised by the whole commune and taught by Allister.\n\nTaken by the masked man in the attack on the commune. His twine pendant with the symbol of Freya was found hanging from the bone throne in the gnoll cave, where his trail ended.\n\nThree years later he was found travelling south with Valron's black-robed caravan, and told the party to stop fighting. He says he is where he wants to be: there are no gods, everyone should find power only in themselves, and the Meruions should be gathered and the ritual stopped, so the strong prevail. Xezus, he says, showed him the truth. The party think he has been brainwashed.\n\nHe was very scared at first after being taken. They healed his leg with magic he had never seen, and he has since seen magic of many colours. He now casts magic through himself, no longer from Freya: he cast Goodberry in a beautiful red, his favourite colour. He wears a pendant with divination magic, likely shielding him from the Emerald Citadel's tracking.",
    "see": [
     "meruion",
     "masked-man",
-    "allister"
+    "allister",
+    "xezus",
+    "cult-of-xezus"
    ],
    "places": [
     "place-commune-of-freya",
-    "place-gnoll-cave"
+    "place-gnoll-cave",
+    "event-black-robed-caravan"
    ],
    "first": 1
   },
@@ -117,6 +120,90 @@
    "first": 2
   },
   {
+   "id": "worf",
+   "name": "Worf",
+   "category": "The barracks",
+   "text": "A dwarf. One of Storvald's three friends from the barracks, with Grifter and Zelf.",
+   "see": [
+    "grifter",
+    "zelf"
+   ],
+   "places": [
+    "place-emerald-barracks"
+   ],
+   "first": 4
+  },
+  {
+   "id": "grifter",
+   "name": "Grifter",
+   "category": "The barracks",
+   "text": "A shifter. One of Storvald's three friends from the barracks, with Worf and Zelf.",
+   "see": [
+    "worf",
+    "zelf"
+   ],
+   "places": [
+    "place-emerald-barracks"
+   ],
+   "first": 4
+  },
+  {
+   "id": "zelf",
+   "name": "Zelf",
+   "category": "The barracks",
+   "text": "An elf. One of Storvald's three friends from the barracks, with Worf and Grifter.",
+   "see": [
+    "worf",
+    "grifter"
+   ],
+   "places": [
+    "place-emerald-barracks"
+   ],
+   "first": 4
+  },
+  {
+   "id": "nicky",
+   "name": "Nicky",
+   "category": "The barracks",
+   "text": "A grung. One of Curtis's three friends from the barracks, with Ricky and Dicky.",
+   "see": [
+    "ricky",
+    "dicky"
+   ],
+   "places": [
+    "place-emerald-barracks"
+   ],
+   "first": 4
+  },
+  {
+   "id": "ricky",
+   "name": "Ricky",
+   "category": "The barracks",
+   "text": "A tortle. One of Curtis's three friends from the barracks, with Nicky and Dicky.",
+   "see": [
+    "nicky",
+    "dicky"
+   ],
+   "places": [
+    "place-emerald-barracks"
+   ],
+   "first": 4
+  },
+  {
+   "id": "dicky",
+   "name": "Dicky",
+   "category": "The barracks",
+   "text": "A goblin. One of Curtis's three friends from the barracks, with Nicky and Ricky.",
+   "see": [
+    "nicky",
+    "ricky"
+   ],
+   "places": [
+    "place-emerald-barracks"
+   ],
+   "first": 4
+  },
+  {
    "id": "roslow",
    "name": "Roslow",
    "category": "On the road",
@@ -146,37 +233,61 @@
    "first": 4
   },
   {
-   "id": "caravan-leader",
-   "name": "The caravan leader",
-   "category": "On the road",
-   "aliases": [
-    "caravan leader"
-   ],
-   "text": "The rider who stopped the black-robed caravan and greeted the party in a very friendly manner, saying they had travelled from Olympus in the north and passed through the outpost without issue. Storvald challenged this, and Fugly saw through the lie. The leader's robes bore very old battle stains.",
-   "places": [
-    "event-black-robed-caravan"
-   ],
-   "first": 4
-  },
-  {
    "id": "masked-man",
-   "name": "The masked man",
-   "category": "Enemies",
+   "name": "Valron",
+   "category": "The cult of Xezus",
    "aliases": [
-    "masked man"
+    "masked man",
+    "The masked man"
    ],
-   "text": "Wears a mask with a white skull on it; his gnolls bore the same brand. Took Dion from the commune by dimension door, and got away with him.\n\nHe found the gnolls in their cave and taught them about Xezus and their own power, and taught their lord \"fire breathing\" (probably just a fire-breathing potion). Tracks by the bone throne end at a wall, as if he left with Dion by dimension door. He seems to hail from the northern mountains.",
+   "text": "The masked man: an aasimar who wore a mask with a white skull on it; his gnolls bore the same brand. Took Dion from the commune by dimension door, and got away with him.\n\nHe found the gnolls in their cave and taught them about Xezus and their own power, and taught their lord \"fire breathing\" (probably just a fire-breathing potion). Tracks by the bone throne end at a wall, as if he left with Dion by dimension door. He seems to hail from the northern mountains.\n\nThree years later he stepped out of the black-robed caravan after Dion. Once named as Valron, he took off his mask. He doubted the party wouldn't run to warn the Emerald Citadel if they only travelled with the caravan for three days, and told his men to keep an eye on them.",
    "see": [
     "xezus",
+    "cult-of-xezus",
     "horned-skull",
     "dion",
     "gnoll-lord"
    ],
    "places": [
     "place-commune-of-freya",
-    "place-gnoll-cave"
+    "place-gnoll-cave",
+    "event-black-robed-caravan"
    ],
    "first": 1
+  },
+  {
+   "id": "caravan-leader",
+   "name": "The caravan leader",
+   "category": "The cult of Xezus",
+   "aliases": [
+    "caravan leader"
+   ],
+   "text": "Greeted the party in a very friendly manner when the caravan driver stopped the black-robed caravan, saying they had travelled from Olympus in the north and passed through the outpost without issue. Storvald challenged this, and Fugly saw through the lie. The leader's robes bore very old battle stains.\n\nWhen the fight broke out, Storvald cleaved the leg off the horse carrying him and two others, spilling them to the ground, and told them to yield.",
+   "places": [
+    "event-black-robed-caravan"
+   ],
+   "first": 4,
+   "see": [
+    "cult-of-xezus",
+    "masked-man"
+   ]
+  },
+  {
+   "id": "caravan-driver",
+   "name": "The caravan driver",
+   "category": "The cult of Xezus",
+   "aliases": [
+    "caravan driver"
+   ],
+   "text": "Drove the black-robed caravan, and stopped it when the party met it on the road. When the fight broke out and the party shot out a wheel, he was thrown from the cart, and didn't move.",
+   "see": [
+    "cult-of-xezus",
+    "caravan-leader"
+   ],
+   "places": [
+    "event-black-robed-caravan"
+   ],
+   "first": 4
   },
   {
    "id": "gnoll-lord",

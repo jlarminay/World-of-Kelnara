@@ -1,7 +1,7 @@
 // Creates the MapLibre map and keeps it in sync with the store.
 import * as maplibregl from 'maplibre-gl'
 import { type GeoJSONSource, type LngLatBoundsLike, type MapGeoJSONFeature } from 'maplibre-gl'
-import { watch } from 'vue'
+import { nextTick, watch } from 'vue'
 import type { Feature, FeatureCollection, Position } from 'geojson'
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import glyphRegular from '@/assets/glyphs/noto-sans-regular-0-255.pbf?url'
@@ -22,8 +22,8 @@ import { bboxOf } from '@/world/geo'
 import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
 import { hereAt } from '@/world/party'
-import { clearSelection, mapRef, placeById, selectLore, selectMember, selectPlace, selectSession, sheetPeekPx, store } from '@/state/store'
-import { loreById } from '@/world/lore'
+import { clearSelection, mapRef, placeById, selectPlace, selectSession, sheetPeekPx, store } from '@/state/store'
+import { applyRoute, routeOf } from '@/state/route'
 
 // The site must be served over http(s): browsers block workers on file:// pages.
 maplibregl.setWorkerUrl(workerUrl)
@@ -86,6 +86,17 @@ export async function createMap(container: HTMLElement) {
     const b = bboxOf(layers.land.features[0].geometry)
     map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 40, duration: 0 })
   }
+
+  // Keep the camera's padding in step with the panel, without moving what is on screen: otherwise the padding of
+  // the last flyTo stays after the panel closes, and the map zooms out off-centre.
+  const syncPadding = () => {
+    const pad = cameraPadding()
+    const c = map.getContainer()
+    const at: [number, number] = [pad.left + (c.clientWidth - pad.left - pad.right) / 2, pad.top + (c.clientHeight - pad.top - pad.bottom) / 2]
+    map.jumpTo({ center: map.unproject(at), padding: pad })
+  }
+  syncPadding()
+  watch(() => [store.panel === 'none', store.mobile], syncPadding)
 
   // ---- places ----
   const placesSource = map.getSource('places') as GeoJSONSource
@@ -226,23 +237,34 @@ export async function createMap(container: HTMLElement) {
   watch(() => store.baseLayer, (b) => showDrawing(b === 'original'), { immediate: true })
   watch(() => store.drawingOpacity, (o) => map.getLayer('original') && map.setPaintProperty('original', 'raster-opacity', o))
 
-  // ---- URL hash: #lng,lat,zoomz[/place-id] ----
-  const writeHash = () => {
+  // ---- URL hash: #lng,lat,zoomz[/route] (src/state/route.ts) ----
+  // Opening a page pushes a history entry, so Back and Forward step through pages; moving the map only
+  // updates the current entry.
+  let current = ''
+  const url = (route: string) => {
     const c = map.getCenter()
-    const s = store.selection
-    const sel = s?.type === 'place' ? '/' + s.id : s?.type === 'session' ? `/session/${s.n}` : s?.type === 'member' ? `/party/${s.id}` : s?.type === 'lore' ? `/${loreById(s.id)?.kind ?? 'glossary'}/${s.id}` : ''
-    history.replaceState(null, '', `#${c.lng.toFixed(5)},${c.lat.toFixed(5)},${map.getZoom().toFixed(2)}z${sel}`)
+    return `#${c.lng.toFixed(5)},${c.lat.toFixed(5)},${map.getZoom().toFixed(2)}z${route ? '/' + route : ''}`
   }
-  map.on('moveend', writeHash)
-  watch(() => store.selection, writeHash)
+  map.on('moveend', () => history.replaceState(history.state, '', url(current)))
+  watch(routeOf, (route) => {
+    if (route === current) return
+    current = route
+    history.pushState(null, '', url(route))
+  })
+  // Back/Forward: reopen that page, and return the map to where it was when the page was left (the camera in its URL)
+  window.addEventListener('popstate', async () => {
+    const h = parseHash()
+    applyRoute(h?.place ?? '')
+    current = routeOf()
+    if (!h) return
+    await nextTick() // after the padding follows the panel (syncPadding), which would cut the flight short
+    map.flyTo({ center: h.center, zoom: h.zoom, padding: cameraPadding(), duration: 1000 })
+  })
   map.on('zoom', () => (store.zoom = map.getZoom()))
   store.zoom = map.getZoom()
-  const linkedSession = initial?.place?.match(/^session\/(\d+)$/)
-  const linkedMember = initial?.place?.match(/^party\/(.+)$/)
-  if (linkedSession) selectSession(Number(linkedSession[1]))
-  else if (linkedMember) selectMember(linkedMember[1])
-  else if (/^(glossary|people)\//.test(initial?.place ?? '') && loreById(initial!.place!.split('/')[1])) selectLore(initial!.place!.split('/')[1])
-  else if (initial?.place && placeById.value.has(initial.place)) selectPlace(initial.place)
+  applyRoute(initial?.place ?? '')
+  current = routeOf()
+  history.replaceState(history.state, '', url(current))
 
   return map
 }
@@ -277,6 +299,12 @@ const panelInset = () => {
   if (store.panel === 'none') return { left: 0, bottom: 0 }
   return store.mobile ? { left: 0, bottom: sheetPeekPx() } : { left: 440, bottom: 0 }
 }
+/** The camera's padding: the part of the screen the panel (and on phones, the search box) leaves visible.
+ * MapLibre keeps the padding of the last flyTo, so it is also kept in step with the panel (see createMap). */
+const cameraPadding = () => {
+  const inset = panelInset()
+  return { left: inset.left, top: store.mobile && store.panel !== 'none' ? 60 : 0, right: 0, bottom: inset.bottom }
+}
 
 export function flyToPlace(id: string) {
   const map = mapRef.value
@@ -286,15 +314,14 @@ export function flyToPlace(id: string) {
   // Settlements with a generated city zoom to show the whole built-up area.
   const settlement = store.settlements.find((s) => s.placeId === id)
   const target = settlement ? 12.2 : levelToZoom(p.minzoom) + 1.5
-  map.flyTo({ center: place.geometry.coordinates as [number, number], zoom: Math.max(map.getZoom(), target), padding: { left: panelInset().left, top: store.mobile ? 60 : 0, right: 0, bottom: panelInset().bottom }, duration: 1200 })
+  map.flyTo({ center: place.geometry.coordinates as [number, number], zoom: Math.max(map.getZoom(), target), padding: cameraPadding(), duration: 1200 })
 }
 
 /** The "your location" button: centre on the current location, close enough to see its circle. */
 export function flyToHere() {
   const map = mapRef.value
   if (!map) return
-  const inset = panelInset()
-  map.flyTo({ center: hereAt, zoom: Math.max(map.getZoom(), levelToZoom(4)), padding: { left: inset.left, top: store.mobile ? 60 : 0, right: 0, bottom: inset.bottom }, duration: 1200 })
+  map.flyTo({ center: hereAt, zoom: Math.max(map.getZoom(), levelToZoom(4)), padding: cameraPadding(), duration: 1200 })
 }
 
 export function flyToFeature(layer: LayerName, id: string) {

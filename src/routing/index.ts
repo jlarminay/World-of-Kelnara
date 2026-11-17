@@ -136,6 +136,7 @@ async function buildGrid(): Promise<Grid> {
   const r2 = rc.getContext('2d', { willReadFrequently: true })!
   r2.strokeStyle = '#fff'; r2.lineWidth = 1.5
   for (const f of layers.roads.features as Feature<LineString>[]) {
+    if (f.properties?.rank === 'rumored') continue
     r2.beginPath()
     f.geometry.coordinates.forEach((c, i) => { const [x, y] = toPx(c); if (i) r2.lineTo(x / meta.cell_px, y / meta.cell_px); else r2.moveTo(x / meta.cell_px, y / meta.cell_px) })
     r2.stroke()

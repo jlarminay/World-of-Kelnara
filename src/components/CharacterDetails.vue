@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // A character's profile: who they are, then their story session by session, then the places that matter to them.
 import { computed, ref, watch } from 'vue'
+import LinkedText from './LinkedText.vue'
 import { ArrowLeft, ScrollText, Gamepad2, ChevronDown } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { memberById } from '@/world/party'
@@ -50,9 +51,9 @@ function openPlace(id: string) {
       <button class="-ml-2 mb-1 flex items-center gap-1 rounded-full px-2 py-1 text-sm text-primary hover:bg-black/5" @click="store.selection = null; store.panel = 'party'">
         <ArrowLeft class="size-4" />Party
       </button>
-      <h1 class="text-[22px] leading-7">{{ m.name }}</h1>
+      <h1 class="text-[22px] leading-7">{{ m.surname ? `${m.name} ${m.surname}` : m.name }}</h1>
       <p class="mt-1 text-sm text-muted-foreground">{{ m.race }} {{ m.class }}</p>
-      <p v-if="m.summary" class="mt-3 text-sm leading-6">{{ m.summary }}</p>
+      <p v-if="m.summary" class="mt-3 text-sm leading-6"><LinkedText :text="m.summary" :skip="id" /></p>
     </div>
     <Separator />
 
@@ -84,7 +85,7 @@ function openPlace(id: string) {
           </button>
           <div v-if="open.has(c.n)" class="bg-black/[.02] px-4 pb-4">
             <ul class="list-disc space-y-1 pl-5 text-sm leading-6 text-muted-foreground">
-              <li v-for="(line, i) in c.lines" :key="i">{{ line }}</li>
+              <li v-for="(line, i) in c.lines" :key="i"><LinkedText :text="line" :skip="id" /></li>
             </ul>
             <button class="mt-2 text-xs font-medium text-primary hover:underline" @click="selectSession(c.n)">Open session {{ c.n }}</button>
           </div>

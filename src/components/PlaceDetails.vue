@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import LinkedText from './LinkedText.vue'
 import { Share2, LocateFixed, Layers, MapPin, Info, Building2, CalendarDays, ScrollText } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
@@ -22,6 +23,9 @@ const props = defineProps<{ id: string }>()
 const place = computed(() => placeById.value.get(props.id))
 const p = computed(() => place.value?.properties)
 const cat = computed(() => p.value && categoryOf(p.value))
+/** Other names worth showing: not ones that only repeat the name in lower case or without "The" (kept for linking in the notes). */
+const plain = (s: string) => s.toLowerCase().replace(/^the\s+/, '')
+const otherNames = computed(() => (p.value?.aliases ?? []).filter((a) => plain(a) !== plain(p.value!.name)))
 const ancestors = computed(() => ancestorsOf(props.id))
 const children = computed(() => childrenOf(props.id))
 const nearby = computed(() => {
@@ -68,7 +72,7 @@ const share = () => navigator.clipboard?.writeText(location.href)
           <DirectionsIcon class="size-6" arrow="var(--primary)" />
         </button>
       </div>
-      <p v-if="p.aliases?.length" class="text-sm text-muted-foreground">Also known as {{ p.aliases.join(', ') }}</p>
+      <p v-if="otherNames.length" class="text-sm text-muted-foreground">Also known as {{ otherNames.join(', ') }}</p>
       <p class="mt-1 text-sm text-muted-foreground">
         {{ cat.label }}<template v-if="p.province"> · {{ p.province }}</template>
       </p>
@@ -82,7 +86,7 @@ const share = () => navigator.clipboard?.writeText(location.href)
     </div>
     <Separator />
 
-    <section v-if="p.description" class="px-6 py-4 text-sm leading-6">{{ p.description }}</section>
+    <section v-if="p.description" class="px-6 py-4 text-sm leading-6"><LinkedText :text="p.description" :skip="id" /></section>
     <Separator v-if="p.description" />
 
     <ul class="py-2 text-sm">
@@ -120,7 +124,7 @@ const share = () => navigator.clipboard?.writeText(location.href)
       <Separator />
       <section class="px-6 py-4">
         <h2 class="mb-2 text-base font-medium">History</h2>
-        <p class="text-sm leading-6 whitespace-pre-line text-muted-foreground">{{ p.history }}</p>
+        <p class="text-sm leading-6 whitespace-pre-line text-muted-foreground"><LinkedText :text="p.history" :skip="id" /></p>
       </section>
     </template>
 
@@ -147,7 +151,7 @@ const share = () => navigator.clipboard?.writeText(location.href)
       <Separator />
       <section class="px-6 py-4">
         <h2 class="mb-2 text-base font-medium">Details</h2>
-        <p v-for="(para, i) in details" :key="i" class="mb-3 text-sm leading-6 text-muted-foreground last:mb-0">{{ para }}</p>
+        <p v-for="(para, i) in details" :key="i" class="mb-3 text-sm leading-6 text-muted-foreground last:mb-0"><LinkedText :text="para" :skip="id" /></p>
       </section>
     </template>
 

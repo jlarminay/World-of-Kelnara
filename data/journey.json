@@ -29,6 +29,12 @@
     "farm-jimothys-radishes",
     "event-black-robed-caravan"
    ]
+  },
+  {
+   "session": 5,
+   "stops": [
+    { "at": [-0.195845, 0.157057], "label": "Camp with the caravan", "approx": true, "note": "Two days back south with Valron's caravan and Dion; one more night before Green Rock. Exactly where on the road is a guess." }
+   ]
   }
  ]
 }

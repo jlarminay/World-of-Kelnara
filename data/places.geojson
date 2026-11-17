@@ -25,7 +25,7 @@
    "type": "Feature",
    "properties": {
     "id": "place-gold-mines",
-    "name": "Golden Gods Mine",
+    "name": "Gold God Mine",
     "rank": "poi",
     "kind": "mine",
     "province": "Vaelthorn",
@@ -49,7 +49,7 @@
     "kind": "capital",
     "province": "Eldravane",
     "minzoom": 0,
-    "description": "The great city of Freya's faithful, standing at the end of a peninsula in the middle of the Cerulean Lake. It is the last big city before the northern mountains.",
+    "description": "The great city of Freya's faithful, standing at the end of a peninsula in the middle of the Cerulean Lake.",
     "aliases": [
      "The Emerald City"
     ],
@@ -109,7 +109,7 @@
     "minzoom": 3,
     "parent": "place-emerald-citadel",
     "area": "area-lower-city",
-    "description": "The landward half of the city behind the wall and the Main Gate: forges, barracks and the busy streets travellers enter by."
+    "description": "The landward half of the city behind the wall and the Main Gate: forges, the barracks and the busy streets travellers enter by."
    },
    "geometry": {
     "type": "Point",
@@ -146,19 +146,66 @@
   {
    "type": "Feature",
    "properties": {
+    "id": "place-emerald-barracks",
+    "name": "The Barracks",
+    "rank": "poi",
+    "kind": "barracks",
+    "province": "Eldravane",
+    "minzoom": 4,
+    "parent": "district-lower-city",
+    "aliases": [
+     "barracks"
+    ],
+    "description": "Home of the citadel guard, just inside the Main Gate.",
+    "details": "The citadel guard live and train here, close to the Main Gate where the city most needs guarding.\n\nDuring the three years after Dion was taken, Storvald joined the citadel guard and lived here. So did Curtis, a half-elf paladin, and the two became close friends. Each of them made three more friends in the barracks: Worf the dwarf, Grifter the shifter and Zelf the elf for Storvald, and Nicky the grung, Ricky the tortle and Dicky the goblin for Curtis."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.2448,
+     0.1296
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
     "id": "place-tree-of-life",
     "name": "Tree of Life",
     "rank": "poi",
     "kind": "landmark",
     "province": "Scorched Lands",
     "minzoom": 2,
-    "description": "The world's genesis: the tree the gods made, from which everything known to exist has sprung.",
-    "details": "The gods made the Tree of Life, and it has spawned everything known to exist so far. All the creatures in the books are Sentients. The elves were the first, and the dragonborn are the youngest.\n\nThe chromatic dragons were the first to spring from the tree. They were destructive and set out to annihilate the world, so the tree brought forth other species to slow them down. Among them were the giants, who lost their war against the dragons and are now believed to be gone. The last thing the tree brought forth were the metallic dragons.\n\nTo stop the tree creating more life, the chromatic dragons scorched it, and the land around it became the Scorched Lands. No new life has come from the tree in thousands of years.\n\nWith the metallic dragons still losing, the gods raised a champion in each of the realms and brought them to the Scorched Lands, where they sealed the chromatic dragons in the abyss. It took so much magic that the champions crystallized. They were the first Meruions, and every Meruion since must go to renew the seal."
+    "description": "The world's genesis: the tree the gods made, from which everything known to exist has sprung. The chromatic dragons burned it to a crisp.",
+    "details": "The gods made the Tree of Life, and it has spawned everything known to exist so far. All the creatures in the books are Sentients. The elves were the first, and the dragonborn are the youngest.\n\nThe chromatic dragons were the first to spring from the tree. They were destructive and set out to annihilate the world, so the tree brought forth other species to slow them down. Among them were the giants, who lost their war against the dragons and are now believed to be gone. The last thing the tree brought forth were the metallic dragons.\n\nTo stop the tree creating more life, the chromatic dragons burned it to a crisp and destroyed it, before they were sealed away, and the land around it became the Scorched Lands. No new life has come from the tree in thousands of years.\n\nWith the metallic dragons still losing, the gods raised a champion in each of the realms and brought them to the Scorched Lands, where they sealed the chromatic dragons in the abyss, a massive bottomless chasm in front of the tree. It took so much magic that the champions crystallized. They were the first Meruions, and every Meruion since must go to renew the seal."
    },
    "geometry": {
     "type": "Point",
     "coordinates": [
      -0.585,
+     -0.16
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-the-abyss",
+    "name": "The Abyss",
+    "rank": "poi",
+    "kind": "chasm",
+    "province": "Scorched Lands",
+    "minzoom": 2,
+    "aliases": [
+     "abyss"
+    ],
+    "description": "A massive, bottomless chasm in front of the Tree of Life, where the chromatic dragons are sealed.",
+    "details": "When the gods' champions brought the chromatic dragons to the Scorched Lands, they sealed them in this chasm. The seal protects the hole. It took so much magic that the champions crystallized; they were the first Meruions.\n\nThe seal has to be renewed by the Meruions. The current Meruion of Freya is very old, which is why Dion is so badly needed back: he is being raised to go with the other two Meruions to renew it."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.5835,
      -0.16
     ]
    }
@@ -179,6 +226,30 @@
     "coordinates": [
      -0.465,
      -0.137
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-sunken-city",
+    "name": "The Sunken City",
+    "rank": "poi",
+    "kind": "ruin",
+    "province": null,
+    "minzoom": 2,
+    "aliases": [
+     "underwater ruins",
+     "sunken city"
+    ],
+    "description": "Underwater ruins in the southern sea, south of Discoverer's Bay and west of the Steel Spine peninsula, built in an architecture never seen before.",
+    "details": "Golgamutt saw this sunken city when the ship he worked on as a deckhand sank here. He has researched it ever since, but no books or research papers exist on the matter, and nobody seems to know anything about it."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.0915,
+     -0.6885
     ]
    }
   },
@@ -268,8 +339,8 @@
     "kind": "outpost",
     "province": "Eldravane",
     "minzoom": 2,
-    "description": "The Emerald Citadel's outpost on the road north, about two weeks' travel along the main road.",
-    "details": "A crew from the citadel is stationed here. Three years after Dion was taken, they detained a caravan coming from the north because it raised concern: one of those travelling with it was said to resemble the Meruion."
+    "description": "The Emerald Citadel's outpost on the road north, about two weeks' travel along the main road. Presumed lost: the caravan it detained got away.",
+    "details": "A crew from the citadel is stationed here. Three years after Dion was taken, they detained a caravan coming from the north because it raised concern: one of those travelling with it was said to resemble the Meruion.\n\nThat caravan was Valron's, carrying Dion, and the party met it on the road south, free, claiming it had passed through the outpost without issue. The party assume the outpost is no longer viable: everyone there is probably dead, or the whole outpost destroyed.\n\nPast the outpost, a secret path leads north through the forest into the mountains, to Xezus (rumored: shown as a dotted orange path). A highway runs east from the outpost."
    },
    "geometry": {
     "type": "Point",
@@ -282,13 +353,33 @@
   {
    "type": "Feature",
    "properties": {
-    "id": "place-unnamed-city-1",
-    "name": "Unnamed city 1",
+    "id": "rumored-xezus",
+    "name": "Xezus's Mountain",
+    "rank": "poi",
+    "kind": "rumored",
+    "province": "Vaelthorn",
+    "minzoom": 2,
+    "description": "Rumored: where Xezus can be found, according to Dion. The location is a rough guess.",
+    "details": "Dion told the party that Xezus can be reached by a secret path north past the Northern Outpost, through the forest and into the mountains. The cult of Xezus have all met him there.\n\nNobody in the party has been there. The pin and the dotted orange path to it are rough guesses."
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.13586,
+     0.38265
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "place-dollingr-port",
+    "name": "Dollingr Port",
     "rank": "city",
     "kind": "city",
     "province": "Vaelthorn",
     "minzoom": 1,
-    "description": ""
+    "description": "A port city on the northern shore of Unity Bay, on a highway branching off the road from the Emerald Citadel to Unity Port."
    },
    "geometry": {
     "type": "Point",
@@ -301,13 +392,13 @@
   {
    "type": "Feature",
    "properties": {
-    "id": "place-unnamed-city-2",
-    "name": "Unnamed city 2",
+    "id": "place-unity-port",
+    "name": "Unity Port",
     "rank": "city",
     "kind": "city",
     "province": "Eldravane",
     "minzoom": 1,
-    "description": ""
+    "description": "A port city on the western shore of Unity Bay, at the end of the highway from the Emerald Citadel."
    },
    "geometry": {
     "type": "Point",
@@ -519,10 +610,10 @@
     "kind": "farm",
     "province": "Eldravane",
     "description": "Jimothy's radish farm, about twenty years old, on the road where the town of Green Rock once stood. He kept the old town's name in its memory.",
-    "details": "Around the farm are the ruins of Green Rock, a town about a hundred years old that stood on the road until it was destroyed. Jimothy named the farm after it in remembrance. Jimothy, a tall, slender man with blond hair, was raised there. When the village was attacked he was taken away with other survivors, and he later came back with his friend Roslow to start the farm. He sells radishes to local towns and passing travellers, since they travel well. His cooking is almost exactly like Roslow's: the same spices and the same preparation.\n\nThe house has three rooms: one with a couple of unused beds, one well decorated but not lived in lately, and Jimothy's own. In his room is a crumpled letter to Roslow confessing his love. Side quest: Radish Me Lover.",
+    "details": "Around the farm are the ruins of Green Rock, a town about a hundred years old that stood on the road until it was destroyed. Jimothy named the farm after it in remembrance. Jimothy, a tall, slender man with blond hair, was raised there. When the village was attacked he was taken away with other survivors, and he later came back with his friend Roslow to start the farm. He sells radishes to local towns and passing travellers, since they travel well. A road runs south from the farm to the highway between the Emerald Citadel and Unity Port. His cooking is almost exactly like Roslow's: the same spices and the same preparation.\n\nThe house has three rooms: one with a couple of unused beds, one well decorated but not lived in lately, and Jimothy's own. In his room is a crumpled letter to Roslow confessing his love. Side quest: Radish Me Lover.",
     "minzoom": 2,
     "aliases": [
-     "Jimothy's Farmstead"
+     "Green Rock"
     ]
    },
    "geometry": {
@@ -564,9 +655,6 @@
     "province": "Eldravane",
     "minzoom": 4,
     "parent": "district-the-heights",
-    "tags": [
-     "Golgamutt"
-    ],
     "description": "Golgamutt's fine house in The Heights, bought with the earnings from his best-selling book.",
     "details": "During the three years after Dion was taken, Golgamutt joined the grand library as a researcher. While there he wrote \"A Unique Perspective on Things That Already Happened\", a massive best seller that is very popular in the city and beyond. Its success let him afford a nice house in The Heights, the upper district near the Grand Citadel.\n\nWhen Golgamutt is off travelling, the house is watched over by some of his trusted assistants."
    },
@@ -587,9 +675,9 @@
     "kind": "event",
     "province": "Eldravane",
     "minzoom": 2,
-    "when": "Session 4: three days after leaving Green Rock Farm, on the way to the Northern Outpost",
-    "description": "Where the party met a caravan of pale, black-robed travellers coming south on the road.",
-    "details": "Cresting a hill, the party saw a caravan drawn by two black horses, with five riders, four people walking beside it and one driving. It carried no banner, and nobody noticed much until it was about a hundred feet away. The travellers wore black robes, were not heavily armoured, and were exceedingly pale, with skin and clothing unlike anything familiar. Their robes showed battle stains, though very old ones.\n\nOne rider pulled ahead and stopped the caravan, greeting the party in a very friendly manner. He said they had travelled from Olympus in the north and had passed through the outpost without issue. Storvald challenged this, and Fugly saw through the lie. Asked to inspect the caravan, they agreed, and Storvald, Botox and Fugly went to check it under some very hard looks."
+    "when": "Sessions 4 and 5: three days after leaving Green Rock Farm, on the way to the Northern Outpost",
+    "description": "Where the party met Valron's black-robed caravan coming south on the road, fought it, and found Dion.",
+    "details": "Cresting a hill, the party saw a caravan drawn by two black horses, with five riders, four people walking beside it and one driving. It carried no banner, and nobody noticed much until it was about a hundred feet away. The travellers wore black robes, were not heavily armoured, and were exceedingly pale, with skin and clothing unlike anything familiar. Their robes showed battle stains, though very old ones.\n\nThe caravan driver acknowledged the party and stopped the caravan, and their leader greeted them in a very friendly manner. He said they had travelled from Olympus in the north and had passed through the outpost without issue. Storvald challenged this, and Fugly saw through the lie. Asked to inspect the caravan, they agreed, and Storvald, Botox and Fugly went to check it under some very hard looks.\n\nAs the party approached, they heard hushed muttering inside and Botox sensed a spell being cast. Dorlan snapped the reins with Mage Hand and the cart bolted with two riders, while the rest mounted the remaining horses. Storvald brought down the leader's horse, Olde entangled the cart, and Clover, riding on top of it, conjured an illusory rock in the horses' path. When the party shot out a wheel the cart stopped, throwing the driver.\n\nDion came out of the cart and told everyone to stop fighting, and the masked man stepped out after him: Valron, an aasimar, who unmasked once named. The party agreed to travel with the caravan, at least as far as Green Rock.\n\nThe party assume this is the caravan the Northern Outpost had detained. Since it left, they assume the outpost is no longer viable: everyone there is probably dead, or the outpost destroyed."
    },
    "geometry": {
     "type": "Point",

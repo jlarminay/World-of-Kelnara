@@ -33,6 +33,7 @@ export const C = {
   highway: '#fde293',
   highwayCase: '#e3b64e',
   trail: '#b9b4aa',
+  rumored: '#e8710a', // a road or path only heard about (rank 'rumored'): dotted orange
   wall: '#b5a58e',
   selected: '#db4437', // outline of the selected city or district, like Google's boundary highlight
   route: '#1a73e8',
@@ -165,6 +166,8 @@ export function buildStyle(): StyleSpecification {
     // ---- world roads (drafts from the trace) ----
     { id: 'road-trail', type: 'line', source: 'roads', minzoom: z(2), filter: ['==', ['get', 'rank'], 'trail'],
       paint: { 'line-color': C.trail, 'line-width': ramp([z(2), 1], [z(6), 2]), 'line-dasharray': [2, 2] } },
+    { id: 'road-rumored', type: 'line', source: 'roads', minzoom: z(2), filter: ['==', ['get', 'rank'], 'rumored'], layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': C.rumored, 'line-width': ramp([z(2), 2], [z(6), 3.5]), 'line-dasharray': [0.1, 2.2] } },
     ...(['road', 'highway'] as const).flatMap((rank): LayerSpecification[] => {
       const hw = rank === 'highway'
       const w = hw ? ramp2([z(0), 1.2], [z(3), 3], [z(6), 8]) : ramp2([z(1), 0.8], [z(3), 2.2], [z(6), 6])
