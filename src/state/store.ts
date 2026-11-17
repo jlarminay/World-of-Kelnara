@@ -36,6 +36,10 @@ export const store = reactive({
   /** Real-world size comparison: whether its card is open, the outlines placed on the map, and the one clicked
    * (it shows the rotate handle). See src/map/compare.ts. */
   compare: { open: false, items: [] as CompareItem[], selected: null as string | null },
+  /** The web of connections (WebView.vue): whether it is open, the node in focus, the session it shows the
+   * web as of (null: the latest), the kinds of thing filtered out (WEB_GROUPS ids), and whether things with no
+   * connections are shown. */
+  web: { open: false, focus: null as string | null, session: null as number | null, hidden: [] as string[], unconnected: false },
   /** Phone-sized screen: panels become a bottom sheet (like Google Maps on mobile). */
   mobile: false,
   /** Bottom sheet height on phones. */

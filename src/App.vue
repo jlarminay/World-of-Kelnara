@@ -8,6 +8,7 @@ import AutoUpdate from '@/components/AutoUpdate.vue'
 import InstallBanner from '@/components/InstallBanner.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import MapControls from '@/components/MapControls.vue'
+import WebView from '@/components/WebView.vue'
 import { store } from '@/state/store'
 </script>
 
@@ -24,5 +25,6 @@ import { store } from '@/state/store'
     <ContextMenu />
     <AutoUpdate />
     <InstallBanner />
+    <WebView v-if="store.web.open" />
   </div>
 </template>

@@ -10,8 +10,10 @@ import { placeById, selectFeature, selectLore, selectMember, selectPlace, select
 const LIST_PANELS: Partial<Record<Panel, string>> = { menu: 'menu', sessions: 'sessions', party: 'party', glossary: 'glossary', people: 'people', directions: 'directions', results: 'search' }
 
 /** The route for what is open now: '' (nothing), a place id, session/3, party/storvald, glossary/xezus, people/dion,
- * feature/lakes/lake-1, or a list panel (menu, sessions, party, glossary, people, directions, search). */
+ * feature/lakes/lake-1, a list panel (menu, sessions, party, glossary, people, directions, search), or the web
+ * of connections (web, web/<node id>). */
 export function routeOf(): string {
+  if (store.web.open) return store.web.focus ? `web/${store.web.focus}` : 'web'
   const s = store.selection
   if (store.panel === 'details' && s) {
     if (s.type === 'place') return s.id
@@ -25,6 +27,12 @@ export function routeOf(): string {
 
 /** Opens what a route names. Unknown routes close the panel. */
 export function applyRoute(route: string) {
+  // the web of connections: web, or web/<node id> with one in focus
+  store.web.open = route === 'web' || route.startsWith('web/')
+  if (store.web.open) {
+    store.web.focus = route.startsWith('web/') ? route.slice(4) : null
+    return
+  }
   const list = Object.entries(LIST_PANELS).find(([, r]) => r === route)
   if (list) {
     if (list[0] !== 'directions') store.selection = null

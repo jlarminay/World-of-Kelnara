@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Menu shown in the side panel (below the search bar) when the menu button is pressed.
 import { ref } from 'vue'
-import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth, ScrollText, UsersRound, Scale, Github, BookA, UserRound } from 'lucide-vue-next'
+import { ChevronDown, Ruler, Layers, Footprints, Download, Share, Earth, ScrollText, UsersRound, Scale, Github, BookA, UserRound, Network } from 'lucide-vue-next'
 import { canInstall, install, promptInstall } from '@/state/install'
 import { CHIPS } from '@/search'
 import { store } from '@/state/store'
@@ -51,6 +51,9 @@ function compare() {
       </button>
       <button class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="store.panel = 'glossary'">
         <BookA class="size-5 text-muted-foreground" />Glossary
+      </button>
+      <button class="flex w-full items-center gap-4 px-6 py-2.5 text-left text-sm hover:bg-black/5" @click="store.web.focus = null; store.web.open = true">
+        <Network class="size-5 text-muted-foreground" />Web of connections
       </button>
     </section>
 
