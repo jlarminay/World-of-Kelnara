@@ -27,7 +27,7 @@ const duration = computed(() => `about ${formatTravel(days.value)}`)
     <div class="flex items-start justify-between">
       <div>
         <h3 class="text-sm font-medium">Measure distance</h3>
-        <p v-if="store.measure.points.length < 2" class="mt-1 text-sm text-muted-foreground">Click on the map to add to your path</p>
+        <p v-if="store.measure.points.length < 2" class="mt-1 text-sm text-muted-foreground">{{ store.mobile ? 'Tap' : 'Click' }} on the map to add to your path</p>
         <p v-else class="mt-1 text-sm">
           Total distance: <span class="font-medium">{{ formatKm(km) }}</span>
         </p>
@@ -51,7 +51,7 @@ const duration = computed(() => `about ${formatTravel(days.value)}`)
         On foot: <span class="font-medium text-[#188038]">{{ duration }}</span>
         <span class="text-muted-foreground"> at {{ speeds[store.measure.ground] }} km/day</span>
       </p>
-      <p class="mt-1 text-xs text-muted-foreground">Drag a point to move it, click a point to remove it.</p>
+      <p class="mt-1 text-xs text-muted-foreground">Drag a point to move it, {{ store.mobile ? 'tap' : 'click' }} a point to remove it.</p>
     </template>
   </div>
 </template>

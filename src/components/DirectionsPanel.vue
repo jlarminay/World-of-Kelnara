@@ -2,7 +2,7 @@
 import { computed, watch } from 'vue'
 import { ArrowLeft, ArrowUpDown, Footprints, CircleDot, MapPin, Ruler, X } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
-import { store } from '@/state/store'
+import { closeDirections as close, store } from '@/state/store'
 import { MAX_OFF_ROAD_KM, planJourney, speedOn, waypointCoord, waypointLabel, type Ground, type Mode } from '@/routing'
 import { startMeasure } from '@/map/measure'
 import { distanceKm, formatKm, formatTravel } from '@/world/coords'
@@ -59,14 +59,6 @@ function swap() {
   ;[d.from, d.to] = [d.to, d.from]
   d.via.reverse()
 }
-function close() {
-  d.from = ''
-  d.to = ''
-  d.via = []
-  d.result = null
-  d.error = ''
-  store.panel = store.selection ? 'details' : 'none'
-}
 </script>
 
 <template>
@@ -109,7 +101,8 @@ function close() {
     <div v-if="d.result" class="px-6 py-5">
       <p class="text-[22px] text-[#188038]">{{ fmtDays(total) }} <span class="text-base text-muted-foreground">({{ formatKm(d.result.km) }})</span></p>
       <p class="mt-1 text-sm text-muted-foreground">By road, {{ modeLabel }}</p>
-      <p class="mt-1 text-xs text-muted-foreground">Drag the blue line to take a different road. Drag a stop to move it, click it to remove it.</p>
+      <!-- dragging the route is mouse-only (src/map/routeEdit.ts), so phones leave the hint out -->
+      <p v-if="!store.mobile" class="mt-1 text-xs text-muted-foreground">Drag the blue line to take a different road. Drag a stop to move it, click it to remove it.</p>
 
       <template v-if="d.result.steps?.length">
         <Separator class="my-4" />

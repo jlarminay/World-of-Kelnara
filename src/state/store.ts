@@ -1,4 +1,4 @@
-import { computed, reactive, shallowRef } from 'vue'
+import { computed, reactive, shallowRef, watch } from 'vue'
 import type { Map as MlMap } from 'maplibre-gl'
 import type { Place, Places, Settlement } from '@/world/types'
 import { placesData, settlementData, type LayerName } from '@/world/data'
@@ -42,11 +42,14 @@ export const store = reactive({
   web: { open: false, focus: null as string | null, session: null as number | null, hidden: [] as string[], unconnected: false },
   /** Phone-sized screen: panels become a bottom sheet (like Google Maps on mobile). */
   mobile: false,
-  /** Bottom sheet height on phones. */
-  sheet: 'peek' as 'peek' | 'full',
+  /** Bottom sheet height on phones: 'min' is a strip above the bottom edge (the map in focus, the page still
+   * open), 'peek' about half the screen, 'full' all of it below the search box. */
+  sheet: 'peek' as Sheet,
   /** Time of the last long-press (touch "right-click"), so the tap that ends it is ignored. */
   longPressAt: 0,
 })
+
+export type Sheet = 'min' | 'peek' | 'full'
 
 const phone = window.matchMedia('(max-width: 640px)')
 store.mobile = phone.matches
@@ -56,6 +59,22 @@ phone.addEventListener('change', (e) => (store.mobile = e.matches))
 export const appHeightPx = () => (document.querySelector('#app > div') as HTMLElement | null)?.clientHeight || window.innerHeight
 /** Height of the bottom sheet when peeking (phones). */
 export const sheetPeekPx = () => Math.round(appHeightPx() * 0.45)
+/** Height of the bottom sheet when lowered: the drag handle, the page's header image (Hero.vue, 112px) and a little more. */
+export const SHEET_MIN_PX = 160
+/** Height of the bottom sheet at full height: leaves the search box visible above it. */
+export const sheetFullPx = () => appHeightPx() - 72
+export const sheetPx = (s: Sheet) => (s === 'min' ? SHEET_MIN_PX : s === 'full' ? sheetFullPx() : sheetPeekPx())
+
+// A newly opened page starts with the sheet at half height, except that going from one place or entry to another
+// while the sheet is lowered keeps it lowered (tapping around the map keeps the map in view). Synchronous, so a
+// camera move started in the same tick (flyToPlace) already sees the new height.
+watch(
+  () => [store.panel, store.selection] as const,
+  ([panel], [old]) => {
+    if (!(store.sheet === 'min' && panel === 'details' && old === 'details')) store.sheet = 'peek'
+  },
+  { flush: 'sync' },
+)
 
 export type Ground = 'road' | 'path' | 'open'
 /** A real-world outline on the map: which one (id in data/comparisons.geojson), where its centre is, and its turn in degrees. */
@@ -118,6 +137,17 @@ export function selectLore(id: string) {
 export function selectFeature(layer: LayerName, id: string) {
   store.selection = { type: 'feature', layer, id }
   store.panel = 'details'
+}
+
+/** Closes directions: clears the route and returns to the page that was open before (or closes the panel). */
+export function closeDirections() {
+  const d = store.directions
+  d.from = ''
+  d.to = ''
+  d.via = []
+  d.result = null
+  d.error = ''
+  if (store.panel === 'directions') store.panel = store.selection ? 'details' : 'none'
 }
 
 export function clearSelection() {

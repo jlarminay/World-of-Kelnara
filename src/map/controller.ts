@@ -22,7 +22,7 @@ import { bboxOf } from '@/world/geo'
 import { categoryOf, isPinned, pinImageId } from '@/world/categories'
 import { RANKS } from '@/world/types'
 import { hereAt } from '@/world/party'
-import { clearSelection, mapRef, placeById, selectPlace, selectSession, sheetPeekPx, store } from '@/state/store'
+import { clearSelection, mapRef, placeById, selectPlace, selectSession, sheetPx, store } from '@/state/store'
 import { applyRoute, routeOf } from '@/state/route'
 
 // The site must be served over http(s): browsers block workers on file:// pages.
@@ -89,14 +89,22 @@ export async function createMap(container: HTMLElement) {
 
   // Keep the camera's padding in step with the panel, without moving what is on screen: otherwise the padding of
   // the last flyTo stays after the panel closes, and the map zooms out off-centre.
+  // A flight that is under way already has the new padding (it was started after the panel changed); jumping
+  // here would cancel it, and the map would not move to what was just opened.
   const syncPadding = () => {
+    if (map.isMoving()) return
     const pad = cameraPadding()
     const c = map.getContainer()
     const at: [number, number] = [pad.left + (c.clientWidth - pad.left - pad.right) / 2, pad.top + (c.clientHeight - pad.top - pad.bottom) / 2]
     map.jumpTo({ center: map.unproject(at), padding: pad })
   }
   syncPadding()
-  watch(() => [store.panel === 'none', store.mobile], syncPadding)
+  // a change made during a flight was skipped above; catch up once the map stops
+  map.on('moveend', () => {
+    const pad = cameraPadding(), has = map.getPadding()
+    if (pad.top !== has.top || pad.bottom !== has.bottom || pad.left !== has.left || pad.right !== has.right) syncPadding()
+  })
+  watch(() => [store.panel === 'none', store.mobile, store.mobile && store.sheet], syncPadding)
 
   // ---- places ----
   const placesSource = map.getSource('places') as GeoJSONSource
@@ -163,7 +171,10 @@ export async function createMap(container: HTMLElement) {
     if (store.measure.active) return // handled by measure.ts
     if (map.queryRenderedFeatures(e.point, { layers: ['compare-fill'] }).length) return // handled by compare.ts
     const hit = map.queryRenderedFeatures(e.point, { layers: CLICKABLE_PLACES })[0]
-    if (hit) return selectPlace(hit.properties.id)
+    if (hit) {
+      selectPlace(hit.properties.id)
+      return void nextTick(() => keepInView(e.lngLat.toArray()))
+    }
     // the trail is only drawn while sessions are open (journey.ts); hidden layers never match
     const leg = map.queryRenderedFeatures(e.point, { layers: ['journey-hit', 'journey-stops'] })[0]
     if (leg) return selectSession(leg.properties.session)
@@ -206,7 +217,10 @@ export async function createMap(container: HTMLElement) {
     { immediate: true },
   )
 
-  // ---- route ----
+  // ---- route: drawn only while directions are open (they keep the route for Back/Forward) ----
+  watch(() => store.panel === 'directions', (on) => {
+    for (const id of ['route-case', 'route', 'route-hit', 'route-hover', 'route-ends']) map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none')
+  }, { immediate: true })
   // re-fit the view when the start or destination changes, not while the route is being dragged
   let fitPending = false
   watch(() => [store.directions.from, store.directions.to], () => (fitPending = true))
@@ -290,20 +304,36 @@ export function fitCoords(coords: Position[], padding = 60, maxZoom = MAX_ZOOM -
   if (!map || !coords.length) return
   const b = coords.reduce((b, [x, y]) => [Math.min(b[0], x), Math.min(b[1], y), Math.max(b[2], x), Math.max(b[3], y)], [Infinity, Infinity, -Infinity, -Infinity])
   const inset = panelInset()
-  map.fitBounds([[b[0], b[1]], [b[2], b[3]]] as LngLatBoundsLike, { padding: { top: padding + 60, bottom: padding + inset.bottom, right: padding, left: padding + inset.left }, maxZoom })
+  const want = { top: padding + 60, bottom: padding + inset.bottom, right: padding, left: padding + inset.left }
+  // MapLibre adds the map's own padding (the panel, see cameraPadding) to the padding given here, so only the rest
+  // is passed: counting the panel twice pushed the route off-centre, and on phones left no room, so nothing moved.
+  const p = map.getPadding()
+  const has = { top: p.top ?? 0, bottom: p.bottom ?? 0, left: p.left ?? 0, right: p.right ?? 0 }
+  const fit = { top: Math.max(0, want.top - has.top), bottom: Math.max(0, want.bottom - has.bottom), left: Math.max(0, want.left - has.left), right: Math.max(0, want.right - has.right) }
+  map.fitBounds([[b[0], b[1]], [b[2], b[3]]] as LngLatBoundsLike, { padding: fit, maxZoom })
 }
 
-/** Width of the left panel, so the camera centres things in the visible part of the map. */
 /** Room taken by the panel: on the left on desktop, the bottom sheet on phones. */
 const panelInset = () => {
   if (store.panel === 'none') return { left: 0, bottom: 0 }
-  return store.mobile ? { left: 0, bottom: sheetPeekPx() } : { left: 440, bottom: 0 }
+  // at full height the sheet covers the map; things are placed for when it comes back down to half
+  return store.mobile ? { left: 0, bottom: sheetPx(store.sheet === 'full' ? 'peek' : store.sheet) } : { left: 440, bottom: 0 }
 }
 /** The camera's padding: the part of the screen the panel (and on phones, the search box) leaves visible.
  * MapLibre keeps the padding of the last flyTo, so it is also kept in step with the panel (see createMap). */
 const cameraPadding = () => {
   const inset = panelInset()
   return { left: inset.left, top: store.mobile && store.panel !== 'none' ? 60 : 0, right: 0, bottom: inset.bottom }
+}
+
+/** Phones: when something tapped on the map ends up under the bottom sheet or the search box, slide it into view. */
+function keepInView(at: [number, number]) {
+  const map = mapRef.value
+  if (!map || !store.mobile || store.panel === 'none') return
+  const pad = cameraPadding()
+  const y = map.project(at).y
+  if (y > pad.top + 40 && y < map.getContainer().clientHeight - pad.bottom - 20) return
+  map.easeTo({ center: at, padding: pad, duration: 400 })
 }
 
 export function flyToPlace(id: string) {
@@ -328,7 +358,7 @@ export function flyToFeature(layer: LayerName, id: string) {
   const f = (layers[layer].features as Feature[]).find((f) => f.properties?.id === id)
   if (!f) return
   if (f.geometry.type === 'Point') {
-    mapRef.value?.flyTo({ center: f.geometry.coordinates as [number, number], zoom: Math.max(mapRef.value.getZoom(), levelToZoom(1)) })
+    mapRef.value?.flyTo({ center: f.geometry.coordinates as [number, number], zoom: Math.max(mapRef.value.getZoom(), levelToZoom(1)), padding: cameraPadding() })
     return
   }
   const b = bboxOf(f.geometry)

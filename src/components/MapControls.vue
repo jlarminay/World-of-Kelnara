@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Plus, Minus, LocateFixed } from "lucide-vue-next";
-import { mapRef, store } from "@/state/store";
+import { mapRef, SHEET_MIN_PX, store } from "@/state/store";
 import { kmPerPixel, zoomToLevel } from "@/world/coords";
 import { world } from "@/world/data";
 import { flyToHere } from "@/map/controller";
@@ -48,9 +48,10 @@ const toggle = () =>
     </span>
   </button>
 
-  <!-- current location, above the zoom buttons (bottom right on its own on phones, where zoom is hidden) -->
+  <!-- current location, above the zoom buttons (bottom right on its own on phones, where zoom is hidden; above the bottom sheet when it is lowered) -->
   <button
-    v-show="!(store.mobile && store.panel !== 'none')"
+    v-show="!(store.mobile && store.panel !== 'none' && store.sheet !== 'min')"
+    :style="store.mobile && store.panel !== 'none' ? { bottom: SHEET_MIN_PX + 12 + 'px' } : undefined"
     class="absolute right-3 bottom-[125px] z-10 grid size-10 place-items-center rounded-lg bg-white text-muted-foreground shadow-gm hover:text-[#1a73e8] max-sm:bottom-8"
     title="Show current location"
     @click="flyToHere"

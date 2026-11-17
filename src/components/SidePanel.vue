@@ -1,9 +1,10 @@
 <script setup lang="ts">
-// Desktop: a panel on the left, under the search box. Phones: a bottom sheet (like Google Maps on mobile)
-// that peeks at about half the screen; drag its handle up to expand, down to shrink or close.
+// Desktop: a panel on the left, under the search box. Phones: a bottom sheet (like Google Maps on mobile) that
+// rests at one of three heights: lowered (a strip with the page's header, to look at the map), about half the
+// screen, or full. Drag it by its handle, or by its content (down when scrolled to the top, up until it is full).
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { appHeightPx, clearSelection, sheetPeekPx, store } from '@/state/store'
+import { appHeightPx, clearSelection, closeDirections, SHEET_MIN_PX, sheetPx, store, type Sheet } from '@/state/store'
 import ResultsList from './ResultsList.vue'
 import PlaceDetails from './PlaceDetails.vue'
 import FeatureDetails from './FeatureDetails.vue'
@@ -16,26 +17,38 @@ import CharacterDetails from './CharacterDetails.vue'
 import LoreList from './LoreList.vue'
 import LoreDetails from './LoreDetails.vue'
 
+// re-read on resize (rotation, the on-screen keyboard), so the heights follow the screen
 const vh = ref(appHeightPx())
 const onResize = () => (vh.value = appHeightPx())
 onMounted(() => window.addEventListener('resize', onResize))
 onBeforeUnmount(() => window.removeEventListener('resize', onResize))
 
-const fullPx = computed(() => vh.value - 72) // leaves the search box visible above the sheet
+const SHEETS: Sheet[] = ['min', 'peek', 'full']
+const heightOf = (s: Sheet) => (vh.value, sheetPx(s))
 const dragPx = ref<number | null>(null)
-const heightPx = computed(() => dragPx.value ?? (store.sheet === 'full' ? fullPx.value : sheetPeekPx()))
+const heightPx = computed(() => dragPx.value ?? heightOf(store.sheet))
 
-// every newly opened page starts at the peek height, scrolled to the top
+// every newly opened page starts scrolled to the top (the sheet's height is set in store.ts)
 const sheetBody = ref<HTMLElement | null>(null)
 const desktopAside = ref<HTMLElement | null>(null)
 watch(() => [store.panel, store.selection], async () => {
-  store.sheet = 'peek'
   await nextTick()
   if (sheetBody.value) sheetBody.value.scrollTop = 0
   const viewport = desktopAside.value?.querySelector<HTMLElement>('[data-reka-scroll-area-viewport]')
   if (viewport) viewport.scrollTop = 0
 })
 
+// below full height the content doesn't scroll (dragging it moves the sheet), so show it from the top
+watch(() => store.sheet, (s) => { if (s !== 'full' && sheetBody.value) sheetBody.value.scrollTop = 0 })
+
+/** Where a drag ends: closed when pulled well below the lowest height, else the nearest of the three. */
+function settle(h: number) {
+  if (h < SHEET_MIN_PX * 0.6) return close()
+  store.sheet = SHEETS.reduce((a, b) => (Math.abs(heightOf(b) - h) < Math.abs(heightOf(a) - h) ? b : a))
+}
+const clampH = (h: number) => Math.max(40, Math.min(heightOf('full'), h))
+
+// ---- dragging by the handle (a tap on it steps the height up, or down from full) ----
 let startY = 0
 let startH = 0
 let moved = false
@@ -49,21 +62,53 @@ function move(e: PointerEvent) {
   if (!(e.currentTarget as HTMLElement).hasPointerCapture(e.pointerId)) return
   const dy = e.clientY - startY
   if (Math.abs(dy) > 4) moved = true
-  if (moved) dragPx.value = Math.max(60, Math.min(fullPx.value, startH - dy))
+  if (moved) dragPx.value = clampH(startH - dy)
 }
 function up() {
   const h = dragPx.value
   dragPx.value = null
-  if (!moved) {
-    store.sheet = store.sheet === 'full' ? 'peek' : 'full' // a tap on the handle toggles
-    return
-  }
-  if (h === null) return
-  if (h < sheetPeekPx() * 0.55) return close()
-  store.sheet = h > (sheetPeekPx() + fullPx.value) / 2 ? 'full' : 'peek'
+  if (!moved) return void (store.sheet = store.sheet === 'min' ? 'peek' : store.sheet === 'peek' ? 'full' : 'peek')
+  if (h !== null) settle(h)
 }
+
+// ---- dragging by the content: down when it is scrolled to the top, up while the sheet is not full ----
+let touchY = 0
+let touchH = 0
+let mode: 'sheet' | 'scroll' | null = null
+function touchStart(e: TouchEvent) {
+  mode = e.touches.length === 1 ? null : 'scroll'
+  touchY = e.touches[0].clientY
+  touchH = heightPx.value
+}
+function touchMove(e: TouchEvent) {
+  if (mode === 'scroll') return
+  const dy = e.touches[0].clientY - touchY
+  if (mode === null) {
+    if (Math.abs(dy) < 6) return
+    const atTop = (sheetBody.value?.scrollTop ?? 0) <= 0
+    mode = (dy > 0 && atTop) || (dy < 0 && store.sheet !== 'full') ? 'sheet' : 'scroll'
+    if (mode === 'scroll') return
+    touchY = e.touches[0].clientY // start from here, so the sheet doesn't jump by the dead zone
+  }
+  e.preventDefault()
+  dragPx.value = clampH(touchH - (e.touches[0].clientY - touchY))
+}
+function touchEnd() {
+  if (mode !== 'sheet') return void (mode = null)
+  mode = null
+  const h = dragPx.value
+  dragPx.value = null
+  if (h !== null) settle(h)
+}
+onMounted(() => window.addEventListener('touchmove', guardMove, { passive: false }))
+onBeforeUnmount(() => window.removeEventListener('touchmove', guardMove))
+/** Vue can't add a non-passive touchmove listener in the template; this one forwards the sheet body's moves. */
+function guardMove(e: TouchEvent) {
+  if (sheetBody.value?.contains(e.target as Node)) touchMove(e)
+}
+
 function close() {
-  store.sheet = 'peek'
+  if (store.panel === 'directions') closeDirections() // otherwise the route would stay drawn with no way to clear it
   clearSelection()
   store.panel = 'none'
 }
@@ -88,7 +133,11 @@ function close() {
       >
         <span class="h-1 w-9 rounded-full bg-black/20" />
       </div>
-      <div ref="sheetBody" class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+      <div
+        ref="sheetBody" class="min-h-0 flex-1 overscroll-contain"
+        :class="store.sheet === 'full' && dragPx === null ? 'overflow-y-auto' : 'overflow-hidden'"
+        @touchstart.passive="touchStart" @touchend="touchEnd" @touchcancel="touchEnd"
+      >
         <DirectionsPanel v-if="store.panel === 'directions'" />
         <SideMenu v-else-if="store.panel === 'menu'" />
         <SessionList v-else-if="store.panel === 'sessions'" />

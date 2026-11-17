@@ -25,7 +25,7 @@ const fraction = (km2: number) => {
     <div class="flex items-start justify-between">
       <div>
         <h3 class="text-sm font-medium">Real-world size</h3>
-        <p class="mt-1 text-sm text-muted-foreground">Drag a place to move it. Click it, then drag the rotate handle to turn it.</p>
+        <p class="mt-1 text-sm text-muted-foreground">Drag a place to move it. {{ store.mobile ? 'Tap' : 'Click' }} it, then drag the rotate handle to turn it.</p>
       </div>
       <button class="grid size-8 place-items-center rounded-full text-muted-foreground hover:bg-black/5" title="Close" @click="closeCompare">
         <X class="size-4" />
