@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Plus, Minus, Layers, LocateFixed } from "lucide-vue-next";
+import { Plus, Minus, LocateFixed } from "lucide-vue-next";
 import { mapRef, store } from "@/state/store";
 import { kmPerPixel, zoomToLevel } from "@/world/coords";
 import { world } from "@/world/data";
